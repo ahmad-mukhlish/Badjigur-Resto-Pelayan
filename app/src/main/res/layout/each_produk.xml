@@ -70,6 +70,49 @@
                     android:text="Rp 15000"
                     android:textColor="@color/colorPrimary"
                     android:textSize="15sp" />
+
+
+                <Button
+                    android:id="@+id/minus"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/colorPrimary"
+                    android:text="-"
+                    android:textColor="#FFFFFF"
+                    android:textSize="25sp" />
+
+
+                <Button
+                    android:id="@+id/plus"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_toLeftOf="@id/minus"
+                    android:background="@color/colorPrimary"
+                    android:text="+"
+                    android:textColor="#FFFFFF"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/qty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toLeftOf="@id/plus"
+                    android:text="0"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
             </RelativeLayout>
         </FrameLayout>
     </android.support.v7.widget.CardView>

@@ -36,7 +36,7 @@ public class Produk implements Parcelable {
 
     private String mTitle;
     private String mTag;
-    private int mPrice;
+    private int mPrice, mQty;
     private String mImage_path;
 
 
@@ -47,6 +47,14 @@ public class Produk implements Parcelable {
         this.mPrice = vote_average;
         this.mImage_path = image_path;
 
+    }
+
+    public int getmQty() {
+        return mQty;
+    }
+
+    public void setmQty(int mQty) {
+        this.mQty = mQty;
     }
 
     public String getmTitle() {
