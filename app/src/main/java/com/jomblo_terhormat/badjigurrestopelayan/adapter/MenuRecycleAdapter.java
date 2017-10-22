@@ -43,7 +43,10 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                 into(holder.mGambar);
 
         holder.mJudul.setText(currentProduk.getmTitle());
-        holder.mItemView.setOnClickListener(new FilmListner(position));
+        holder.mTag.setText(currentProduk.getmTag());
+        holder.mPrice.setText("Rp. " + currentProduk.getmPrice());
+
+        holder.mItemView.setOnClickListener(new ProdukListener(position));
 
     }
 
@@ -55,13 +58,15 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
     class FilmViewHolder extends RecyclerView.ViewHolder {
 
         ImageView mGambar;
-        TextView mJudul;
+        TextView mJudul, mTag, mPrice;
         View mItemView;
 
         FilmViewHolder(View itemView) {
             super(itemView);
             mGambar = itemView.findViewById(R.id.gambar);
             mJudul = itemView.findViewById(R.id.judul);
+            mTag = itemView.findViewById(R.id.tag) ;
+            mPrice = itemView.findViewById(R.id.price) ;
             mItemView = itemView;
 
         }
@@ -69,11 +74,11 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
     }
 
-    class FilmListner implements View.OnClickListener {
+    class ProdukListener implements View.OnClickListener {
 
         private int position;
 
-        FilmListner(int position) {
+        ProdukListener(int position) {
             this.position = position;
         }
 

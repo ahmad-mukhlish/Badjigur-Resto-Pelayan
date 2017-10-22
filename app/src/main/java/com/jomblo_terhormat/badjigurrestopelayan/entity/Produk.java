@@ -10,15 +10,15 @@ import android.os.Parcelable;
 public class Produk implements Parcelable {
 
     public static final String DUMMY_JSON_MAKANAN = "{\"produk\":[" +
-            "{\"name\":\"Burger\",\"tag\":\"Fast Food\",\"price\":20000,\"image_path\":\"http://victoriabuzz.com/wp-content/uploads/2016/11/tavern-double-1100x535.jpg\"}," +
-            "{\"name\":\"Salad\",\"tag\":\"Vegetarian\",\"price\":12000,\"image_path\":\"http://www.simplyrecipes.com/wp-content/uploads/2016/07/2016-08-12-BLT-Salad-3-600x400.jpg\"}," +
-            "{\"name\":\"Nasi goreng\",\"tag\":\"Indonesian\",\"price\":20000,\"image_path\":\"https://selerasa.com/images/nasi/nasi_goreng/Resep-Dan-Cara-Membuat-Nasi-Goreng-Rumahan-Spesial-Enak-Gurih-Simpel-Dan-Praktis.jpg\"}," +
+            "{\"name\":\"Burger\",\"tag\":\"Fast Food\",\"price\":20000,\"image_path\":\"https://assets.fastcompany.com/image/upload/w_596,c_limit,q_auto:best,f_auto,fl_lossy/wp-cms/uploads/2017/06/i-1-sonic-burger.jpg\"}," +
+            "{\"name\":\"Salad\",\"tag\":\"Vegetarian\",\"price\":12000,\"image_path\":\"https://media1.popsugar-assets.com/files/thumbor/Gx1VGi0PtkPaSj0meVDJBKw33FQ/fit-in/500x500/filters:format_auto-!!-:strip_icc-!!-/2016/02/29/902/n/37139775/3d1ad674_edit_img_image_15954515_1456777527/i/Black-Bean-Salad-Avocado-Dressing-Recipe.png\"}," +
+            "{\"name\":\"Nasi goreng\",\"tag\":\"Indonesian\",\"price\":20000,\"image_path\":\"http://resepkoki.co/wp-content/uploads/2015/06/nasi-goreng-putih.jpg\"}," +
             "{\"name\":\"Spaghetti\",\"tag\":\"Italian\",\"price\":16000,\"image_path\":\"https://www.cookingclassy.com/wp-content/uploads/2012/11/spaghetti+with+meat+sauce11.jpg\"}," +
             "{\"name\":\"Bakso\",\"tag\":\"Indonesia\",\"price\":14000,\"image_path\":\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ51GuBuy1F5Q1GTtiIlZMymb69pOj07Hr7wJ6SzjER3tIH_T3t\"}" +
             "]}" ;
 
     public static final String DUMMY_JASON_MINUMAN = "{\"produk\":" +
-            "[{\"name\":\"Bandrek\",\"tag\":\"Indonesian\",\"price\":8000,\"image_path\":\"https://4.bp.blogspot.com/-ZnrkU_DfE4Y/VuMCyRg9qVI/AAAAAAAAEDo/B5m1WHkhICwqlOJ2Lo9wA0zpAtWPKMxOA/s1600/resep-bandrek-susu.jpg\"}," +
+            "[{\"name\":\"Bandrek\",\"tag\":\"Indonesian\",\"price\":8000,\"image_path\":\"http://www.tokomesin.com/wp-content/uploads/2016/02/Peluang-Bisnis-Minuman-Bandrek-dan-Analisa-Bisnisnya-tokomesin.jpg\"}," +
             "{\"name\":\"Bajigur\",\"tag\":\"Indonesian\",\"price\":11000,\"image_path\":\"http://seremanis.com/theme/vintage/assets/img/gallery/bajigur.jpg\"}," +
             "{\"name\":\"Moccacino\",\"tag\":\"Italian\",\"price\":12000,\"image_path\":\"https://alexandracvanny03.files.wordpress.com/2014/11/moc.jpg\"}," +
             "{\"name\":\"Cola\",\"tag\":\"Fastfood\",\"price\":13000,\"image_path\":\"https://images.detik.com/community/media/visual/2016/11/14/126c1616-ab86-4d0c-8c21-381bf334af40.jpg?a=1\"}," +
@@ -27,11 +27,11 @@ public class Produk implements Parcelable {
 
 
     public static final String DUMMY_JASON_DESSERT = "{\"produk\":[" +
-            "{\"name\":\"Wajit\",\"tag\":\"Indonesian\",\"price\":6000,\"image_path\":\"http://www.hotelgeulisbandung.com/gambar/bandung/bandung-wajit-cililin-bandung-si-manis-legit-dari-bandung-barat-136-l.png\"}," +
-            "{\"name\":\"Ali Agrem\",\"tag\":\"Indonesian\",\"price\":8000,\"image_path\":\"http://www.harianindo.com/wp-content/uploads/2016/12/11057885_10207658791090510_5518523220918188457_n-600x350.jpg\"}," +
+            "{\"name\":\"Wajit\",\"tag\":\"Indonesian\",\"price\":6000,\"image_path\":\"http://1.bp.blogspot.com/-0w4tzM4r4wg/VjxZNvEy67I/AAAAAAAAI9c/qDDNLxvnHdQ/s1600/Wajit.jpg\"}," +
+            "{\"name\":\"Ali Agrem\",\"tag\":\"Indonesian\",\"price\":8000,\"image_path\":\"https://ecs12.tokopedia.net/newimg/cache/300/product-1/2014/11/9/255352/255352_b3eb8ed8-676a-11e4-96f5-de5a2523fab8.jpg\"}," +
             "{\"name\":\"Tiramisu\",\"tag\":\"Italian\",\"price\":14000,\"image_path\":\"http://food.fnr.sndimg.com/content/dam/images/food/fullset/2011/2/4/2/RX-FNM_030111-Sugar-Fix-005_s4x3.jpg.rend.hgtvcom.616.462.suffix/1371597326801.jpeg\"}," +
             "{\"name\":\"Cherry pie\",\"tag\":\"Fastfood\",\"price\":11000,\"image_path\":\"http://food.fnr.sndimg.com/content/dam/images/food/fullset/2009/6/15/0/JI_20731_s4x3.jpg.rend.hgtvcom.616.462.suffix/1371589402748.jpeg\"}," +
-            "{\"name\":\"Strawberry Chesscake Bites\",\"tag\":\"Vegetarian\",\"price\":16000,\"image_path\":\"http://media.foodnetwork.ca/imageserve/wp-content/uploads/sites/6/2015/04/strawberry-cheesecake-bites/x.jpg\"}" +
+            "{\"name\":\"Strawberry Chesscake\",\"tag\":\"Vegetarian\",\"price\":16000,\"image_path\":\"http://media.foodnetwork.ca/imageserve/wp-content/uploads/sites/6/2015/04/strawberry-cheesecake-bites/x.jpg\"}" +
             "]}" ;
 
     private String mTitle;
@@ -61,7 +61,7 @@ public class Produk implements Parcelable {
         return mImage_path;
     }
 
-    public float getmPrice() {
+    public int getmPrice() {
         return mPrice;
     }
 
