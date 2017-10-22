@@ -47,9 +47,10 @@ public class ProdukLoader extends AsyncTaskLoader<List<List<Produk>>> {
 
         List<List<Produk>> lists = new ArrayList<>();
 
-        lists.add(QueryUtils.fetchData(""));
-        lists.add(QueryUtils.fetchData(""));
-        lists.add(QueryUtils.fetchData(""));
+        lists.add(QueryUtils.fetchData(Produk.DUMMY_JSON_MAKANAN));
+        lists.add(QueryUtils.fetchData(Produk.DUMMY_JASON_MINUMAN));
+        lists.add(QueryUtils.fetchData(Produk.DUMMY_JASON_DESSERT));
+
 
 
         return lists;

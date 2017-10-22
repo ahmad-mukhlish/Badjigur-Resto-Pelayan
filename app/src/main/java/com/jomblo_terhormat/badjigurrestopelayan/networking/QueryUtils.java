@@ -44,7 +44,7 @@ final class QueryUtils {
             Log.e(LOG_TAG, "Error when closing input stream", e);
         }
 
-        return extract(Produk.DUMMY_JSON);
+        return extract(link);
 
     }
 
