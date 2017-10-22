@@ -8,7 +8,10 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.adapter.MenuTabAdapter;
@@ -20,6 +23,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<List<Produk>>> {
 
     public static List<List<Produk>> mProduk = null;
+    private ActionBar mActionBar;
+    private LinearLayout mLoading;
     private static final int LOADER_ID = 54;
 
     @Override
@@ -33,11 +38,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
+        LinearLayout error = (LinearLayout) findViewById(R.id.error);
+        error.setVisibility(View.GONE);
+
+        mLoading = (LinearLayout) findViewById(R.id.loading);
+
+        mActionBar = getSupportActionBar();
+        mActionBar.hide();
+
         if (isConnected) {
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(LOADER_ID, null, this);
         } else {
-//            error.setVisibility(View.VISIBLE);
+            error.setVisibility(View.VISIBLE);
         }
 
 
@@ -76,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void updateUI(List<List<Produk>> list) {
+        mActionBar.show();
+        mLoading.setVisibility(View.GONE);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         MenuTabAdapter adapter = new MenuTabAdapter(getSupportFragmentManager(), setTitle(), list);
         viewPager.setAdapter(adapter);
