@@ -36,7 +36,7 @@ public class Produk implements Parcelable {
 
     private String mTitle;
     private String mTag;
-    private int mPrice, mQty;
+    private int mPrice, mQty = 0;
     private String mImage_path;
 
 
