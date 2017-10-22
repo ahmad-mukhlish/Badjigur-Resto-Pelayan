@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -130,15 +131,21 @@ final class QueryUtils {
         try {
 
             JSONObject root = new JSONObject(jason);
-            String nama = root.getString("name");
-            String tag = root.getString("tag");
-            String price = root.getString("price");
-            String image_path = root.getString("image_path");
+            JSONArray produk = root.getJSONArray("produk");
+
+            for (int i = 0; i < produk.length(); i++) {
+
+                JSONObject produkNow = produk.getJSONObject(i) ;
+                String nama = produkNow.getString("name");
+                String tag = produkNow.getString("tag");
+                int price = produkNow.getInt("price") ;
+                String image_path = produkNow.getString("image_path");
+                Produk currentProduk = new Produk(nama, tag, price, image_path);
+                listFilm.add(currentProduk);
+            }
 
 
-            Produk currentProduk = new Produk(nama, tag, Integer.parseInt(price), image_path);
 
-            listFilm.add(currentProduk);
 
 
         } catch (JSONException e) {
