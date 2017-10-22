@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,10 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,7 +32,7 @@ final class QueryUtils {
     }
 
 
-     static List<Produk> fetchData(String link) {
+    static List<Produk> fetchData(String link) {
 
         URL url = parseStringLinkToURL(link);
 
@@ -47,7 +43,7 @@ final class QueryUtils {
             Log.e(LOG_TAG, "Error when closing input stream", e);
         }
 
-        return extract(jsonResponse);
+        return extract(Produk.DUMMY_JSON);
 
     }
 
@@ -134,35 +130,22 @@ final class QueryUtils {
         try {
 
             JSONObject root = new JSONObject(jason);
-            JSONArray results = root.getJSONArray("results");
-            for (int i = 0; i < results.length(); i++) {
-                JSONObject filmData = results.getJSONObject(i);
-                String title = filmData.getString("title");
-                String overview = filmData.getString("overview");
-                String poster_path = filmData.getString("poster_path");
-                String backdrop_path = filmData.getString("backdrop_path");
-                String vote_average = "" + filmData.getDouble("vote_average");
-                String release_date = filmData.getString("release_date");
-//                Produk film =
-//                        new Produk(title,
-//                                overview,
-//                                poster_path,
-//                                backdrop_path,
-//                                Float.parseFloat(vote_average), release_date);
-//                listFilm.add(film);
-            }
+            String nama = root.getString("name");
+            String tag = root.getString("tag");
+            String price = root.getString("price");
+            String image_path = root.getString("image_path");
+
+
+            Produk currentProduk = new Produk(nama, tag, Integer.parseInt(price), image_path);
+
+            listFilm.add(currentProduk);
+
 
         } catch (JSONException e) {
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
 
-        // Return the list of earthquakes
         return listFilm;
     }
 
-    private static String convertDateTime(long dateTime) {
-        Date date = new Date(dateTime * 1000);
-        Format dateTimeFormat = new SimpleDateFormat("EEEE, dd MMMM");
-        return dateTimeFormat.format(date);
-    }
 }
