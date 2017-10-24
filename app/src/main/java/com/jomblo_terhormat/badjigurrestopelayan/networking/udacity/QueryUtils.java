@@ -1,4 +1,4 @@
-package com.jomblo_terhormat.badjigurrestopelayan.networking;
+package com.jomblo_terhormat.badjigurrestopelayan.networking.udacity;
 
 import android.text.TextUtils;
 import android.util.Log;

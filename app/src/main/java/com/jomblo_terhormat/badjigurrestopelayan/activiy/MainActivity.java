@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.adapter.MenuTabAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
-import com.jomblo_terhormat.badjigurrestopelayan.networking.ProdukLoader;
+import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.ProdukLoader;
 
 import java.util.List;
 
@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mActionBar.show();
         mLoading.setVisibility(View.GONE);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        //tempat masuk data
         MenuTabAdapter adapter = new MenuTabAdapter(getSupportFragmentManager(), setTitle(), list);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);

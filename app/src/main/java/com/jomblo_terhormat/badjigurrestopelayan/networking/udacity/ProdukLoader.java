@@ -1,4 +1,4 @@
-package com.jomblo_terhormat.badjigurrestopelayan.networking;
+package com.jomblo_terhormat.badjigurrestopelayan.networking.udacity;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
