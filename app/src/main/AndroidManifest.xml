@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activiy.MainActivity"></activity>
+        <activity android:name=".activiy.MainActivity" />
         <activity
             android:name=".activiy.LoginActivity"
             android:label="@string/title_activity_login"
@@ -22,6 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activiy.BillingActivity"
+            android:parentActivityName=".activiy.MainActivity"/>
     </application>
 
 </manifest>
