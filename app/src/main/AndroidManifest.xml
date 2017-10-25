@@ -23,8 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activiy.BillingActivity"
-            android:parentActivityName=".activiy.MainActivity"/>
+            android:name=".activiy.BillingActivity" />
     </application>
 
 </manifest>
