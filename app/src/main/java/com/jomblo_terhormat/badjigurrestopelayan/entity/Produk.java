@@ -40,6 +40,28 @@ public class Produk implements Parcelable {
     private String mImage_path;
     private boolean mCart = false ;
 
+
+    protected Produk(Parcel in) {
+        mTitle = in.readString();
+        mTag = in.readString();
+        mPrice = in.readInt();
+        mQty = in.readInt();
+        mImage_path = in.readString();
+        mCart = in.readByte() != 0;
+    }
+
+    public static final Creator<Produk> CREATOR = new Creator<Produk>() {
+        @Override
+        public Produk createFromParcel(Parcel in) {
+            return new Produk(in);
+        }
+
+        @Override
+        public Produk[] newArray(int size) {
+            return new Produk[size];
+        }
+    };
+
     public boolean ismCart() {
         return (mQty > 0);
     }
@@ -78,24 +100,6 @@ public class Produk implements Parcelable {
         return mPrice;
     }
 
-    protected Produk(Parcel in) {
-        mTitle = in.readString();
-        mTag = in.readString();
-        mImage_path = in.readString();
-        mPrice = in.readInt();
-    }
-
-    public static final Creator<Produk> CREATOR = new Creator<Produk>() {
-        @Override
-        public Produk createFromParcel(Parcel in) {
-            return new Produk(in);
-        }
-
-        @Override
-        public Produk[] newArray(int size) {
-            return new Produk[size];
-        }
-    };
 
     @Override
     public int describeContents() {
@@ -106,9 +110,9 @@ public class Produk implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(mTitle);
         parcel.writeString(mTag);
-        parcel.writeString(mImage_path);
         parcel.writeInt(mPrice);
+        parcel.writeInt(mQty);
+        parcel.writeString(mImage_path);
+        parcel.writeByte((byte) (mCart ? 1 : 0));
     }
-
-
 }

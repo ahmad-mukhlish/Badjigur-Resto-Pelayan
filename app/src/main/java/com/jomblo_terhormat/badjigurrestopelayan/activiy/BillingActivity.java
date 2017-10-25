@@ -24,7 +24,7 @@ public class BillingActivity extends AppCompatActivity {
 
 
         MenuRecycleAdapter filmRecycleViewAdapter =
-                new MenuRecycleAdapter(this, joinList());
+                new MenuRecycleAdapter(this, cartedList(joinList()));
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvItems);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
@@ -43,6 +43,7 @@ public class BillingActivity extends AppCompatActivity {
         ArrayList<Produk> dessert = bundle.getParcelableArrayList("dessert") ;
 
 
+
         ArrayList<Produk> produks = new ArrayList<Produk>() ;
 
         produks.addAll(makanan) ;
@@ -55,12 +56,13 @@ public class BillingActivity extends AppCompatActivity {
 
 
     private List<Produk> cartedList(List<Produk> list) {
-        List<Produk> carted = null;
+        List<Produk> carted = new ArrayList<>();
         for (Produk produk : list) {
-
+              if(produk.ismCart())
+              carted.add(produk) ;
         }
 
-        return null;
+        return carted;
     }
 
 

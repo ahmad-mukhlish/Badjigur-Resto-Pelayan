@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             Intent intent = new Intent(MainActivity.this, BillingActivity.class) ;
             intent.putExtra("makanan", (ArrayList<Produk>) mProduk.get(0)) ;
+            Log.v("contoh",mProduk.get(0).get(0).getmTitle()+" "+mProduk.get(0).get(0).getmQty()) ;
             intent.putExtra("minuman", (ArrayList<Produk>) mProduk.get(1)) ;
             intent.putExtra("dessert", (ArrayList<Produk>) mProduk.get(2)) ;
 
