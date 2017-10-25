@@ -22,6 +22,7 @@ import com.jomblo_terhormat.badjigurrestopelayan.adapter.MenuTabAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.ProdukLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<List<Produk>>> {
@@ -114,8 +115,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.billing) ;
-            startActivity(new Intent(MainActivity.this, BillingActivity.class));
+        if (item.getItemId() == R.id.billing) {
+
+            Intent intent = new Intent(MainActivity.this, BillingActivity.class) ;
+            intent.putExtra("makanan", (ArrayList<Produk>) mProduk.get(0)) ;
+            intent.putExtra("minuman", (ArrayList<Produk>) mProduk.get(1)) ;
+            intent.putExtra("dessert", (ArrayList<Produk>) mProduk.get(2)) ;
+
+            startActivity(intent);
+
+        }
+
+
+
         return super.onOptionsItemSelected(item);
     }
 

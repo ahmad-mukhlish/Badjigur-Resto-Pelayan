@@ -102,7 +102,7 @@ public class Produk implements Parcelable {
         parcel.writeString(mTitle);
         parcel.writeString(mTag);
         parcel.writeString(mImage_path);
-        parcel.writeFloat(mPrice);
+        parcel.writeInt(mPrice);
     }
 
 
