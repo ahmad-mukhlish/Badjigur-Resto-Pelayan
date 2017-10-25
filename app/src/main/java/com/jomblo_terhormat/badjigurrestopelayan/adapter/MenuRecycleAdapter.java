@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +49,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         holder.mTag.setText(currentProduk.getmTag());
         holder.mPrice.setText("Rp. " + currentProduk.getmPrice());
         holder.mQty.setText(currentProduk.getmQty() + "");
+        holder.mCart.setChecked(currentProduk.ismCart());
 
         holder.mPlus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +58,8 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                 qty++;
                 currentProduk.setmQty(qty);
                 holder.mQty.setText(qty + "");
+                holder.mCart.setChecked(currentProduk.ismCart());
+
             }
         });
 
@@ -67,6 +71,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                     qty--;
                     currentProduk.setmQty(qty);
                     holder.mQty.setText(qty + "");
+                    holder.mCart.setChecked(currentProduk.ismCart());
                 }
             }
         });
@@ -85,6 +90,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         TextView mJudul, mTag, mPrice, mQty;
         View mItemView;
         Button mPlus, mMinus;
+        CheckBox mCart ;
 
 
         FilmViewHolder(View itemView) {
@@ -96,6 +102,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
             mQty = itemView.findViewById(R.id.qty);
             mPlus = itemView.findViewById(R.id.plus);
             mMinus = itemView.findViewById(R.id.minus);
+            mCart = itemView.findViewById(R.id.cart) ;
             mItemView = itemView;
         }
 

@@ -11,13 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         card_view:cardCornerRadius="5dp"
         card_view:cardElevation="6dp">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             android:layout_gravity="center_horizontal">
 
             <RelativeLayout
@@ -26,7 +26,7 @@
 
                 <ImageView
                     android:id="@+id/gambar"
-                    android:layout_width="100dp"
+                    android:layout_width="110dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="2dp"
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:layout_toRightOf="@id/gambar"
                     android:text="Burger"
                     android:textColor="#000000"
@@ -104,18 +104,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_toLeftOf="@id/plus"
                     android:text="0"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
                     android:textColor="#000000"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <CheckBox
+                    android:id="@+id/cart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:enabled="false" />
 
 
             </RelativeLayout>

@@ -38,9 +38,14 @@ public class Produk implements Parcelable {
     private String mTag;
     private int mPrice, mQty = 0;
     private String mImage_path;
+    private boolean mCart = false ;
+
+    public boolean ismCart() {
+        return (mQty > 0);
+    }
 
 
-    public Produk(String title, String tag,  int vote_average, String image_path) {
+    public Produk(String title, String tag, int vote_average, String image_path) {
 
         this.mTitle = title;
         this.mTag = tag;
