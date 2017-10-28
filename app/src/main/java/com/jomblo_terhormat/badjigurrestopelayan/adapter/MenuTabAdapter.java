@@ -19,9 +19,9 @@ public class MenuTabAdapter extends FragmentStatePagerAdapter {
 
     public static final int TOTAL_FRAGMENT = 3;
     private String[] mTitles;
-    private List<List<Produk>> mLists;
+    private List<Produk> mLists;
 
-    public MenuTabAdapter(FragmentManager fm, String[] titles, List<List<Produk>> List) {
+    public MenuTabAdapter(FragmentManager fm, String[] titles, List<Produk> List) {
         super(fm);
         this.mTitles = titles ;
         this.mLists = List ;
@@ -35,7 +35,7 @@ public class MenuTabAdapter extends FragmentStatePagerAdapter {
         Fragment fragment;
         fragment = new MenuProdukFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("key", (ArrayList<Produk>) mLists.get(position));
+        bundle.putParcelableArrayList("key", (ArrayList<Produk>) mLists);
         fragment.setArguments(bundle);
 
         return fragment;

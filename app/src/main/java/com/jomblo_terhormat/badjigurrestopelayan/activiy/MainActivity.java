@@ -11,7 +11,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,9 +25,9 @@ import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.ProdukLoader
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<List<Produk>>> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Produk>> {
 
-    public static List<List<Produk>> mProduk = null;
+    public static List<Produk> mProduk = null;
     private ActionBar mActionBar;
     private LinearLayout mLoading;
     private static final int LOADER_ID = 54;
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public Loader<List<List<Produk>>> onCreateLoader(int i, Bundle bundle) {
+    public Loader<List<Produk>> onCreateLoader(int i, Bundle bundle) {
         if (mProduk == null) {
             return new ProdukLoader(this);
         } else
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoadFinished(Loader<List<List<Produk>>> loader, List<List<Produk>> produks) {
+    public void onLoadFinished(Loader<List<Produk>> loader, List<Produk> produks) {
         if (mProduk == null) {
             mProduk = produks;
         }
@@ -90,11 +89,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoaderReset(Loader<List<List<Produk>>> loader) {
+    public void onLoaderReset(Loader<List<Produk>> loader) {
 
     }
 
-    private void updateUI(List<List<Produk>> list) {
+    private void updateUI(List<Produk> list) {
         mActionBar.show();
         mLoading.setVisibility(View.GONE);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -119,10 +118,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (item.getItemId() == R.id.billing) {
 
             Intent intent = new Intent(MainActivity.this, BillingActivity.class) ;
-            intent.putExtra("makanan", (ArrayList<Produk>) mProduk.get(0)) ;
-            Log.v("contoh",mProduk.get(0).get(0).getmTitle()+" "+mProduk.get(0).get(0).getmQty()) ;
-            intent.putExtra("minuman", (ArrayList<Produk>) mProduk.get(1)) ;
-            intent.putExtra("dessert", (ArrayList<Produk>) mProduk.get(2)) ;
+            intent.putExtra("makanan", (ArrayList<Produk>) mProduk) ;
+            intent.putExtra("minuman", (ArrayList<Produk>) mProduk) ;
+            intent.putExtra("dessert", (ArrayList<Produk>) mProduk) ;
 
             startActivity(intent);
 

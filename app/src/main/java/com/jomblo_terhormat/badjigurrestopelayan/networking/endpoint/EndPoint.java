@@ -5,5 +5,5 @@ package com.jomblo_terhormat.badjigurrestopelayan.networking.endpoint;
  */
 
 public class EndPoint {
-    public static String BASE_URL = "http://192.168.168.2/restoran/";
+    public static String BASE_URL = "http://192.168.1.8/restoran/";
 }

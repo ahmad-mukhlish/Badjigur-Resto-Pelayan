@@ -41,13 +41,13 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         final Produk currentProduk = mProduks.get(position);
 
         Picasso.with(mContext).
-                load(currentProduk.getmImage_path()).
+                load(Produk.BASE_PATH + currentProduk.getPath()).
                 into(holder.mGambar);
 
 
-        holder.mJudul.setText(currentProduk.getmTitle());
-        holder.mTag.setText(currentProduk.getmTag());
-        holder.mPrice.setText("Rp. " + currentProduk.getmPrice());
+        holder.mJudul.setText(currentProduk.getNama());
+        holder.mTag.setText(currentProduk.getTag());
+        holder.mPrice.setText("Rp. " + currentProduk.getHarga_jual());
         holder.mQty.setText(currentProduk.getmQty() + "");
         holder.mCart.setChecked(currentProduk.ismCart());
 

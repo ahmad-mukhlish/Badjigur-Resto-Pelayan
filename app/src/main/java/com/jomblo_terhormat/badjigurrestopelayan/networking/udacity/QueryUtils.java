@@ -44,7 +44,7 @@ final class QueryUtils {
             Log.e(LOG_TAG, "Error when closing input stream", e);
         }
 
-        return extract(link);
+        return extract(jsonResponse);
 
     }
 
@@ -126,22 +126,25 @@ final class QueryUtils {
             return null;
         }
 
-        List<Produk> listFilm = new ArrayList<>();
+        List<Produk> listProduks = new ArrayList<>();
 
         try {
 
-            JSONObject root = new JSONObject(jason);
-            JSONArray produk = root.getJSONArray("produk");
+            JSONArray root = new JSONArray(jason);
 
-            for (int i = 0; i < produk.length(); i++) {
+            for (int i = 0; i < root.length(); i++) {
 
-                JSONObject produkNow = produk.getJSONObject(i) ;
-                String nama = produkNow.getString("name");
+                JSONObject produkNow = root.getJSONObject(i) ;
+                int id_makanan = Integer.parseInt(produkNow.getString("id_makanan")) ;
+                String nama = produkNow.getString("nama");
+                int jenis = Integer.parseInt(produkNow.getString("jenis")) ;
                 String tag = produkNow.getString("tag");
-                int price = produkNow.getInt("price") ;
-                String image_path = produkNow.getString("image_path");
-                Produk currentProduk = new Produk(nama, tag, price, image_path);
-                listFilm.add(currentProduk);
+                String deskripsi = produkNow.getString("deskripsi");
+                int harga_jual = Integer.parseInt(produkNow.getString("harga_jual")) ;
+                int harga_beli = Integer.parseInt(produkNow.getString("harga_beli")) ;
+                String path = produkNow.getString("path");
+                Produk currentProduk = new Produk(id_makanan,nama,jenis,tag,deskripsi,harga_jual,harga_beli,path) ;
+                listProduks.add(currentProduk);
             }
 
 
@@ -152,7 +155,7 @@ final class QueryUtils {
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
 
-        return listFilm;
+        return listProduks;
     }
 
 }
