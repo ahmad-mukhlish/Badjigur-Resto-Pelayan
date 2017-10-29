@@ -37,20 +37,7 @@ public class BillingActivity extends AppCompatActivity {
 
     private List<Produk> joinList () {
         Bundle bundle = getIntent().getExtras();
-
-        ArrayList<Produk> makanan = bundle.getParcelableArrayList("makanan") ;
-        ArrayList<Produk> minuman = bundle.getParcelableArrayList("minuman") ;
-        ArrayList<Produk> dessert = bundle.getParcelableArrayList("dessert") ;
-
-
-
-        ArrayList<Produk> produks = new ArrayList<Produk>() ;
-
-        produks.addAll(makanan) ;
-        produks.addAll(minuman) ;
-        produks.addAll(dessert) ;
-
-        return produks ;
+        return bundle.getParcelableArrayList("produks") ;
     }
 
 

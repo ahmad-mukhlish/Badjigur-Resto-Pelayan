@@ -17,9 +17,11 @@ import java.util.List;
 public class ProdukLoader extends AsyncTaskLoader<List<Produk>> {
 
 
+    private String mUrl;
 
-    public ProdukLoader(Context context) {
+    public ProdukLoader(Context context, String url) {
         super(context);
+        this.mUrl = url;
     }
 
     @Override
@@ -31,7 +33,7 @@ public class ProdukLoader extends AsyncTaskLoader<List<Produk>> {
     @Override
     public List<Produk> loadInBackground() {
 
-        return QueryUtils.fetchData(Produk.BASE_PATH + Produk.JSON_REPLY) ;
+        return QueryUtils.fetchData(mUrl) ;
     }
 
 }

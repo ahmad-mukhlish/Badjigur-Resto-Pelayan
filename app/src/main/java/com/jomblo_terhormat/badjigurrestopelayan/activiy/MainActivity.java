@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<List<Produk>> onCreateLoader(int i, Bundle bundle) {
         if (mProduk == null) {
-            return new ProdukLoader(this);
+            return new ProdukLoader(this, Produk.BASE_PATH + Produk.JSON_REPLY);
         } else
             return null;
     }
@@ -118,9 +118,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (item.getItemId() == R.id.billing) {
 
             Intent intent = new Intent(MainActivity.this, BillingActivity.class) ;
-            intent.putExtra("makanan", (ArrayList<Produk>) mProduk) ;
-            intent.putExtra("minuman", (ArrayList<Produk>) mProduk) ;
-            intent.putExtra("dessert", (ArrayList<Produk>) mProduk) ;
+            intent.putExtra("produks", (ArrayList<Produk>) mProduk) ;
 
             startActivity(intent);
 

@@ -9,18 +9,33 @@ import android.os.Parcelable;
 
 public class Produk implements Parcelable {
 
-    public static final String BASE_PATH  = "http://192.168.1.8/restoran/";
-    public static final String JSON_REPLY = "server.php?operasi=view" ;
+    public static final String BASE_PATH = "http://192.168.1.10/restoran/";
+    public static final String JSON_REPLY = "server.php?operasi=view";
 
+    public static final Creator<Produk> CREATOR = new Creator<Produk>() {
+        @Override
+        public Produk createFromParcel(Parcel in) {
+            return new Produk(in);
+        }
+
+        @Override
+        public Produk[] newArray(int size) {
+            return new Produk[size];
+        }
+    };
 
     private int id_makanan;
     private String nama;
-    private int jenis ;
+    private int jenis;
     private String tag;
     private String deskripsi;
     private int harga_beli;
     private int harga_jual;
     private String path;
+
+    //field tambahan
+    private int mQty = 0;
+    private boolean mCart = false;
 
 
     public Produk(int id, String nama, int jenis, String tag, String deskripsi, int harga_beli, int harga_jual, String path) {
@@ -34,11 +49,6 @@ public class Produk implements Parcelable {
         this.path = path;
     }
 
-    //field tambahan
-    private int mQty = 0;
-    private boolean mCart = false;
-
-
     protected Produk(Parcel in) {
         id_makanan = in.readInt();
         nama = in.readString();
@@ -50,18 +60,6 @@ public class Produk implements Parcelable {
         mQty = in.readInt();
         mCart = in.readByte() != 0;
     }
-
-    public static final Creator<Produk> CREATOR = new Creator<Produk>() {
-        @Override
-        public Produk createFromParcel(Parcel in) {
-            return new Produk(in);
-        }
-
-        @Override
-        public Produk[] newArray(int size) {
-            return new Produk[size];
-        }
-    };
 
     public boolean ismCart() {
         return (mQty > 0);
@@ -99,7 +97,12 @@ public class Produk implements Parcelable {
         return harga_beli;
     }
 
+    public int getJenis() {
+        return jenis;
+    }
+
     @Override
+
     public int describeContents() {
         return 0;
     }

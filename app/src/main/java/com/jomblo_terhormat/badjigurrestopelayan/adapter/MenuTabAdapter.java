@@ -23,21 +23,18 @@ public class MenuTabAdapter extends FragmentStatePagerAdapter {
 
     public MenuTabAdapter(FragmentManager fm, String[] titles, List<Produk> List) {
         super(fm);
-        this.mTitles = titles ;
-        this.mLists = List ;
+        this.mTitles = titles;
+        this.mLists = List;
 
     }
 
 
-
     @Override
     public Fragment getItem(int position) {
-        Fragment fragment;
-        fragment = new MenuProdukFragment();
+        Fragment fragment = new MenuProdukFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("key", (ArrayList<Produk>) mLists);
+        bundle.putParcelableArrayList("key", (ArrayList<Produk>) divideProduksForFragment(mLists, position));
         fragment.setArguments(bundle);
-
         return fragment;
     }
 
@@ -49,5 +46,17 @@ public class MenuTabAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return TOTAL_FRAGMENT;
+    }
+
+    private List<Produk> divideProduksForFragment(List<Produk> all, int index) {
+        List<Produk> result = new ArrayList<Produk>();
+
+        for (Produk produkNow : all) {
+            if (produkNow.getJenis() == index) {
+                result.add(produkNow);
+            }
+        }
+
+        return result;
     }
 }
