@@ -8,6 +8,7 @@ import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
 import java.util.List;
 
+import retrofit2.Call;
 
 
 /**
@@ -18,6 +19,7 @@ public class ProdukLoader extends AsyncTaskLoader<List<Produk>> {
 
 
     private String mUrl;
+    Call<List<Produk>> mCall;
 
     public ProdukLoader(Context context, String url) {
         super(context);
@@ -32,7 +34,6 @@ public class ProdukLoader extends AsyncTaskLoader<List<Produk>> {
 
     @Override
     public List<Produk> loadInBackground() {
-
         return QueryUtils.fetchData(mUrl) ;
     }
 

@@ -3,6 +3,8 @@ package com.jomblo_terhormat.badjigurrestopelayan.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by GOODWARE1 on 10/19/2017.
  */
@@ -10,7 +12,10 @@ import android.os.Parcelable;
 public class Produk implements Parcelable {
 
     public static final String BASE_PATH = "http://192.168.1.10/restoran/";
-    public static final String JSON_REPLY = "server.php?operasi=view";
+    public static final String JSON_REPLY_MENU = "server.php?operasi=view";
+    public static final String ADMIN = "admin";
+    public static final String PASSWORD = "badjigur";
+
 
     public static final Creator<Produk> CREATOR = new Creator<Produk>() {
         @Override
@@ -24,6 +29,7 @@ public class Produk implements Parcelable {
         }
     };
 
+    @SerializedName("id_makanan")
     private int id_makanan;
     private String nama;
     private int jenis;

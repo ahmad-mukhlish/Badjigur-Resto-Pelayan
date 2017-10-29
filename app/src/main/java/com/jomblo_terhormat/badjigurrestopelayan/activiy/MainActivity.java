@@ -1,9 +1,7 @@
 package com.jomblo_terhormat.badjigurrestopelayan.activiy;
 
-import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -11,26 +9,33 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.adapter.MenuTabAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
-import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.ProdukLoader;
+import com.jomblo_terhormat.badjigurrestopelayan.networking.retrofit.ApiClient;
+import com.jomblo_terhormat.badjigurrestopelayan.networking.retrofit.ApiInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Produk>> {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    public static List<Produk> mProduk = null;
+public class MainActivity extends AppCompatActivity  {
+
+    public static List<Produk> mProduk ;
     private ActionBar mActionBar;
     private LinearLayout mLoading;
-    private static final int LOADER_ID = 54;
+    Call<List<Produk>> mCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,48 +57,48 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mActionBar.hide();
 
         if (isConnected) {
-            LoaderManager loaderManager = getLoaderManager();
-            loaderManager.initLoader(LOADER_ID, null, this);
+           connectWithRetrofit(this);
         } else {
             error.setVisibility(View.VISIBLE);
         }
-
-
     }
 
     private String[] setTitle() {
-        String titles[] = new String[MenuTabAdapter.TOTAL_FRAGMENT] ;
-        titles[0] = "Foods" ;
-        titles[1] = "Beverages" ;
-        titles[2] = "Deserts" ;
+        String titles[] = new String[MenuTabAdapter.TOTAL_FRAGMENT];
+        titles[0] = "Foods";
+        titles[1] = "Beverages";
+        titles[2] = "Deserts";
 
-        return titles ;
+        return titles;
     }
 
-    @Override
-    public Loader<List<Produk>> onCreateLoader(int i, Bundle bundle) {
-        if (mProduk == null) {
-            return new ProdukLoader(this, Produk.BASE_PATH + Produk.JSON_REPLY);
-        } else
-            return null;
-    }
 
-    @Override
-    public void onLoadFinished(Loader<List<Produk>> loader, List<Produk> produks) {
-        if (mProduk == null) {
-            mProduk = produks;
+    public void connectWithRetrofit(final Context context) {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        if(mCall == null){
+            mCall = apiService.getMakanan();
         }
 
-        updateUI(mProduk);
+        mCall.enqueue(new Callback<List<Produk>>() {
 
-    }
+            @Override
+            public void onResponse(Call<List<Produk>> call, Response<List<Produk>> response) {
+                if (response.isSuccessful()){
+                    mProduk = response.body() ;
+                    updateUI(mProduk);
+                }
+            }
 
-    @Override
-    public void onLoaderReset(Loader<List<Produk>> loader) {
-
+            @Override
+            public void onFailure(Call<List<Produk>> call, Throwable t) {
+                Toast.makeText(context,"error when using retrofit",Toast.LENGTH_SHORT).show();
+                Log.e("retrofit",t.toString()) ;
+            }
+        });
     }
 
     private void updateUI(List<Produk> list) {
+
         mActionBar.show();
         mLoading.setVisibility(View.GONE);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -116,15 +121,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.billing) {
-
-            Intent intent = new Intent(MainActivity.this, BillingActivity.class) ;
-            intent.putExtra("produks", (ArrayList<Produk>) mProduk) ;
-
+            Intent intent = new Intent(MainActivity.this, BillingActivity.class);
+            intent.putExtra("produks", (ArrayList<Produk>) mProduk);
             startActivity(intent);
-
         }
-
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -134,4 +134,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onDestroy();
         mProduk = null;
     }
+
+
 }

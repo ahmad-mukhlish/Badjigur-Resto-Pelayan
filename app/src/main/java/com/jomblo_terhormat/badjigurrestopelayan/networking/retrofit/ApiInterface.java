@@ -1,4 +1,4 @@
-package com.jomblo_terhormat.badjigurrestopelayan.networking.rest;
+package com.jomblo_terhormat.badjigurrestopelayan.networking.retrofit;
 
 
 
@@ -14,6 +14,6 @@ import retrofit2.http.GET;
  */
 
 public interface ApiInterface {
-    @GET("server.php?operasi=view")
+    @GET(Produk.JSON_REPLY_MENU)
     Call<List<Produk>> getMakanan();
 }

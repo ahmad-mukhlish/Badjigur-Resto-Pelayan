@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
+import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText edUser, edPass;
@@ -25,15 +26,13 @@ public class LoginActivity extends AppCompatActivity {
         edUser = (EditText) findViewById(R.id.edUsername);
         edPass = (EditText) findViewById(R.id.edPassword);
         login = (Button) findViewById(R.id.login);
-        String stuser = edUser.getText().toString();
-        String stpass = edPass.getText().toString();
     }
 
     public  void login(View v){
         String stuser = edUser.getText().toString();
         String stpass = edPass.getText().toString();
 
-        if(stuser.equals("admin") && stpass.equals("admin")){
+        if(stuser.equals(Produk.ADMIN) && stpass.equals(Produk.PASSWORD)){
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish() ;
