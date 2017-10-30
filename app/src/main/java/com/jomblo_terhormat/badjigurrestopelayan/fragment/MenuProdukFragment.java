@@ -31,7 +31,7 @@ public class MenuProdukFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.produk_list, container, false);
 
         List<Produk> listProduk = getArguments().getParcelableArrayList("key");
-        MenuRecycleAdapter filmRecycleViewAdapter =
+        MenuRecycleAdapter menuRecycleAdapter =
                 new MenuRecycleAdapter(getContext(), listProduk);
 
         RecyclerView recyclerView = rootView.findViewById(R.id.rvItems);
@@ -39,7 +39,7 @@ public class MenuProdukFragment extends Fragment {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(filmRecycleViewAdapter);
+        recyclerView.setAdapter(menuRecycleAdapter);
 
         return rootView;
     }

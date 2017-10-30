@@ -20,7 +20,7 @@ import java.util.List;
  * Created by GOODWARE1 on 9/2/2017.
  */
 
-public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.FilmViewHolder> {
+public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.MenuViewHolder> {
 
     private Context mContext;
     private List<Produk> mProduks;
@@ -31,13 +31,13 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
     }
 
     @Override
-    public FilmViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(mContext).inflate(R.layout.each_produk, parent, false);
-        return new FilmViewHolder(itemView);
+    public MenuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(mContext).inflate(R.layout.each_produk_menu, parent, false);
+        return new MenuViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final FilmViewHolder holder, int position) {
+    public void onBindViewHolder(final MenuViewHolder holder, int position) {
         final Produk currentProduk = mProduks.get(position);
 
         Picasso.with(mContext).
@@ -84,7 +84,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         return mProduks.size();
     }
 
-    class FilmViewHolder extends RecyclerView.ViewHolder {
+    class MenuViewHolder extends RecyclerView.ViewHolder {
 
         ImageView mGambar;
         TextView mJudul, mTag, mPrice, mQty;
@@ -93,7 +93,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         CheckBox mCart ;
 
 
-        FilmViewHolder(View itemView) {
+        MenuViewHolder(View itemView) {
             super(itemView);
             mGambar = itemView.findViewById(R.id.gambar);
             mJudul = itemView.findViewById(R.id.judul);
