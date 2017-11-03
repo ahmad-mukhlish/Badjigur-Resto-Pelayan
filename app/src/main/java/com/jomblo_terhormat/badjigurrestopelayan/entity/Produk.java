@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Produk implements Parcelable {
 
-    public static final String BASE_PATH = "http://192.168.1.9/restoran/";
+    public static final String BASE_PATH = "http://192.168.1.8/restoran/";
     public static final String JSON_REPLY_MENU = "server.php?operasi=view";
     public static final String ADMIN = "admin";
     public static final String PASSWORD = "jasuke";
@@ -53,6 +53,11 @@ public class Produk implements Parcelable {
         this.harga_beli = harga_beli;
         this.harga_jual = harga_jual;
         this.path = path;
+    }
+
+    public Produk(String nama, int harga_jual) {
+        this.nama = nama;
+        this.harga_jual = harga_jual;
     }
 
     protected Produk(Parcel in) {

@@ -1,6 +1,7 @@
 package com.jomblo_terhormat.badjigurrestopelayan.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ public class BillingRecycleAdapter extends RecyclerView.Adapter<BillingRecycleAd
     public BillingRecycleAdapter(Context mContext, List<Produk> produks) {
         this.mContext = mContext;
         this.mProduks = produks;
+        addTotal(mProduks);
     }
 
     @Override
@@ -36,11 +38,18 @@ public class BillingRecycleAdapter extends RecyclerView.Adapter<BillingRecycleAd
     public void onBindViewHolder(final BillingViewHolder holder, int position) {
         final Produk currentProduk = mProduks.get(position);
 
-        holder.mJudul.setText(currentProduk.getNama());
-        holder.mPrice.setText("Rp. " + (currentProduk.getHarga_jual() * currentProduk.getmQty()));
-        holder.mQty.setText(currentProduk.getmQty() + "");
+        if (!currentProduk.getNama().equals("Total")) {
+            holder.mJudul.setText(currentProduk.getNama());
+            holder.mPrice.setText("Rp. " + (currentProduk.getHarga_jual() * currentProduk.getmQty()));
+            holder.mQty.setText(currentProduk.getmQty() + "");
+        } else {
+            holder.mJudul.setText(currentProduk.getNama());
+            holder.mJudul.setTextColor(Color.RED);
+            holder.mPrice.setText("Rp. " + currentProduk.getHarga_jual());
+            holder.mPrice.setTextColor(Color.RED);
+            holder.mQty.setVisibility(View.GONE);
 
-
+        }
 
     }
 
@@ -64,6 +73,15 @@ public class BillingRecycleAdapter extends RecyclerView.Adapter<BillingRecycleAd
         }
 
 
+    }
+
+    private void addTotal(List<Produk> produks) {
+        int totalHarga = 0;
+        for (Produk produkNow : produks) {
+            totalHarga += produkNow.getHarga_jual() * produkNow.getmQty();
+        }
+        Produk total = new Produk("Total", totalHarga);
+        produks.add(total);
     }
 
 

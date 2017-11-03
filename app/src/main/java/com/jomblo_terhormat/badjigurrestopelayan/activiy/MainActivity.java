@@ -30,9 +30,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
-    public static List<Produk> mProduk ;
+    public static List<Produk> mProduk;
     private ActionBar mActionBar;
     private LinearLayout mLoading;
     Call<List<Produk>> mCall;
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity  {
         mActionBar.hide();
 
         if (isConnected) {
-           connectWithRetrofit(this);
+            connectWithRetrofit(this);
         } else {
             error.setVisibility(View.VISIBLE);
         }
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity  {
 
     public void connectWithRetrofit(final Context context) {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        if(mCall == null){
+        if (mCall == null) {
             mCall = apiService.getMakanan();
         }
 
@@ -83,16 +83,16 @@ public class MainActivity extends AppCompatActivity  {
 
             @Override
             public void onResponse(Call<List<Produk>> call, Response<List<Produk>> response) {
-                if (response.isSuccessful()){
-                    mProduk = response.body() ;
+                if (response.isSuccessful()) {
+                    mProduk = response.body();
                     updateUI(mProduk);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Produk>> call, Throwable t) {
-                Toast.makeText(context,"error when using retrofit",Toast.LENGTH_SHORT).show();
-                Log.e("retrofit",t.toString()) ;
+                Toast.makeText(context, "error when using retrofit", Toast.LENGTH_SHORT).show();
+                Log.e("retrofit", t.toString());
             }
         });
     }
@@ -121,9 +121,14 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.billing) {
-            Intent intent = new Intent(MainActivity.this, BillingActivity.class);
-            intent.putExtra("produks", (ArrayList<Produk>) mProduk);
-            startActivity(intent);
+            if (cartedList(mProduk).size() > 0) {
+                Intent intent = new Intent(MainActivity.this, BillingActivity.class);
+                intent.putExtra("produks", (ArrayList<Produk>) cartedList(mProduk));
+                startActivity(intent);
+            } else {
+                Toast.makeText(this,"Anda belum memesan apapun",Toast.LENGTH_SHORT).show();
+            }
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -133,6 +138,16 @@ public class MainActivity extends AppCompatActivity  {
     protected void onDestroy() {
         super.onDestroy();
         mProduk = null;
+    }
+
+    private List<Produk> cartedList(List<Produk> list) {
+        List<Produk> carted = new ArrayList<>();
+        for (Produk produk : list) {
+            if(produk.ismCart())
+                carted.add(produk) ;
+        }
+
+        return carted;
     }
 
 

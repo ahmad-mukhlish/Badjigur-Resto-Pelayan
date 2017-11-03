@@ -9,7 +9,6 @@ import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.adapter.BillingRecycleAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BillingActivity extends AppCompatActivity {
@@ -22,9 +21,11 @@ public class BillingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.produk_list);
 
+        Bundle bundle = getIntent().getExtras();
+        List<Produk> produks = bundle.getParcelableArrayList("produks") ;
 
         BillingRecycleAdapter billingRecycleAdapter =
-                new BillingRecycleAdapter(this, cartedList(joinList()));
+                new BillingRecycleAdapter(this, produks);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvItems);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
@@ -35,22 +36,9 @@ public class BillingActivity extends AppCompatActivity {
     }
 
 
-    private List<Produk> joinList () {
-        Bundle bundle = getIntent().getExtras();
-        return bundle.getParcelableArrayList("produks") ;
-    }
 
 
 
-    private List<Produk> cartedList(List<Produk> list) {
-        List<Produk> carted = new ArrayList<>();
-        for (Produk produk : list) {
-              if(produk.ismCart())
-              carted.add(produk) ;
-        }
-
-        return carted;
-    }
 
 
 }
