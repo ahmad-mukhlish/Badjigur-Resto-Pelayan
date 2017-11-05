@@ -19,7 +19,7 @@ public class BillingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.produk_list);
+        setContentView(R.layout.activity_billing);
 
         Bundle bundle = getIntent().getExtras();
         List<Produk> produks = bundle.getParcelableArrayList("produks") ;
@@ -27,7 +27,7 @@ public class BillingActivity extends AppCompatActivity {
         BillingRecycleAdapter billingRecycleAdapter =
                 new BillingRecycleAdapter(this, produks);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvItems);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvBilling);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
 
         recyclerView.setHasFixedSize(true);
