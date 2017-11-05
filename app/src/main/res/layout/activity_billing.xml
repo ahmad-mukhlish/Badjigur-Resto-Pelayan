@@ -46,12 +46,18 @@
     </RelativeLayout>
 
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/rvBilling"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical" />
+        android:layout_weight="1">
+
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/rvBilling"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+    </ScrollView>
 
 
     <LinearLayout
@@ -91,9 +97,13 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/sub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
@@ -109,13 +119,16 @@
                     android:layout_alignParentLeft="true"
                     android:text="PPN (10%) \t\t:"
                     android:textColor="#FFFFFF"
-
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/ppn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
@@ -141,9 +154,13 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/grand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"
+                    android:textColor="#FF0000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
