@@ -47,7 +47,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
         holder.mJudul.setText(currentProduk.getNama());
         holder.mTag.setText(currentProduk.getTag());
-        holder.mPrice.setText("Rp. " + currentProduk.getHarga_jual());
+        holder.mPrice.setText(Produk.formatter(""+currentProduk.getHarga_jual()));
         holder.mQty.setText(currentProduk.getmQty() + "");
         holder.mCart.setChecked(currentProduk.ismCart());
 

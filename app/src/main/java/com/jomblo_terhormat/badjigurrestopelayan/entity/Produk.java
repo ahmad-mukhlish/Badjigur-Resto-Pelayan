@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 /**
  * Created by GOODWARE1 on 10/19/2017.
  */
@@ -129,5 +132,20 @@ public class Produk implements Parcelable {
         parcel.writeString(path);
         parcel.writeInt(mQty);
         parcel.writeByte((byte) (mCart ? 1 : 0));
+    }
+
+    public static String formatter(String input) {
+        if (!input.isEmpty()) {
+            DecimalFormatSymbols symbol = new DecimalFormatSymbols();
+            symbol.setGroupingSeparator('.');
+
+            DecimalFormat format = new DecimalFormat(" Rp ###,###");
+            format.setDecimalFormatSymbols(symbol);
+
+            return format.format(Double.parseDouble(input));
+        } else {
+            return "";
+        }
+
     }
 }

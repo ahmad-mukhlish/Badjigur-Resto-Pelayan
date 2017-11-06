@@ -34,13 +34,13 @@ public class BillingActivity extends AppCompatActivity {
         recyclerView.setAdapter(billingRecycleAdapter);
 
         TextView sub = (TextView) findViewById(R.id.sub);
-        sub.setText("Rp. " + hitungSub(produks));
+        sub.setText(Produk.formatter("" + hitungSub(produks)));
 
         TextView ppn = (TextView) findViewById(R.id.ppn);
-        ppn.setText("Rp. " + ((int) (hitungSub(produks) * 0.1)));
+        ppn.setText(Produk.formatter("" + ((int) (hitungSub(produks) * 0.1))));
 
         TextView grand = (TextView) findViewById(R.id.grand);
-        grand.setText("Rp. " + (((int) (hitungSub(produks) * 0.1)) + hitungSub(produks)));
+        grand.setText(Produk.formatter("" + (((int) (hitungSub(produks) * 0.1)) + hitungSub(produks))));
 
 
     }

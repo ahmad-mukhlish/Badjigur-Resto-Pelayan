@@ -36,7 +36,7 @@ public class BillingRecycleAdapter extends RecyclerView.Adapter<BillingRecycleAd
     public void onBindViewHolder(final BillingViewHolder holder, int position) {
         final Produk currentProduk = mProduks.get(position);
         holder.mJudul.setText(currentProduk.getNama());
-        holder.mPrice.setText("Rp. " + (currentProduk.getHarga_jual() * currentProduk.getmQty()));
+        holder.mPrice.setText(Produk.formatter("" + (currentProduk.getHarga_jual() * currentProduk.getmQty())));
         holder.mQty.setText(currentProduk.getmQty() + "");
 
 
@@ -63,8 +63,6 @@ public class BillingRecycleAdapter extends RecyclerView.Adapter<BillingRecycleAd
 
 
     }
-
-
 
 
 }
