@@ -126,9 +126,14 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("produks", (ArrayList<Produk>) cartedList(mProduk));
                 startActivity(intent);
             } else {
-                Toast.makeText(this,"Anda belum memesan apapun",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Anda belum memesan apapun", Toast.LENGTH_SHORT).show();
             }
 
+        }
+
+        if (item.getItemId() == R.id.waiter) {
+            // TODO add notif to kasir here
+            Toast.makeText(this, "Waiter sedang dipanggil, silakan tunggu", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -143,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Produk> cartedList(List<Produk> list) {
         List<Produk> carted = new ArrayList<>();
         for (Produk produk : list) {
-            if(produk.ismCart())
-                carted.add(produk) ;
+            if (produk.ismCart())
+                carted.add(produk);
         }
 
         return carted;
