@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     public static List<Produk> mProduk;
     private ActionBar mActionBar;
     private LinearLayout mLoading;
+    Button billing;
+
     Call<List<Produk>> mCall;
 
     @Override
@@ -61,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             error.setVisibility(View.VISIBLE);
         }
+
+        billing = (Button) findViewById(R.id.billing);
+
     }
 
     private String[] setTitle() {
@@ -107,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+        billing.setOnClickListener(new BillingClicked(this, mProduk));
+
 
     }
 
@@ -120,17 +128,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.billing) {
-            if (cartedList(mProduk).size() > 0) {
-                Intent intent = new Intent(MainActivity.this, BillingActivity.class);
-                intent.putExtra("produks", (ArrayList<Produk>) cartedList(mProduk));
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, "Anda belum memesan apapun", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
         if (item.getItemId() == R.id.waiter) {
             // TODO add notif to kasir here
             Toast.makeText(this, "Waiter sedang dipanggil, silakan tunggu", Toast.LENGTH_SHORT).show();
@@ -153,6 +150,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return carted;
+    }
+
+    private class BillingClicked implements View.OnClickListener {
+
+        private Context mContext;
+        private List<Produk> mProduks;
+
+        public BillingClicked(Context mContext, List<Produk> produks) {
+            this.mContext = mContext;
+            this.mProduks = produks;
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (cartedList(mProduks).size() > 0) {
+                Intent intent = new Intent(MainActivity.this, BillingActivity.class);
+                intent.putExtra("produks", (ArrayList<Produk>) cartedList(mProduks));
+                startActivity(intent);
+            } else {
+                Toast.makeText(mContext, "Anda belum memesan apapun", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 

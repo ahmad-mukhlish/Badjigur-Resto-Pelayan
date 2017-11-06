@@ -28,7 +28,7 @@ public class MenuProdukFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.produk_list, container, false);
+        View rootView = inflater.inflate(R.layout.menu_tab_fragment, container, false);
 
         List<Produk> listProduk = getArguments().getParcelableArrayList("key");
         MenuRecycleAdapter menuRecycleAdapter =

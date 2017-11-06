@@ -7,15 +7,7 @@
         android:icon="@drawable/bel"
         android:orderInCategory="0"
         android:title="Call waiter"
-        app:showAsAction="always"/>
-
-
-    <item
-        android:id="@+id/billing"
-        android:icon="@drawable/billing"
-        android:orderInCategory="1"
-        android:title="billing"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
 
 </menu>
