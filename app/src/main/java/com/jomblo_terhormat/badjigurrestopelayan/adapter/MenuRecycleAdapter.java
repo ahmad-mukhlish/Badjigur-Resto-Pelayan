@@ -1,6 +1,7 @@
 package com.jomblo_terhormat.badjigurrestopelayan.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
+import com.jomblo_terhormat.badjigurrestopelayan.activity.DetailActivity;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.squareup.picasso.Picasso;
 
@@ -47,7 +49,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
         holder.mJudul.setText(currentProduk.getNama());
         holder.mTag.setText(currentProduk.getTag());
-        holder.mPrice.setText(Produk.formatter(""+currentProduk.getHarga_jual()));
+        holder.mPrice.setText(Produk.formatter("" + currentProduk.getHarga_jual()));
         holder.mQty.setText(currentProduk.getmQty() + "");
         holder.mCart.setChecked(currentProduk.ismCart());
 
@@ -77,6 +79,9 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         });
 
 
+        holder.mItemView.setOnClickListener(new ProdukListener(position));
+
+
     }
 
     @Override
@@ -90,7 +95,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         TextView mJudul, mTag, mPrice, mQty;
         View mItemView;
         Button mPlus, mMinus;
-        CheckBox mCart ;
+        CheckBox mCart;
 
 
         MenuViewHolder(View itemView) {
@@ -102,11 +107,31 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
             mQty = itemView.findViewById(R.id.qty);
             mPlus = itemView.findViewById(R.id.plus);
             mMinus = itemView.findViewById(R.id.minus);
-            mCart = itemView.findViewById(R.id.cart) ;
+            mCart = itemView.findViewById(R.id.cart);
             mItemView = itemView;
         }
 
 
+    }
+
+    class ProdukListener implements View.OnClickListener {
+
+        private int position;
+
+        ProdukListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Produk clickedProduk = mProduks.get(position);
+            Intent intent = new Intent(mContext, DetailActivity.class);
+            intent.putExtra("gambar", clickedProduk.getPath());
+            intent.putExtra("judul", clickedProduk.getNama());
+            intent.putExtra("deskripsi", clickedProduk.getDeskripsi());
+            intent.putExtra("harga", clickedProduk.getHarga_jual());
+            view.getContext().startActivity(intent);
+        }
     }
 
 
