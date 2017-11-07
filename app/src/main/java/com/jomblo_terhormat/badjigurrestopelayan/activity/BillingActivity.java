@@ -1,6 +1,7 @@
-package com.jomblo_terhormat.badjigurrestopelayan.activiy;
+package com.jomblo_terhormat.badjigurrestopelayan.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -47,7 +48,7 @@ public class BillingActivity extends AppCompatActivity {
         grand.setText(Produk.formatter("" + (((int) (hitungSub(produks) * 0.1)) + hitungSub(produks))));
 
         Button ask = (Button) findViewById(R.id.ask);
-        ask.setOnClickListener(new billingAsked(this));
+        ask.setOnClickListener(new IntentToast(this, "Billing Anda sedang disiapkan, silakan tunggu", FeedBackActivity.class));
 
 
     }
@@ -60,21 +61,26 @@ public class BillingActivity extends AppCompatActivity {
         return sub;
     }
 
-
-    private class billingAsked implements View.OnClickListener {
+    private class IntentToast implements View.OnClickListener {
 
         private Context mContext;
+        private String mToast;
+        private Class mClass;
 
-        public billingAsked(Context mContext) {
+
+        public IntentToast(Context mContext, String mToast, Class mClass) {
             this.mContext = mContext;
+            this.mToast = mToast;
+            this.mClass = mClass;
         }
 
         @Override
         public void onClick(View view) {
-            //TODO add notif to kasir here
-            Toast.makeText(mContext, "Billing Anda sedang disiapkan, silakan tunggu",
-                    Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(mContext, mToast, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(mContext, mClass));
         }
     }
+
 
 }

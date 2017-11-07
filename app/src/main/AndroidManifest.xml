@@ -13,20 +13,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activiy.MainActivity"
+            android:name=".activity.MainActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".activiy.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-
-            android:name=".activiy.BillingActivity"
-            android:parentActivityName=".activiy.MainActivity" />
+            android:name=".activity.BillingActivity"
+            android:parentActivityName=".activity.MainActivity" />
+        <activity android:name=".activity.FeedBackActivity" />
     </application>
 
 </manifest>

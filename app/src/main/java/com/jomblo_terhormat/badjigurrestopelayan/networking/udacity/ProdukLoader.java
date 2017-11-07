@@ -3,7 +3,7 @@ package com.jomblo_terhormat.badjigurrestopelayan.networking.udacity;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
-import com.jomblo_terhormat.badjigurrestopelayan.activiy.MainActivity;
+import com.jomblo_terhormat.badjigurrestopelayan.activity.MainActivity;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
 import java.util.List;
