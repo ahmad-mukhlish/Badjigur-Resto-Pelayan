@@ -14,7 +14,7 @@ import java.text.DecimalFormatSymbols;
 
 public class Produk implements Parcelable {
 
-    public static final String BASE_PATH = "http://192.168.1.8/restoran/";
+    public static final String BASE_PATH = "http://192.168.1.9/restoran/";
     public static final String JSON_REPLY_MENU = "server.php?operasi=view";
     public static final String ADMIN = "admin";
     public static final String PASSWORD = "jasuke";

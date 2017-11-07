@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activiy.MainActivity" />
+        <activity
+            android:name=".activiy.MainActivity"
+            android:launchMode="singleTop" />
         <activity
             android:name=".activiy.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -22,7 +24,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activiy.BillingActivity" />
+
+            android:name=".activiy.BillingActivity"
+            android:parentActivityName=".activiy.MainActivity" />
     </application>
 
 </manifest>
