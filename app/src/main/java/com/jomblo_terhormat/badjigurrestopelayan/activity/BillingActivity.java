@@ -3,11 +3,17 @@ package com.jomblo_terhormat.badjigurrestopelayan.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +25,7 @@ import java.util.List;
 
 public class BillingActivity extends AppCompatActivity {
 
+    String mKeterangan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,5 +89,40 @@ public class BillingActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_billing, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.note) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            View rootDialog = LayoutInflater.from(this).inflate(R.layout.dialogue_keterangan, null);
+            final EditText keterangan = rootDialog.findViewById(R.id.keterangan);
+            keterangan.setText(mKeterangan);
+            keterangan.setSelection(keterangan.getText().length());
+
+            builder.setView(rootDialog);
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+
+
+            TextView ok = rootDialog.findViewById(R.id.ok);
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    mKeterangan = keterangan.getText().toString();
+                }
+            });
+
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }

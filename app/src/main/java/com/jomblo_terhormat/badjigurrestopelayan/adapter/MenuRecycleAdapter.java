@@ -1,6 +1,7 @@
 package com.jomblo_terhormat.badjigurrestopelayan.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -81,8 +82,11 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         });
 
 
-        holder.mItemView.setOnClickListener(new ProdukListener(position));
+        if (position % 2 != 0) {
+            holder.mItemView.setBackgroundColor(Color.rgb(255, 255, 255));
+        }
 
+        holder.mItemView.setOnClickListener(new ProdukListener(position));
 
     }
 
@@ -129,7 +133,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
 
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            View rootDialog = LayoutInflater.from(mContext).inflate(R.layout.detail_dialogue, null);
+            View rootDialog = LayoutInflater.from(mContext).inflate(R.layout.dialogue_detail, null);
             Produk clickedProduk = mProduks.get(position);
 
             final TextView judul = rootDialog.findViewById(R.id.judul);
@@ -170,8 +174,8 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
             deskripsi.setText(clickedProduk.getDeskripsi());
             harga.setText(Produk.formatter("" + clickedProduk.getHarga_jual()));
 
-            builder.setView(rootDialog) ;
-            final AlertDialog dialog = builder.create() ;
+            builder.setView(rootDialog);
+            final AlertDialog dialog = builder.create();
             dialog.show();
 
             TextView ok = rootDialog.findViewById(R.id.ok);

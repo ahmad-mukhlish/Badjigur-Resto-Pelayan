@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark">
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/tengah"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="10dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp">
+
+
+        <EditText
+            android:id="@+id/keterangan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:hint="Masukkan tambahan keterangan di sini (spt jangan pakai saos dsb)."
+            android:textSize="14sp" />
+
+    </android.support.v7.widget.CardView>
+
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/tengah"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="50dp"
+        android:background="@color/colorPrimary"
+        android:text="ok"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
+
+</RelativeLayout>

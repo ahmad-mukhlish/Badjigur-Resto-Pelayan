@@ -1,6 +1,7 @@
 package com.jomblo_terhormat.badjigurrestopelayan.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,9 @@ public class BillingRecycleAdapter extends RecyclerView.Adapter<BillingRecycleAd
         holder.mJudul.setText(currentProduk.getNama());
         holder.mPrice.setText(Produk.formatter("" + (currentProduk.getHarga_jual() * currentProduk.getmQty())));
         holder.mQty.setText(currentProduk.getmQty() + "");
+        if (position % 2 != 0) {
+            holder.mItemView.setBackgroundColor(Color.rgb(255, 255, 255));
+        }
 
 
     }
