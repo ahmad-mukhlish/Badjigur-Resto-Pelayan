@@ -28,9 +28,6 @@
             android:name=".activity.BillingActivity"
             android:parentActivityName=".activity.MainActivity" />
         <activity android:name=".activity.FeedBackActivity" />
-        <activity
-            android:name=".activity.DetailActivity"
-            android:parentActivityName=".activity.MainActivity" />
 
     </application>
 

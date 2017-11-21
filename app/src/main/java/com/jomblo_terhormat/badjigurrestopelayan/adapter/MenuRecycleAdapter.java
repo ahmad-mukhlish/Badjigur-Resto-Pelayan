@@ -1,7 +1,8 @@
 package com.jomblo_terhormat.badjigurrestopelayan.adapter;
 
 import android.content.Context;
-import android.content.Intent;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
-import com.jomblo_terhormat.badjigurrestopelayan.activity.DetailActivity;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -124,13 +126,53 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
         @Override
         public void onClick(View view) {
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            View rootDialog = LayoutInflater.from(mContext).inflate(R.layout.detail_dialogue, null);
             Produk clickedProduk = mProduks.get(position);
-            Intent intent = new Intent(mContext, DetailActivity.class);
-            intent.putExtra("gambar", clickedProduk.getPath());
-            intent.putExtra("judul", clickedProduk.getNama());
-            intent.putExtra("deskripsi", clickedProduk.getDeskripsi());
-            intent.putExtra("harga", clickedProduk.getHarga_jual());
-            view.getContext().startActivity(intent);
+
+            final TextView judul = rootDialog.findViewById(R.id.judul);
+
+            TextView deskripsi = rootDialog.findViewById(R.id.deskripsi);
+            TextView harga = rootDialog.findViewById(R.id.harga);
+            ImageView imageView = rootDialog.findViewById(R.id.gambar);
+
+            final CardView cardView = rootDialog.findViewById(R.id.detail_card);
+            cardView.setVisibility(View.GONE);
+
+
+            final ProgressBar progressBar = rootDialog.findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
+
+
+            Picasso.with(mContext).
+                    load(Produk.BASE_PATH + clickedProduk.getPath()).
+                    error(R.drawable.detail)
+                    .into(imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            progressBar.setVisibility(View.GONE);
+                            cardView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            progressBar.setVisibility(View.GONE);
+                            cardView.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+
+            judul.setText(clickedProduk.getNama());
+            judul.setWidth(imageView.getWidth());
+
+            deskripsi.setText(clickedProduk.getDeskripsi());
+            harga.setText(Produk.formatter("" + clickedProduk.getHarga_jual()));
+
+            builder.setView(rootDialog) ;
+            AlertDialog dialog = builder.create() ;
+            dialog.show();
         }
     }
 
