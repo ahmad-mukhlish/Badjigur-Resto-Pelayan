@@ -171,8 +171,18 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
             harga.setText(Produk.formatter("" + clickedProduk.getHarga_jual()));
 
             builder.setView(rootDialog) ;
-            AlertDialog dialog = builder.create() ;
+            final AlertDialog dialog = builder.create() ;
             dialog.show();
+
+            TextView ok = rootDialog.findViewById(R.id.ok);
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+
         }
     }
 
