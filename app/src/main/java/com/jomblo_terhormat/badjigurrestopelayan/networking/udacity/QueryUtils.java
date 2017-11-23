@@ -158,7 +158,7 @@ public class QueryUtils {
         return listProduks;
     }
 
-    public static String postWithHttp(URL url) throws IOException {
+    public static String postWithHttp(URL url, String message) throws IOException {
 
         String jsonResponse = "";
 
@@ -179,10 +179,10 @@ public class QueryUtils {
             urlConnection.setReadTimeout(10000 /*miliseconds*/);
             urlConnection.setConnectTimeout(150000 /*miliseconds*/);
 
-            DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-            wr.writeBytes(Produk.DUMMY_POST);
-            wr.flush();
-            wr.close();
+            DataOutputStream dataOutputStream = new DataOutputStream(urlConnection.getOutputStream());
+            dataOutputStream.writeBytes(message);
+            dataOutputStream.flush();
+            dataOutputStream.close();
 
             urlConnection.connect();
             if (urlConnection.getResponseCode() == 200) {

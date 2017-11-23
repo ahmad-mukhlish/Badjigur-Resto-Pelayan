@@ -23,7 +23,6 @@ public class Produk implements Parcelable {
     public static final String DUMMY_POST = "{\"meja\":10,\"no_nota\":19,\"tanggal\":\"2017-11-01 05:00:00\",\"catatan\":\"Refactor\",\"pesanan\":[{\"id_makanan\":3,\"qty\":4},{\"id_makanan\":3,\"qty\":4},{\"id_makanan\":4,\"qty\":4}]}";
 
 
-
     public static final Creator<Produk> CREATOR = new Creator<Produk>() {
         @Override
         public Produk createFromParcel(Parcel in) {
@@ -65,6 +64,10 @@ public class Produk implements Parcelable {
     public Produk(String nama, int harga_jual) {
         this.nama = nama;
         this.harga_jual = harga_jual;
+    }
+
+    public int getId_makanan() {
+        return id_makanan;
     }
 
     protected Produk(Parcel in) {

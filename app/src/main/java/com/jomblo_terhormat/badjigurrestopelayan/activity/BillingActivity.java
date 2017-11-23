@@ -24,13 +24,22 @@ import com.jomblo_terhormat.badjigurrestopelayan.adapter.BillingRecycleAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.QueryUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import static android.util.Log.v;
 
 public class BillingActivity extends AppCompatActivity {
 
+    List<Produk> mProduks;
     String mKeterangan;
 
     @Override
@@ -39,10 +48,10 @@ public class BillingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_billing);
 
         Bundle bundle = getIntent().getExtras();
-        List<Produk> produks = bundle.getParcelableArrayList("produks");
+        mProduks = bundle.getParcelableArrayList("produks");
 
         BillingRecycleAdapter billingRecycleAdapter =
-                new BillingRecycleAdapter(this, produks);
+                new BillingRecycleAdapter(this, mProduks);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvBilling);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
@@ -52,13 +61,13 @@ public class BillingActivity extends AppCompatActivity {
         recyclerView.setAdapter(billingRecycleAdapter);
 
         TextView sub = (TextView) findViewById(R.id.sub);
-        sub.setText(Produk.formatter("" + hitungSub(produks)));
+        sub.setText(Produk.formatter("" + hitungSub(mProduks)));
 
         TextView ppn = (TextView) findViewById(R.id.ppn);
-        ppn.setText(Produk.formatter("" + ((int) (hitungSub(produks) * 0.1))));
+        ppn.setText(Produk.formatter("" + ((int) (hitungSub(mProduks) * 0.1))));
 
         TextView grand = (TextView) findViewById(R.id.grand);
-        grand.setText(Produk.formatter("" + (((int) (hitungSub(produks) * 0.1)) + hitungSub(produks))));
+        grand.setText(Produk.formatter("" + (((int) (hitungSub(mProduks) * 0.1)) + hitungSub(mProduks))));
 
         Button ask = (Button) findViewById(R.id.ask);
         ask.setOnClickListener(new askListener(this, "Billing Anda sedang disiapkan, silakan tunggu", FeedBackActivity.class));
@@ -72,6 +81,43 @@ public class BillingActivity extends AppCompatActivity {
             sub += produk.getHarga_jual() * produk.getmQty();
         }
         return sub;
+    }
+
+    private String createJsonMessage() {
+
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+
+            JSONArray jsonArray = new JSONArray();
+
+            for (int i = 0; i < mProduks.size(); i++) {
+                JSONObject jsonProduk = new JSONObject();
+                jsonProduk.accumulate("id_makanan", mProduks.get(i).getId_makanan());
+                jsonProduk.accumulate("qty", mProduks.get(i).getmQty());
+
+                jsonArray.put(i, jsonProduk);
+
+            }
+
+
+            jsonObject.accumulate("meja", 3);
+            jsonObject.accumulate("no_nota", 54);
+
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String date = df.format(Calendar.getInstance().getTime());
+
+            jsonObject.accumulate("tanggal", date);
+            jsonObject.accumulate("catatan", "sing lancar");
+            jsonObject.accumulate("pesanan", jsonArray);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject.toString();
+
     }
 
     private class askListener implements View.OnClickListener {
@@ -91,7 +137,7 @@ public class BillingActivity extends AppCompatActivity {
         public void onClick(View view) {
 
 
-            new BillingAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_POST);
+            new BillingAsyncTask(createJsonMessage()).execute(Produk.BASE_PATH + Produk.JSON_POST);
             Toast.makeText(mContext, mToast, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(mContext, mClass));
         }
@@ -102,6 +148,13 @@ public class BillingActivity extends AppCompatActivity {
 
     private class BillingAsyncTask extends AsyncTask<String, Void, String> {
 
+
+        private String mMessage;
+
+        public BillingAsyncTask(String mMessage) {
+            this.mMessage = mMessage;
+        }
+
         @Override
         protected String doInBackground(String... urls) {
 
@@ -110,7 +163,7 @@ public class BillingActivity extends AppCompatActivity {
             }
 
             try {
-                Log.v("cek", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[0])));
+                Log.v("cek", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[0]), mMessage));
             } catch (IOException e) {
                 v("cek", e.getMessage());
             }
