@@ -2,11 +2,13 @@ package com.jomblo_terhormat.badjigurrestopelayan.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,8 +22,12 @@ import android.widget.Toast;
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.adapter.BillingRecycleAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
+import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.QueryUtils;
 
+import java.io.IOException;
 import java.util.List;
+
+import static android.util.Log.v;
 
 public class BillingActivity extends AppCompatActivity {
 
@@ -55,7 +61,7 @@ public class BillingActivity extends AppCompatActivity {
         grand.setText(Produk.formatter("" + (((int) (hitungSub(produks) * 0.1)) + hitungSub(produks))));
 
         Button ask = (Button) findViewById(R.id.ask);
-        ask.setOnClickListener(new IntentToast(this, "Billing Anda sedang disiapkan, silakan tunggu", FeedBackActivity.class));
+        ask.setOnClickListener(new askListener(this, "Billing Anda sedang disiapkan, silakan tunggu", FeedBackActivity.class));
 
 
     }
@@ -68,14 +74,14 @@ public class BillingActivity extends AppCompatActivity {
         return sub;
     }
 
-    private class IntentToast implements View.OnClickListener {
+    private class askListener implements View.OnClickListener {
 
         private Context mContext;
         private String mToast;
         private Class mClass;
 
 
-        public IntentToast(Context mContext, String mToast, Class mClass) {
+        public askListener(Context mContext, String mToast, Class mClass) {
             this.mContext = mContext;
             this.mToast = mToast;
             this.mClass = mClass;
@@ -84,9 +90,39 @@ public class BillingActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
+
+            new BillingAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_POST);
             Toast.makeText(mContext, mToast, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(mContext, mClass));
         }
+
+
+    }
+
+
+    private class BillingAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            if (urls.length < 1 || urls[0] == null) {
+                return null;
+            }
+
+            try {
+                Log.v("cek", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[0])));
+            } catch (IOException e) {
+                v("cek", e.getMessage());
+            }
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(String response) {
+        }
+
     }
 
     @Override
@@ -125,4 +161,7 @@ public class BillingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
 }
+
+
