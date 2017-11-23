@@ -1,7 +1,9 @@
 package com.jomblo_terhormat.badjigurrestopelayan.activity;
 
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -9,7 +11,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,29 +22,25 @@ import android.widget.Toast;
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.adapter.MenuTabAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
-import com.jomblo_terhormat.badjigurrestopelayan.networking.retrofit.ApiClient;
-import com.jomblo_terhormat.badjigurrestopelayan.networking.retrofit.ApiInterface;
+import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.ProdukLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Produk>> {
 
     public static List<Produk> mProduk;
     private ActionBar mActionBar;
     private LinearLayout mLoading;
-    Button billing;
-
-    Call<List<Produk>> mCall;
+    private static final int LOADER_ID = 54;
+    private Button billing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mProduk = null;
 
         ConnectivityManager mConnectivityManager =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -56,16 +53,19 @@ public class MainActivity extends AppCompatActivity {
 
         mLoading = (LinearLayout) findViewById(R.id.loading);
 
+
         mActionBar = getSupportActionBar();
         mActionBar.hide();
 
         if (isConnected) {
-            connectWithRetrofit(this);
+            LoaderManager loaderManager = getLoaderManager();
+            loaderManager.initLoader(LOADER_ID, null, this);
         } else {
             error.setVisibility(View.VISIBLE);
         }
 
         billing = (Button) findViewById(R.id.billing);
+
 
     }
 
@@ -79,28 +79,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void connectWithRetrofit(final Context context) {
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        if (mCall == null) {
-            mCall = apiService.getMakanan();
+    @Override
+    public Loader<List<Produk>> onCreateLoader(int i, Bundle bundle) {
+        if (mProduk == null) {
+            return new ProdukLoader(this, Produk.BASE_PATH + Produk.JSON_REPLY_MENU);
+        } else
+            return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Produk>> loader, List<Produk> produks) {
+        if (mProduk == null || mProduk.isEmpty()) {
+            mProduk = produks;
         }
 
-        mCall.enqueue(new Callback<List<Produk>>() {
+        updateUI(mProduk);
 
-            @Override
-            public void onResponse(Call<List<Produk>> call, Response<List<Produk>> response) {
-                if (response.isSuccessful()) {
-                    mProduk = response.body();
-                    updateUI(mProduk);
-                }
-            }
+    }
 
-            @Override
-            public void onFailure(Call<List<Produk>> call, Throwable t) {
-                Toast.makeText(context, "error when using retrofit", Toast.LENGTH_SHORT).show();
-                Log.e("retrofit", t.toString());
-            }
-        });
+    @Override
+    public void onLoaderReset(Loader<List<Produk>> loader) {
+
     }
 
     private void updateUI(List<Produk> list) {
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-        billing.setOnClickListener(new BillingClicked(this, mProduk));
+        billing.setOnClickListener(new BillingClicked(this, list));
 
 
     }
@@ -174,5 +173,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Sudah menu utama, tidak bisa kembali lagi..", Toast.LENGTH_SHORT).show();
+    }
 
 }
+

@@ -8,8 +8,6 @@ import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
 import java.util.List;
 
-import retrofit2.Call;
-
 
 /**
  * Created by GOODWARE1 on 8/30/2017.
@@ -19,7 +17,6 @@ public class ProdukLoader extends AsyncTaskLoader<List<Produk>> {
 
 
     private String mUrl;
-    Call<List<Produk>> mCall;
 
     public ProdukLoader(Context context, String url) {
         super(context);
