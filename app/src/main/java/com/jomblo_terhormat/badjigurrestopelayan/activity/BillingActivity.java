@@ -101,14 +101,13 @@ public class BillingActivity extends AppCompatActivity {
             }
 
 
-            jsonObject.accumulate("meja", 3);
-            jsonObject.accumulate("no_nota", 54);
-
+            jsonObject.accumulate("meja", 9);
+            jsonObject.accumulate("no_nota", 52);
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
             String date = df.format(Calendar.getInstance().getTime());
 
             jsonObject.accumulate("tanggal", date);
-            jsonObject.accumulate("catatan", "sing lancar");
+            jsonObject.accumulate("catatan", mKeterangan);
             jsonObject.accumulate("pesanan", jsonArray);
 
 

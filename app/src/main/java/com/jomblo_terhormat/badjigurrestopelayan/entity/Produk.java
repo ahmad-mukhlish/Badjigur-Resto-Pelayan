@@ -17,10 +17,10 @@ public class Produk implements Parcelable {
     public static final String BASE_PATH = "http://192.168.1.3/restoran/";
     public static final String JSON_REPLY_MENU = "server.php?operasi=makanan";
     public static final String JSON_POST = "server.php?operasi=pesan";
-    public static final String ADMIN = "admin";
-    public static final String PASSWORD = "jasuke";
+    public static final String JSON_LOGIN = "server.php?operasi=get_passlog&username=";
+    public static int no_meja ;
 
-    public static final String DUMMY_POST = "{\"meja\":10,\"no_nota\":19,\"tanggal\":\"2017-11-01 05:00:00\",\"catatan\":\"Refactor\",\"pesanan\":[{\"id_makanan\":3,\"qty\":4},{\"id_makanan\":3,\"qty\":4},{\"id_makanan\":4,\"qty\":4}]}";
+
 
 
     public static final Creator<Produk> CREATOR = new Creator<Produk>() {

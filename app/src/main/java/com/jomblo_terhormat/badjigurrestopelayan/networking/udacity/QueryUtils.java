@@ -50,6 +50,21 @@ public class QueryUtils {
     }
 
 
+    public static String fetchResponse(String link) {
+
+        URL url = parseStringLinkToURL(link);
+
+        String jsonResponse = null;
+        try {
+            jsonResponse = httpConnectRequestJson(url);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error when closing input stream", e);
+        }
+
+        return jsonResponse;
+    }
+
+
     private static String httpConnectRequestJson(URL url) throws IOException {
 
         String jsonResponse = "";
