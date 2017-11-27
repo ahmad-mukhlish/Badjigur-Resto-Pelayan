@@ -51,41 +51,18 @@ public class FeedBackActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            new FeedBackAsyncTask(createJsonMessage()).execute(Produk.BASE_PATH + Produk.JSON_FEEDBACK);
+            new FeedBackAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_FEEDBACK);
             Toast.makeText(mContext, mToast, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(mContext, mClass));
 
+
         }
     }
 
-
-    private String createJsonMessage() {
-
-        JSONObject jsonObject = new JSONObject();
-
-        try {
-
-            jsonObject.accumulate("no_nota", Produk.NO_NOTA);
-            jsonObject.accumulate("rate", Math.round(mRatingBar.getRating() * 2));
-            Log.v("cek",Math.round(mRatingBar.getRating() * 2) + "") ;
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return jsonObject.toString();
-
-    }
 
     private class FeedBackAsyncTask extends AsyncTask<String, Void, String> {
 
 
-        private String mMessage;
-
-        public FeedBackAsyncTask(String mMessage) {
-            this.mMessage = mMessage;
-        }
 
         @Override
         protected String doInBackground(String... urls) {
@@ -95,7 +72,7 @@ public class FeedBackActivity extends AppCompatActivity {
             }
 
             try {
-                Log.v("cek", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[0]), mMessage));
+                Log.v("cek", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[0]), createJsonMessage()));
             } catch (IOException e) {
                 Log.v("cek", e.getMessage());
             }
@@ -106,6 +83,26 @@ public class FeedBackActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
+        }
+
+
+        private String createJsonMessage() {
+
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+
+                jsonObject.accumulate("no_nota", Produk.NO_NOTA);
+                jsonObject.accumulate("rate", Math.round(mRatingBar.getRating() * 2));
+                Log.v("cek", Math.round(mRatingBar.getRating() * 2) + "");
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsonObject.toString();
+
         }
 
     }

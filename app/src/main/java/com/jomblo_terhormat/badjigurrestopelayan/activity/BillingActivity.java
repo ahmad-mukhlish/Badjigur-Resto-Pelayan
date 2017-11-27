@@ -84,41 +84,7 @@ public class BillingActivity extends AppCompatActivity {
         return sub;
     }
 
-    private String createJsonMessage() {
 
-        JSONObject jsonObject = new JSONObject();
-
-        try {
-
-            JSONArray jsonArray = new JSONArray();
-
-            for (int i = 0; i < mProduks.size(); i++) {
-                JSONObject jsonProduk = new JSONObject();
-                jsonProduk.accumulate("id_makanan", mProduks.get(i).getId_makanan());
-                jsonProduk.accumulate("qty", mProduks.get(i).getmQty());
-
-                jsonArray.put(i, jsonProduk);
-
-            }
-
-
-            jsonObject.accumulate("meja", Produk.NO_MEJA);
-            jsonObject.accumulate("no_nota", Produk.NO_NOTA);
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-            String date = df.format(Calendar.getInstance().getTime());
-
-            jsonObject.accumulate("tanggal", date);
-            jsonObject.accumulate("catatan", mKeterangan);
-            jsonObject.accumulate("pesanan", jsonArray);
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return jsonObject.toString();
-
-    }
 
     private class askListener implements View.OnClickListener {
 
@@ -137,7 +103,7 @@ public class BillingActivity extends AppCompatActivity {
         public void onClick(View view) {
 
 
-            new BillingAsyncTask(createJsonMessage()).execute(Produk.BASE_PATH + Produk.JSON_NOTA, Produk.BASE_PATH + Produk.JSON_POST);
+            new BillingAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_NOTA, Produk.BASE_PATH + Produk.JSON_POST);
             Toast.makeText(mContext, mToast, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(mContext, mClass));
         }
@@ -149,12 +115,6 @@ public class BillingActivity extends AppCompatActivity {
     private class BillingAsyncTask extends AsyncTask<String, Void, String> {
 
 
-        private String mMessage;
-
-        public BillingAsyncTask(String mMessage) {
-            this.mMessage = mMessage;
-        }
-
         @Override
         protected String doInBackground(String... urls) {
 
@@ -164,7 +124,9 @@ public class BillingActivity extends AppCompatActivity {
 
             try {
                 Produk.NO_NOTA = Integer.parseInt(new JSONObject(fetchResponse(urls[0])).getString("nota"));
-                Log.v("cek", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), mMessage));
+                Log.v("cik","Narima : " +Produk.NO_NOTA + "") ;
+                Log.v("cik","Ngirim : " + createJsonMessage() + "") ;
+                Log.v("cek", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), createJsonMessage()));
             } catch (IOException e) {
                 v("cek", e.getMessage());
             } catch (JSONException e) {
@@ -177,6 +139,44 @@ public class BillingActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
+
+        }
+
+
+        private String createJsonMessage() {
+
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+
+                JSONArray jsonArray = new JSONArray();
+
+                for (int i = 0; i < mProduks.size(); i++) {
+                    JSONObject jsonProduk = new JSONObject();
+                    jsonProduk.accumulate("id_makanan", mProduks.get(i).getId_makanan());
+                    jsonProduk.accumulate("qty", mProduks.get(i).getmQty());
+
+                    jsonArray.put(i, jsonProduk);
+
+                }
+
+
+                jsonObject.accumulate("meja", Produk.NO_MEJA);
+                jsonObject.accumulate("no_nota", Produk.NO_NOTA);
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                String date = df.format(Calendar.getInstance().getTime());
+
+                jsonObject.accumulate("tanggal", date);
+                jsonObject.accumulate("catatan", mKeterangan);
+                jsonObject.accumulate("pesanan", jsonArray);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsonObject.toString();
+
         }
 
     }
