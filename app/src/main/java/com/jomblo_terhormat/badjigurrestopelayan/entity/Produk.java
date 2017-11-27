@@ -17,6 +17,7 @@ public class Produk implements Parcelable {
     public static final String BASE_PATH = "http://192.168.1.3/restoran/";
     public static final String JSON_REPLY_MENU = "server.php?operasi=makanan";
     public static final String JSON_POST = "server.php?operasi=pesan";
+    public static final String JSON_NOTA = "server.php?operasi=nota";
     public static final String JSON_LOGIN = "server.php?operasi=get_passlog&username=";
     public static int no_meja ;
 

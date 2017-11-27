@@ -36,11 +36,12 @@ import java.util.List;
 import java.util.Locale;
 
 import static android.util.Log.v;
+import static com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.QueryUtils.fetchResponse;
 
 public class BillingActivity extends AppCompatActivity {
 
     List<Produk> mProduks;
-    String mKeterangan;
+    String mKeterangan, mNota;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +102,8 @@ public class BillingActivity extends AppCompatActivity {
             }
 
 
-            jsonObject.accumulate("meja", 9);
-            jsonObject.accumulate("no_nota", 52);
+            jsonObject.accumulate("meja", Produk.no_meja);
+            jsonObject.accumulate("no_nota", mNota);
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
             String date = df.format(Calendar.getInstance().getTime());
 
@@ -136,7 +137,7 @@ public class BillingActivity extends AppCompatActivity {
         public void onClick(View view) {
 
 
-            new BillingAsyncTask(createJsonMessage()).execute(Produk.BASE_PATH + Produk.JSON_POST);
+            new BillingAsyncTask(createJsonMessage()).execute(Produk.BASE_PATH + Produk.JSON_NOTA, Produk.BASE_PATH + Produk.JSON_POST);
             Toast.makeText(mContext, mToast, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(mContext, mClass));
         }
@@ -162,9 +163,12 @@ public class BillingActivity extends AppCompatActivity {
             }
 
             try {
-                Log.v("cek", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[0]), mMessage));
+                mNota = new JSONObject(fetchResponse(urls[0])).getString("nota") ;
+                Log.v("cek", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), mMessage));
             } catch (IOException e) {
                 v("cek", e.getMessage());
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
             return null;

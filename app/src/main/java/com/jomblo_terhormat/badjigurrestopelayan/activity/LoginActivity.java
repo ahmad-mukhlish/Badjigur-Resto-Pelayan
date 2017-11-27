@@ -89,7 +89,6 @@ public class LoginActivity extends AppCompatActivity {
             if (stuser.equals(realUser) && stpass.equals(realPass) && status == 0) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
-                Toast.makeText(mContext, "Meja " + Produk.no_meja, Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 Toast.makeText(mContext, "Username atau password tidak sesuai", Toast.LENGTH_SHORT).show();
