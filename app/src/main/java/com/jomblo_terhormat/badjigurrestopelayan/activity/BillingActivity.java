@@ -41,7 +41,7 @@ import static com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.Query
 public class BillingActivity extends AppCompatActivity {
 
     List<Produk> mProduks;
-    String mKeterangan, mNota;
+    String mKeterangan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +102,8 @@ public class BillingActivity extends AppCompatActivity {
             }
 
 
-            jsonObject.accumulate("meja", Produk.no_meja);
-            jsonObject.accumulate("no_nota", mNota);
+            jsonObject.accumulate("meja", Produk.NO_MEJA);
+            jsonObject.accumulate("no_nota", Produk.NO_NOTA);
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
             String date = df.format(Calendar.getInstance().getTime());
 
@@ -163,7 +163,7 @@ public class BillingActivity extends AppCompatActivity {
             }
 
             try {
-                mNota = new JSONObject(fetchResponse(urls[0])).getString("nota") ;
+                Produk.NO_NOTA = Integer.parseInt(new JSONObject(fetchResponse(urls[0])).getString("nota"));
                 Log.v("cek", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), mMessage));
             } catch (IOException e) {
                 v("cek", e.getMessage());

@@ -18,10 +18,10 @@ public class Produk implements Parcelable {
     public static final String JSON_REPLY_MENU = "server.php?operasi=makanan";
     public static final String JSON_POST = "server.php?operasi=pesan";
     public static final String JSON_NOTA = "server.php?operasi=nota";
+    public static final String JSON_FEEDBACK = "server.php?operasi=rate";
     public static final String JSON_LOGIN = "server.php?operasi=get_passlog&username=";
-    public static int no_meja ;
-
-
+    public static int NO_NOTA;
+    public static int NO_MEJA;
 
 
     public static final Creator<Produk> CREATOR = new Creator<Produk>() {

@@ -17,7 +17,6 @@ import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.QueryUtils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,15 +64,14 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             try {
-                JSONArray root = new JSONArray(QueryUtils.fetchResponse(urls[0]));
+                JSONObject root = new JSONObject(QueryUtils.fetchResponse(urls[0]));
                 if (root.length() == 0) {
                     realPass = "salah";
                 } else {
                     realUser = stuser;
-                    JSONObject responseObject = root.getJSONObject(0);
-                    realPass = responseObject.getString("pass");
-                    Produk.no_meja = Integer.parseInt(responseObject.getString("no_meja"));
-                    status = Integer.parseInt(responseObject.getString("status"));
+                    realPass = root.getString("pass");
+                    Produk.NO_MEJA = Integer.parseInt(root.getString("no_meja"));
+                    status = Integer.parseInt(root.getString("status"));
                 }
             } catch (JSONException e) {
                 Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
