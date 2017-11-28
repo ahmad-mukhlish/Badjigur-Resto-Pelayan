@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark"
@@ -39,37 +40,37 @@
                     android:id="@+id/judul"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="30dp"
-                    android:layout_toRightOf="@id/gambar"
-                    android:text="Burger"
+                    android:layout_toEndOf="@id/gambar"
                     android:textColor="#000000"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tool:text="Burger" />
 
                 <TextView
                     android:id="@+id/tag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/judul"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="2dp"
-                    android:layout_toRightOf="@id/gambar"
-                    android:text="Fast food"
+                    android:layout_toEndOf="@id/gambar"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tool:text="Fast food" />
 
                 <TextView
                     android:id="@+id/price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tag"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/gambar"
-                    android:text="Rp 15000"
+                    android:layout_toEndOf="@id/gambar"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    tool:text="Rp 15000" />
 
 
                 <Button
@@ -77,11 +78,12 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@color/colorPrimary"
-                    android:text="-"
+                    android:text="@string/minus_sign"
+                    android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="25sp" />
 
@@ -92,10 +94,11 @@
                     android:layout_height="25dp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_toLeftOf="@id/minus"
+                    android:layout_marginEnd="1dp"
+                    android:layout_toStartOf="@id/minus"
                     android:background="@color/colorPrimary"
-                    android:text="+"
+                    android:text="@string/plus_sign"
+                    android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="25sp" />
 
@@ -105,9 +108,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@id/plus"
-                    android:text="0"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/plus"
+                    android:text="@string/zero"
                     android:textColor="#000000"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -116,15 +119,12 @@
                     android:id="@+id/cart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
                     android:enabled="false" />
-
 
             </RelativeLayout>
         </FrameLayout>
     </android.support.v7.widget.CardView>
-
-
 </RelativeLayout>
 

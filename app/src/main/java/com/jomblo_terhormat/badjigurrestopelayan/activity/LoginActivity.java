@@ -9,24 +9,24 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
-import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.QueryUtils;
+import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText edUser, edPass;
-    private String realUser = "";
-    private String realPass = "";
-    private String stuser;
-    private String stpass;
-    private int status;
+
+    private final String LOG_TAG = LoginActivity.class.getName();
+
+    private EditText mEdUser, mEdPass;
+    private String mRealUser = "", mRealPass = "";
+    private String mStuser, mStpass;
+    private int mStatus;
 
 
     @Override
@@ -35,15 +35,14 @@ public class LoginActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_login);
-        edUser = (EditText) findViewById(R.id.edUsername);
-        edPass = (EditText) findViewById(R.id.edPassword);
-        Button login = (Button) findViewById(R.id.login);
+        mEdUser = (EditText) findViewById(R.id.edUsername);
+        mEdPass = (EditText) findViewById(R.id.edPassword);
     }
 
     public void login(View v) {
-        stuser = edUser.getText().toString();
-        stpass = edPass.getText().toString();
-        new LoginAsyncTask(this).execute(Produk.BASE_PATH + Produk.JSON_LOGIN + edUser.getText().toString());
+        mStuser = mEdUser.getText().toString();
+        mStpass = mEdPass.getText().toString();
+        new LoginAsyncTask(this).execute(Produk.BASE_PATH + Produk.JSON_LOGIN + mEdUser.getText().toString());
     }
 
 
@@ -52,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
         private Context mContext;
 
-        public LoginAsyncTask(Context mContext) {
+        LoginAsyncTask(Context mContext) {
             this.mContext = mContext;
         }
 
@@ -66,16 +65,15 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 JSONObject root = new JSONObject(QueryUtils.fetchResponse(urls[0]));
                 if (root.length() == 0) {
-                    realPass = "salah";
+                    mRealPass = "salah";
                 } else {
-                    Log.v("cik",root.toString()) ;
-                    realUser = stuser;
-                    realPass = root.getString("pass");
+                    mRealUser = mStuser;
+                    mRealPass = root.getString("pass");
                     Produk.NO_MEJA = Integer.parseInt(root.getString("no_meja"));
-                    status = Integer.parseInt(root.getString("status"));
+                    mStatus = Integer.parseInt(root.getString("status"));
                 }
             } catch (JSONException e) {
-                Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
+                Log.e(LOG_TAG, "Problem parsing the JSON results", e);
             }
 
             return null;
@@ -84,17 +82,15 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
-
-            //TODO jika status 1 kasih validasi lagi
-            if (stuser.equals(realUser) && stpass.equals(realPass) && status == 0) {
+            if (mStuser.equals(mRealUser) && mStpass.equals(mRealPass) && mStatus == 0) {
                 Intent intent = new Intent(LoginActivity.this, MulaiMenuActivity.class);
-
                 startActivity(intent);
                 finish();
-            } else if (status == 1) {
-                Toast.makeText(mContext, "Akun meja sudah digunakan...", Toast.LENGTH_SHORT).show();
+            } else if (mStatus == 1 || mStatus == 2) {
+                Toast.makeText(mContext, R.string.used, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(mContext, "Username atau password tidak sesuai", Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(mContext, R.string.password_mismatch, Toast.LENGTH_SHORT).show();
             }
         }
 

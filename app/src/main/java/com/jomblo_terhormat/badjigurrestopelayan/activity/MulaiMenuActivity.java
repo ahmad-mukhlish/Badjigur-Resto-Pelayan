@@ -11,6 +11,9 @@ import com.jomblo_terhormat.badjigurrestopelayan.R;
 
 public class MulaiMenuActivity extends AppCompatActivity {
 
+    private final String LOG_TAG = MulaiMenuActivity.class.getName();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +27,7 @@ public class MulaiMenuActivity extends AppCompatActivity {
 
         private Context mContext;
 
-        public MulaiListener(Context mContext) {
+        MulaiListener(Context mContext) {
             this.mContext = mContext;
         }
 

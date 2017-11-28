@@ -3,16 +3,12 @@ package com.jomblo_terhormat.badjigurrestopelayan.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-/**
- * Created by GOODWARE1 on 10/19/2017.
- */
-
 public class Produk implements Parcelable {
+
+    private final String LOG_TAG = Produk.class.getName();
 
     public static final String BASE_PATH = "http://192.168.1.3/restoran/";
     public static final String JSON_REPLY_MENU = "server.php?operasi=makanan";
@@ -37,15 +33,14 @@ public class Produk implements Parcelable {
         }
     };
 
-    @SerializedName("id_makanan")
-    private int id_makanan;
-    private String nama;
-    private int jenis;
-    private String tag;
-    private String deskripsi;
-    private int harga_beli;
-    private int harga_jual;
-    private String path;
+    private int mIdMakanan;
+    private String mNama;
+    private int mJenis;
+    private String mTag;
+    private String mDeskripsi;
+    private int mHarga_beli;
+    private int mHarga_jual;
+    private String mPath;
 
     //field tambahan
     private int mQty = 0;
@@ -53,33 +48,33 @@ public class Produk implements Parcelable {
 
 
     public Produk(int id, String nama, int jenis, String tag, String deskripsi, int harga_beli, int harga_jual, String path) {
-        this.id_makanan = id;
-        this.nama = nama;
-        this.jenis = jenis;
-        this.tag = tag;
-        this.deskripsi = deskripsi;
-        this.harga_beli = harga_beli;
-        this.harga_jual = harga_jual;
-        this.path = path;
+        this.mIdMakanan = id;
+        this.mNama = nama;
+        this.mJenis = jenis;
+        this.mTag = tag;
+        this.mDeskripsi = deskripsi;
+        this.mHarga_beli = harga_beli;
+        this.mHarga_jual = harga_jual;
+        this.mPath = path;
     }
 
     public Produk(String nama, int harga_jual) {
-        this.nama = nama;
-        this.harga_jual = harga_jual;
+        this.mNama = nama;
+        this.mHarga_jual = harga_jual;
     }
 
-    public int getId_makanan() {
-        return id_makanan;
+    public int getmIdMakanan() {
+        return mIdMakanan;
     }
 
     protected Produk(Parcel in) {
-        id_makanan = in.readInt();
-        nama = in.readString();
-        tag = in.readString();
-        deskripsi = in.readString();
-        harga_beli = in.readInt();
-        harga_jual = in.readInt();
-        path = in.readString();
+        mIdMakanan = in.readInt();
+        mNama = in.readString();
+        mTag = in.readString();
+        mDeskripsi = in.readString();
+        mHarga_beli = in.readInt();
+        mHarga_jual = in.readInt();
+        mPath = in.readString();
         mQty = in.readInt();
         mCart = in.readByte() != 0;
     }
@@ -96,32 +91,28 @@ public class Produk implements Parcelable {
         this.mQty = mQty;
     }
 
-    public String getNama() {
-        return nama;
+    public String getmNama() {
+        return mNama;
     }
 
-    public String getTag() {
-        return tag;
+    public String getmTag() {
+        return mTag;
     }
 
-    public String getPath() {
-        return path;
+    public String getmPath() {
+        return mPath;
     }
 
-    public int getHarga_jual() {
-        return harga_jual;
+    public int getmHarga_jual() {
+        return mHarga_jual;
     }
 
-    public String getDeskripsi() {
-        return deskripsi;
+    public String getmDeskripsi() {
+        return mDeskripsi;
     }
 
-    public int getHarga_beli() {
-        return harga_beli;
-    }
-
-    public int getJenis() {
-        return jenis;
+    public int getmJenis() {
+        return mJenis;
     }
 
     @Override
@@ -132,13 +123,13 @@ public class Produk implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id_makanan);
-        parcel.writeString(nama);
-        parcel.writeString(tag);
-        parcel.writeString(deskripsi);
-        parcel.writeInt(harga_beli);
-        parcel.writeInt(harga_jual);
-        parcel.writeString(path);
+        parcel.writeInt(mIdMakanan);
+        parcel.writeString(mNama);
+        parcel.writeString(mTag);
+        parcel.writeString(mDeskripsi);
+        parcel.writeInt(mHarga_beli);
+        parcel.writeInt(mHarga_jual);
+        parcel.writeString(mPath);
         parcel.writeInt(mQty);
         parcel.writeByte((byte) (mCart ? 1 : 0));
     }

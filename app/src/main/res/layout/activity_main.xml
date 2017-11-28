@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No Internet Connection..."
+            android:text="@string/no_internet_connection"
             android:textAllCaps="true"
             android:textSize="16sp" />
 
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:text="Warung Pak Broto"
+            android:text="@string/app_name"
             android:textColor="@color/colorAccent"
             android:textSize="30sp" />
 
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:text="Waiter version"
+            android:text="@string/version"
             android:textColor="@color/colorAccent"
             android:textSize="20sp" />
 
@@ -57,10 +57,8 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="20dp"
             android:layout_weight="1"
-            android:src="@drawable/resto" />
+            android:src="@mipmap/ic_launcher" />
 
         <ProgressBar
             android:id="@+id/progress"
@@ -107,7 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:text="See my billing list"
+            android:text="@string/order"
             android:textColor="#FFFFFF" />
 
     </LinearLayout>

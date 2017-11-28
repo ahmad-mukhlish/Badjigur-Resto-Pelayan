@@ -5,7 +5,7 @@
     <item
         android:id="@+id/note"
         android:icon="@mipmap/ic_note"
-        android:title="Note"
+        android:title="@string/note_menu"
         app:showAsAction="always|collapseActionView" />
 
 </menu>

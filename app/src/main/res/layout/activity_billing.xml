@@ -15,10 +15,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:text="Item Name"
+            android:layout_marginStart="10dp"
+            android:text="@string/item_name"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Qty"
+            android:text="@string/qty"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
@@ -35,10 +35,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:text="Sub Total"
+            android:layout_marginEnd="10dp"
+            android:text="@string/sub_total"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
@@ -54,7 +54,7 @@
         <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/rvBilling"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical" />
 
     </ScrollView>
@@ -73,7 +73,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Ask For Bill" />
+            android:text="@string/ask_for_bill" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -92,8 +92,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="Sub total \t\t:"
+                    android:layout_alignParentStart="true"
+                    android:text="@string/sub_total_value"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp" />
 
@@ -101,7 +101,7 @@
                     android:id="@+id/sub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -117,8 +117,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="PPN (10%) \t\t:"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/ppn_value"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp" />
 
@@ -126,7 +127,7 @@
                     android:id="@+id/ppn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -149,8 +150,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="Grand Total \t:"
+                    android:layout_alignParentStart="true"
+                    android:text="@string/grand_total_value"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp" />
 
@@ -158,18 +159,12 @@
                     android:id="@+id/grand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:textColor="#FF0000"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
             </RelativeLayout>
-
-
         </LinearLayout>
-
-
     </LinearLayout>
-
-
 </LinearLayout>

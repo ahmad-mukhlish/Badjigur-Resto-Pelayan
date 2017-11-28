@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
-import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.QueryUtils;
+import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +21,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class FeedBackActivity extends AppCompatActivity {
+
+    private final String LOG_TAG = FeedBackActivity.class.getName();
 
     private RatingBar mRatingBar;
 
@@ -30,7 +32,7 @@ public class FeedBackActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed_back);
 
         Button submit = (Button) findViewById(R.id.submit);
-        submit.setOnClickListener(new submitListener(this, "Terimakasih atas kunjungan Anda", MulaiMenuActivity.class));
+        submit.setOnClickListener(new submitListener(this));
 
         mRatingBar = (RatingBar) findViewById(R.id.ratingnya);
     }
@@ -38,22 +40,17 @@ public class FeedBackActivity extends AppCompatActivity {
     private class submitListener implements View.OnClickListener {
 
         private Context mContext;
-        private String mToast;
-        private Class mClass;
 
 
-        public submitListener(Context mContext, String mToast, Class mClass) {
+        submitListener(Context mContext) {
             this.mContext = mContext;
-            this.mToast = mToast;
-            this.mClass = mClass;
         }
-
 
         @Override
         public void onClick(View view) {
             new FeedBackAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_FEEDBACK);
-            Toast.makeText(mContext, mToast, Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(mContext, mClass));
+            Toast.makeText(mContext, getString(R.string.thank), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(mContext, MulaiMenuActivity.class));
 
 
         }
@@ -61,7 +58,6 @@ public class FeedBackActivity extends AppCompatActivity {
 
 
     private class FeedBackAsyncTask extends AsyncTask<String, Void, String> {
-
 
 
         @Override
@@ -72,9 +68,9 @@ public class FeedBackActivity extends AppCompatActivity {
             }
 
             try {
-                Log.v("cek", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[0]), createJsonMessage()));
+                Log.v(LOG_TAG, QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[0]), createJsonMessage()));
             } catch (IOException e) {
-                Log.v("cek", e.getMessage());
+                Log.e(LOG_TAG, "Error when post with http" ,e);
             }
 
             return null;
@@ -94,11 +90,10 @@ public class FeedBackActivity extends AppCompatActivity {
 
                 jsonObject.accumulate("no_nota", Produk.NO_NOTA);
                 jsonObject.accumulate("rate", Math.round(mRatingBar.getRating() * 2));
-                Log.v("cek", Math.round(mRatingBar.getRating() * 2) + "");
 
 
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(LOG_TAG, "Error when create JSON message" ,e);
             }
 
             return jsonObject.toString();

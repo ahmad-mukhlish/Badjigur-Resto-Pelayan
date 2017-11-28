@@ -21,11 +21,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-/**
- * Created by GOODWARE1 on 9/2/2017.
- */
 
 public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.MenuViewHolder> {
+
+    private final String LOG_TAG = MenuRecycleAdapter.class.getName();
 
     private Context mContext;
     private List<Produk> mProduks;
@@ -46,13 +45,13 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         final Produk currentProduk = mProduks.get(position);
 
         Picasso.with(mContext).
-                load(Produk.BASE_PATH + currentProduk.getPath()).
+                load(Produk.BASE_PATH + currentProduk.getmPath()).
                 into(holder.mGambar);
 
 
-        holder.mJudul.setText(currentProduk.getNama());
-        holder.mTag.setText(currentProduk.getTag());
-        holder.mPrice.setText(Produk.formatter("" + currentProduk.getHarga_jual()));
+        holder.mJudul.setText(currentProduk.getmNama());
+        holder.mTag.setText(currentProduk.getmTag());
+        holder.mPrice.setText(Produk.formatter("" + currentProduk.getmHarga_jual()));
         holder.mQty.setText(currentProduk.getmQty() + "");
         holder.mCart.setChecked(currentProduk.ismCart());
 
@@ -120,7 +119,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
     }
 
-    class ProdukListener implements View.OnClickListener {
+    private class ProdukListener implements View.OnClickListener {
 
         private int position;
 
@@ -131,6 +130,10 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         @Override
         public void onClick(View view) {
 
+            dialogueDetail();
+        }
+
+        private void dialogueDetail() {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             View rootDialog = LayoutInflater.from(mContext).inflate(R.layout.dialogue_detail, null);
@@ -151,7 +154,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
 
             Picasso.with(mContext).
-                    load(Produk.BASE_PATH + clickedProduk.getPath()).
+                    load(Produk.BASE_PATH + clickedProduk.getmPath()).
                     error(R.drawable.detail)
                     .into(imageView, new Callback() {
                         @Override
@@ -168,11 +171,11 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                     });
 
 
-            judul.setText(clickedProduk.getNama());
+            judul.setText(clickedProduk.getmNama());
             judul.setWidth(imageView.getWidth());
 
-            deskripsi.setText(clickedProduk.getDeskripsi());
-            harga.setText(Produk.formatter("" + clickedProduk.getHarga_jual()));
+            deskripsi.setText(clickedProduk.getmDeskripsi());
+            harga.setText(Produk.formatter("" + clickedProduk.getmHarga_jual()));
 
             builder.setView(rootDialog);
             final AlertDialog dialog = builder.create();
@@ -186,8 +189,9 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                 }
             });
 
-
         }
+
+
     }
 
 

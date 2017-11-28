@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tool="http://schemas.android.com/tools"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
 
@@ -12,7 +13,7 @@
         android:layout_margin="15dp"
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
-        android:text="Burger"
+        tool:text="Burger"
         android:textColor="#000000"
         android:textSize="20sp" />
 
@@ -54,7 +55,7 @@
                 android:background="#77000000"
                 android:gravity="center_vertical"
                 android:padding="10dp"
-                android:text="Rp. 20000"
+                tool:text="Rp. 20000"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />
@@ -69,8 +70,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="15dp"
         android:textColor="#000000"
         android:textSize="16sp" />
@@ -83,7 +84,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:background="@color/colorPrimary"
-        android:text="ok"
+        android:text="@string/ok"
         android:textColor="#FFFFFF"
         android:textSize="15sp" />
 

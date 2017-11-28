@@ -23,19 +23,21 @@ import android.widget.Toast;
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.adapter.MenuTabAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
-import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.ProdukLoader;
-import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.QueryUtils;
+import com.jomblo_terhormat.badjigurrestopelayan.networking.ProdukLoader;
+import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Produk>> {
 
+    private final String LOG_TAG = MainActivity.class.getName();
+
     public static List<Produk> mProduk;
     private ActionBar mActionBar;
     private LinearLayout mLoading;
     private static final int LOADER_ID = 54;
-    private Button billing;
+    private Button mBilling;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mActionBar = getSupportActionBar();
         mActionBar.hide();
 
+
         if (isConnected) {
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(LOADER_ID, null, this);
@@ -66,16 +69,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             error.setVisibility(View.VISIBLE);
         }
 
-        billing = (Button) findViewById(R.id.billing);
+        mBilling = (Button) findViewById(R.id.billing);
 
 
     }
 
     private String[] setTitle() {
         String titles[] = new String[MenuTabAdapter.TOTAL_FRAGMENT];
-        titles[0] = "Foods";
-        titles[1] = "Beverages";
-        titles[2] = "Deserts";
+        titles[0] = getString(R.string.food);
+        titles[1] = getString(R.string.beverage);
+        titles[2] = getString(R.string.desert);
 
         return titles;
     }
@@ -109,12 +112,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mActionBar.show();
         mLoading.setVisibility(View.GONE);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        //tempat masuk data
         MenuTabAdapter adapter = new MenuTabAdapter(getSupportFragmentManager(), setTitle(), list);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-        billing.setOnClickListener(new BillingClicked(this, list));
+        mBilling.setOnClickListener(new BillingClicked(this, list));
 
 
     }
@@ -129,23 +131,27 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.waiter) {
-            // TODO add notif to kasir here
-            Toast.makeText(this, "Waiter sedang dipanggil, silakan tunggu", Toast.LENGTH_SHORT).show();
-        }
 
         // TODO move this to navbar
 
-        if (item.getItemId() == R.id.logout) {
-            mProduk = null;
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            new LogoutAsyncTask(MainActivity.this).execute(Produk.BASE_PATH + Produk.JSON_LOGOUT + Produk.NO_MEJA);
-            finish();
+        switch (item.getItemId()) {
 
+            case R.id.waiter: {
+                // TODO add notif to kasir here
+                Toast.makeText(this, R.string.waiter_called, Toast.LENGTH_SHORT).show();
+                break;
+            }
+
+
+            case R.id.logout: {
+                mProduk = null;
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                new LogoutAsyncTask(MainActivity.this).execute(Produk.BASE_PATH + Produk.JSON_LOGOUT + Produk.NO_MEJA);
+                finish();
+
+            }
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -170,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         private Context mContext;
         private List<Produk> mProduks;
 
-        public BillingClicked(Context mContext, List<Produk> produks) {
+        BillingClicked(Context mContext, List<Produk> produks) {
             this.mContext = mContext;
             this.mProduks = produks;
         }
@@ -182,14 +188,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 intent.putExtra("produks", (ArrayList<Produk>) cartedList(mProduks));
                 startActivity(intent);
             } else {
-                Toast.makeText(mContext, "Anda belum memesan apapun", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.no_food_order, Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "Sudah menu utama, tidak bisa kembali lagi..", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.main_menu, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -217,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         @Override
         protected void onPostExecute(String response) {
 
-            Toast.makeText(mContext, "Logout Berhasil", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.logout, Toast.LENGTH_SHORT).show();
 
         }
 

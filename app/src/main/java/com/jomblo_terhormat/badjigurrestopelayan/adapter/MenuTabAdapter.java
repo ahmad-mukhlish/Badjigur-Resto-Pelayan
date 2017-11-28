@@ -11,11 +11,9 @@ import com.jomblo_terhormat.badjigurrestopelayan.fragment.MenuProdukFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by GOODWARE1 on 10/19/2017.
- */
-
 public class MenuTabAdapter extends FragmentStatePagerAdapter {
+
+    private final String LOG_TAG = MenuTabAdapter.class.getName();
 
     public static final int TOTAL_FRAGMENT = 3;
     private String[] mTitles;
@@ -25,7 +23,6 @@ public class MenuTabAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.mTitles = titles;
         this.mLists = List;
-
     }
 
 
@@ -52,7 +49,7 @@ public class MenuTabAdapter extends FragmentStatePagerAdapter {
         List<Produk> result = new ArrayList<Produk>();
 
         for (Produk produkNow : all) {
-            if (produkNow.getJenis() == index) {
+            if (produkNow.getmJenis() == index) {
                 result.add(produkNow);
             }
         }

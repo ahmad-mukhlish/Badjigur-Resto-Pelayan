@@ -13,11 +13,10 @@ import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
 import java.util.List;
 
-/**
- * Created by GOODWARE1 on 9/2/2017.
- */
 
 public class BillingRecycleAdapter extends RecyclerView.Adapter<BillingRecycleAdapter.BillingViewHolder> {
+
+    private final String LOG_TAG = BillingRecycleAdapter.class.getName();
 
     private Context mContext;
     private List<Produk> mProduks;
@@ -36,8 +35,8 @@ public class BillingRecycleAdapter extends RecyclerView.Adapter<BillingRecycleAd
     @Override
     public void onBindViewHolder(final BillingViewHolder holder, int position) {
         final Produk currentProduk = mProduks.get(position);
-        holder.mJudul.setText(currentProduk.getNama());
-        holder.mPrice.setText(Produk.formatter("" + (currentProduk.getHarga_jual() * currentProduk.getmQty())));
+        holder.mJudul.setText(currentProduk.getmNama());
+        holder.mPrice.setText(Produk.formatter("" + (currentProduk.getmHarga_jual() * currentProduk.getmQty())));
         holder.mQty.setText(currentProduk.getmQty() + "");
         if (position % 2 != 0) {
             holder.mItemView.setBackgroundColor(Color.rgb(255, 255, 255));

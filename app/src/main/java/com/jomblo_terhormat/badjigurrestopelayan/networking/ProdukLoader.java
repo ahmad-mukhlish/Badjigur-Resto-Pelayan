@@ -1,4 +1,4 @@
-package com.jomblo_terhormat.badjigurrestopelayan.networking.udacity;
+package com.jomblo_terhormat.badjigurrestopelayan.networking;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -8,13 +8,9 @@ import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
 import java.util.List;
 
-
-/**
- * Created by GOODWARE1 on 8/30/2017.
- */
-
 public class ProdukLoader extends AsyncTaskLoader<List<Produk>> {
 
+    private final String LOG_TAG = ProdukLoader.class.getName();
 
     private String mUrl;
 

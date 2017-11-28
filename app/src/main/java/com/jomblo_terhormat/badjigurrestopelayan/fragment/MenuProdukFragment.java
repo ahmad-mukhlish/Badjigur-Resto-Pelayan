@@ -15,11 +15,10 @@ import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class MenuProdukFragment extends Fragment {
 
+    private final String LOG_TAG = MenuProdukFragment.class.getName();
 
     public MenuProdukFragment() {
         // Required empty public constructor

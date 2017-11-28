@@ -1,4 +1,4 @@
-package com.jomblo_terhormat.badjigurrestopelayan.networking.udacity;
+package com.jomblo_terhormat.badjigurrestopelayan.networking;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,12 +21,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by GOODWARE1 on 8/30/2017.
- */
-
 public class QueryUtils {
-
 
     private static final String LOG_TAG = QueryUtils.class.getName();
 
@@ -34,7 +29,7 @@ public class QueryUtils {
     }
 
 
-    public static List<Produk> fetchData(String link) {
+    static List<Produk> fetchData(String link) {
 
         URL url = parseStringLinkToURL(link);
 
@@ -105,7 +100,7 @@ public class QueryUtils {
         return jsonResponse;
     }
 
-    public static String streamToSting(InputStream inputStream) throws IOException {
+    private static String streamToSting(InputStream inputStream) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
 
         if (inputStream != null) {
@@ -167,7 +162,7 @@ public class QueryUtils {
 
 
         } catch (JSONException e) {
-            Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
+            Log.e(LOG_TAG, "Problem parsing JSON results", e);
         }
 
         return listProduks;
@@ -204,11 +199,11 @@ public class QueryUtils {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = QueryUtils.streamToSting(inputStream);
             } else {
-                Log.e("cek", "Error response code " + urlConnection.getResponseCode());
+                Log.e(LOG_TAG, "Error response code " + urlConnection.getResponseCode());
             }
 
         } catch (IOException e) {
-            Log.e("cek", "Error while retrieving jsonResponse", e);
+            Log.e(LOG_TAG, "Error while retrieving jsonResponse", e);
         } finally {
             //close the url and input stream.. regardless exception thrown or not..
             if (urlConnection != null)

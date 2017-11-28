@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.adapter.BillingRecycleAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
-import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.QueryUtils;
+import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,10 +35,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import static android.util.Log.v;
-import static com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.QueryUtils.fetchResponse;
+
+import static com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils.fetchResponse;
 
 public class BillingActivity extends AppCompatActivity {
+
+    private final String LOG_TAG = BillingActivity.class.getName();
 
     List<Produk> mProduks;
     String mKeterangan;
@@ -71,7 +73,7 @@ public class BillingActivity extends AppCompatActivity {
         grand.setText(Produk.formatter("" + (((int) (hitungSub(mProduks) * 0.1)) + hitungSub(mProduks))));
 
         Button ask = (Button) findViewById(R.id.ask);
-        ask.setOnClickListener(new askListener(this, "Billing Anda sedang disiapkan, silakan tunggu", FeedBackActivity.class));
+        ask.setOnClickListener(new askListener(this));
 
 
     }
@@ -79,33 +81,25 @@ public class BillingActivity extends AppCompatActivity {
     private int hitungSub(List<Produk> produks) {
         int sub = 0;
         for (Produk produk : produks) {
-            sub += produk.getHarga_jual() * produk.getmQty();
+            sub += produk.getmHarga_jual() * produk.getmQty();
         }
         return sub;
     }
 
 
-
     private class askListener implements View.OnClickListener {
 
         private Context mContext;
-        private String mToast;
-        private Class mClass;
 
-
-        public askListener(Context mContext, String mToast, Class mClass) {
+        askListener(Context mContext) {
             this.mContext = mContext;
-            this.mToast = mToast;
-            this.mClass = mClass;
         }
 
         @Override
         public void onClick(View view) {
-
-
             new BillingAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_NOTA, Produk.BASE_PATH + Produk.JSON_POST);
-            Toast.makeText(mContext, mToast, Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(mContext, mClass));
+            Toast.makeText(mContext, getString(R.string.billing), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(mContext, FeedBackActivity.class));
         }
 
 
@@ -124,13 +118,9 @@ public class BillingActivity extends AppCompatActivity {
 
             try {
                 Produk.NO_NOTA = Integer.parseInt(new JSONObject(fetchResponse(urls[0])).getString("nota"));
-                Log.v("cik","Narima : " +Produk.NO_NOTA + "") ;
-                Log.v("cik","Ngirim : " + createJsonMessage() + "") ;
-                Log.v("cek", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), createJsonMessage()));
-            } catch (IOException e) {
-                v("cek", e.getMessage());
-            } catch (JSONException e) {
-                e.printStackTrace();
+                Log.v(LOG_TAG, QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), createJsonMessage()));
+            } catch (IOException | JSONException e) {
+                Log.v(LOG_TAG, "Error when send billing", e);
             }
 
             return null;
@@ -153,7 +143,7 @@ public class BillingActivity extends AppCompatActivity {
 
                 for (int i = 0; i < mProduks.size(); i++) {
                     JSONObject jsonProduk = new JSONObject();
-                    jsonProduk.accumulate("id_makanan", mProduks.get(i).getId_makanan());
+                    jsonProduk.accumulate("id_makanan", mProduks.get(i).getmIdMakanan());
                     jsonProduk.accumulate("qty", mProduks.get(i).getmQty());
 
                     jsonArray.put(i, jsonProduk);
@@ -172,7 +162,7 @@ public class BillingActivity extends AppCompatActivity {
 
 
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(LOG_TAG, "Error when create JSON message", e);
             }
 
             return jsonObject.toString();
@@ -191,30 +181,34 @@ public class BillingActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.note) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            View rootDialog = LayoutInflater.from(this).inflate(R.layout.dialogue_keterangan, null);
-            final EditText keterangan = rootDialog.findViewById(R.id.keterangan);
-            keterangan.setText(mKeterangan);
-            keterangan.setSelection(keterangan.getText().length());
-
-            builder.setView(rootDialog);
-            final AlertDialog dialog = builder.create();
-            dialog.show();
-
-
-            TextView ok = rootDialog.findViewById(R.id.ok);
-            ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                    mKeterangan = keterangan.getText().toString();
-                }
-            });
-
-
+            dialogueKeterangan();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void dialogueKeterangan() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View rootDialog = LayoutInflater.from(this).inflate(R.layout.dialogue_keterangan, null);
+        final EditText keterangan = rootDialog.findViewById(R.id.keterangan);
+        keterangan.setText(mKeterangan);
+        keterangan.setSelection(keterangan.getText().length());
+
+        builder.setView(rootDialog);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+        TextView ok = rootDialog.findViewById(R.id.ok);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                mKeterangan = keterangan.getText().toString();
+            }
+        });
+
     }
 
 
