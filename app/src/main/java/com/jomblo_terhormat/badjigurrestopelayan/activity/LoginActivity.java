@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (root.length() == 0) {
                     realPass = "salah";
                 } else {
+                    Log.v("cik",root.toString()) ;
                     realUser = stuser;
                     realPass = root.getString("pass");
                     Produk.NO_MEJA = Integer.parseInt(root.getString("no_meja"));
@@ -84,10 +85,14 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String response) {
 
+            //TODO jika status 1 kasih validasi lagi
             if (stuser.equals(realUser) && stpass.equals(realPass) && status == 0) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
                 startActivity(intent);
                 finish();
+            } else if (status == 1) {
+                Toast.makeText(mContext, "Akun meja sudah digunakan...", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(mContext, "Username atau password tidak sesuai", Toast.LENGTH_SHORT).show();
             }

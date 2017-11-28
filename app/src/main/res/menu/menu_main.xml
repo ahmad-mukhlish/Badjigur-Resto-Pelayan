@@ -3,11 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/waiter"
-        android:icon="@drawable/bel"
-        android:orderInCategory="0"
-        android:title="Call waiter"
-        app:showAsAction="always" />
+    android:id="@+id/waiter"
+    android:icon="@drawable/bel"
+    android:orderInCategory="0"
+    android:title="Call waiter"
+    app:showAsAction="always" />
 
+    <item
+        android:id="@+id/logout"
+        android:orderInCategory="0"
+        android:title="Log out"
+        app:showAsAction="always" />
 
 </menu>

@@ -20,6 +20,7 @@ public class Produk implements Parcelable {
     public static final String JSON_NOTA = "server.php?operasi=nota";
     public static final String JSON_FEEDBACK = "server.php?operasi=rate";
     public static final String JSON_LOGIN = "server.php?operasi=get_passlog&username=";
+    public static final String JSON_LOGOUT = "server.php?operasi=logout_meja&no_meja=";
     public static int NO_NOTA;
     public static int NO_MEJA;
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -23,6 +24,7 @@ import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.adapter.MenuTabAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.ProdukLoader;
+import com.jomblo_terhormat.badjigurrestopelayan.networking.udacity.QueryUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,6 +134,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             Toast.makeText(this, "Waiter sedang dipanggil, silakan tunggu", Toast.LENGTH_SHORT).show();
         }
 
+        // TODO move this to navbar
+
+        if (item.getItemId() == R.id.logout) {
+            mProduk = null;
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            new LogoutAsyncTask(MainActivity.this).execute(Produk.BASE_PATH + Produk.JSON_LOGOUT + Produk.NO_MEJA);
+            finish();
+
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -178,5 +192,36 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Toast.makeText(this, "Sudah menu utama, tidak bisa kembali lagi..", Toast.LENGTH_SHORT).show();
     }
 
+
+    private class LogoutAsyncTask extends AsyncTask<String, Void, String> {
+
+        private Context mContext;
+
+        LogoutAsyncTask(Context mContext) {
+            this.mContext = mContext;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            if (urls.length < 1 || urls[0] == null) {
+                return null;
+            }
+
+            QueryUtils.fetchResponse(urls[0]);
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(String response) {
+
+            Toast.makeText(mContext, "Logout Berhasil", Toast.LENGTH_SHORT).show();
+
+        }
+
+
+    }
 }
 
