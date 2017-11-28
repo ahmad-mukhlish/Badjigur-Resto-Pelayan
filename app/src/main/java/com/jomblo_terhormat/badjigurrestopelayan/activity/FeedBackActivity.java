@@ -30,7 +30,7 @@ public class FeedBackActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed_back);
 
         Button submit = (Button) findViewById(R.id.submit);
-        submit.setOnClickListener(new submitListener(this, "Terimakasih atas kunjungan Anda", MainActivity.class));
+        submit.setOnClickListener(new submitListener(this, "Terimakasih atas kunjungan Anda", MulaiMenuActivity.class));
 
         mRatingBar = (RatingBar) findViewById(R.id.ratingnya);
     }

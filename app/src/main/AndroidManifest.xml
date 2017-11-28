@@ -28,7 +28,9 @@
             android:name=".activity.BillingActivity"
             android:parentActivityName=".activity.MainActivity" />
         <activity android:name=".activity.FeedBackActivity" />
-
+        <activity
+            android:name=".activity.MulaiMenuActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

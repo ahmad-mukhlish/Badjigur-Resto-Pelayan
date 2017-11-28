@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
             //TODO jika status 1 kasih validasi lagi
             if (stuser.equals(realUser) && stpass.equals(realPass) && status == 0) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, MulaiMenuActivity.class);
 
                 startActivity(intent);
                 finish();
