@@ -2,48 +2,26 @@ package com.jomblo_terhormat.badjigurrestopelayan.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.adapter.BillingRecycleAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
-import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-
-
-import static com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils.fetchResponse;
 
 public class BillingActivity extends AppCompatActivity {
 
     private final String LOG_TAG = BillingActivity.class.getName();
 
-    List<Produk> mProduks;
-    String mKeterangan;
+    private List<Produk> mProduks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,120 +75,12 @@ public class BillingActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            new BillingAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_NOTA, Produk.BASE_PATH + Produk.JSON_POST);
             Toast.makeText(mContext, getString(R.string.billing), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(mContext, FeedBackActivity.class));
         }
 
 
     }
-
-
-    private class BillingAsyncTask extends AsyncTask<String, Void, String> {
-
-
-        @Override
-        protected String doInBackground(String... urls) {
-
-            if (urls.length < 1 || urls[0] == null) {
-                return null;
-            }
-
-            try {
-                Produk.NO_NOTA = Integer.parseInt(new JSONObject(fetchResponse(urls[0])).getString("nota"));
-                Log.v(LOG_TAG, QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), createJsonMessage()));
-            } catch (IOException | JSONException e) {
-                Log.v(LOG_TAG, "Error when send billing", e);
-            }
-
-            return null;
-        }
-
-
-        @Override
-        protected void onPostExecute(String response) {
-
-        }
-
-
-        private String createJsonMessage() {
-
-            JSONObject jsonObject = new JSONObject();
-
-            try {
-
-                JSONArray jsonArray = new JSONArray();
-
-                for (int i = 0; i < mProduks.size(); i++) {
-                    JSONObject jsonProduk = new JSONObject();
-                    jsonProduk.accumulate("id_makanan", mProduks.get(i).getmIdMakanan());
-                    jsonProduk.accumulate("qty", mProduks.get(i).getmQty());
-
-                    jsonArray.put(i, jsonProduk);
-
-                }
-
-
-                jsonObject.accumulate("meja", Produk.NO_MEJA);
-                jsonObject.accumulate("no_nota", Produk.NO_NOTA);
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                String date = df.format(Calendar.getInstance().getTime());
-
-                jsonObject.accumulate("tanggal", date);
-                jsonObject.accumulate("catatan", mKeterangan);
-                jsonObject.accumulate("pesanan", jsonArray);
-
-
-            } catch (JSONException e) {
-                Log.e(LOG_TAG, "Error when create JSON message", e);
-            }
-
-            return jsonObject.toString();
-
-        }
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_billing, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.note) {
-            dialogueKeterangan();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void dialogueKeterangan() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View rootDialog = LayoutInflater.from(this).inflate(R.layout.dialogue_keterangan, null);
-        final EditText keterangan = rootDialog.findViewById(R.id.keterangan);
-        keterangan.setText(mKeterangan);
-        keterangan.setSelection(keterangan.getText().length());
-
-        builder.setView(rootDialog);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-
-        TextView ok = rootDialog.findViewById(R.id.ok);
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                mKeterangan = keterangan.getText().toString();
-            }
-        });
-
-    }
-
 
 }
 

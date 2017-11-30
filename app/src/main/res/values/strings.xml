@@ -35,4 +35,5 @@
     <string name="note_menu">Note</string>
     <string name="call_waiter_menu">Call waiter</string>
     <string name="log_out_menu">Log out</string>
+    <string name="add_chef_note">Add Chef\'s Note</string>
 </resources>
