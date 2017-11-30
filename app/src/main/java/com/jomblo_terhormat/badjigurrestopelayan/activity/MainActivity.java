@@ -30,6 +30,7 @@ import com.jomblo_terhormat.badjigurrestopelayan.adapter.MenuTabAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.ProdukLoader;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
+import com.mikepenz.materialdrawer.DrawerBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,8 +89,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
 
         mBilling = (Button) findViewById(R.id.billing);
-
-
+        new DrawerBuilder().withActivity(this).build();
     }
 
     private String[] setTitle() {
