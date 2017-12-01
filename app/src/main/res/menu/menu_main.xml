@@ -6,13 +6,8 @@
     android:id="@+id/waiter"
     android:icon="@drawable/bel"
     android:orderInCategory="0"
-    android:title="@string/call_waiter_menu"
+    android:title="@string/menu_call_waiter"
     app:showAsAction="always" />
 
-    <item
-        android:id="@+id/logout"
-        android:orderInCategory="0"
-        android:title="@string/log_out_menu"
-        app:showAsAction="always" />
 
 </menu>

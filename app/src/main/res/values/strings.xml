@@ -1,39 +1,58 @@
 <resources>
     <string name="app_name"> Mr. Broto Resto </string>
-    <string name="food">Foods</string>
-    <string name="beverage">Beverages</string>
-    <string name="desert">Deserts</string>
-    <string name="used">The table is currently used</string>
-    <string name="password_mismatch">Username or password is incorrect</string>
-    <string name="waiter_called">The waiter has been called, please wait..</string>
-    <string name="no_food_order">No food has been ordered yet</string>
-    <string name="main_menu">You have reached the main menu..</string>
-    <string name="logout">Logout success..</string>
-    <string name="thank">Thank you, have a great day..</string>
-    <string name="billing">Your bill is being prepared, please wait..</string>
-    <string name="item_name">Item Name</string>
-    <string name="qty">Qty</string>
-    <string name="sub_total">Sub Total</string>
-    <string name="ask_for_bill">Ask For Bill</string>
-    <string name="sub_total_value">Sub total \t\t:</string>
-    <string name="ppn_value">PPN (10%) \t\t:</string>
-    <string name="grand_total_value">Grand Total \t:</string>
-    <string name="feedback">Please rate our restaurant :</string>
-    <string name="submit">Submit</string>
-    <string name="version">Customer ver.</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="login">login</string>
-    <string name="no_internet_connection">No Internet Connection..</string>
-    <string name="order">order</string>
-    <string name="menu">See my menu</string>
-    <string name="ok">OK</string>
-    <string name="notes">Add your chef\'s notes here.. </string>
-    <string name="minus_sign">-</string>
-    <string name="plus_sign">+</string>
-    <string name="zero">0</string>
-    <string name="note_menu">Note</string>
-    <string name="call_waiter_menu">Call waiter</string>
-    <string name="log_out_menu">Log out</string>
-    <string name="add_chef_note">Add Chef\'s Note</string>
+
+    <!--tab names :-->
+    <string name="tab_food">Foods</string>
+    <string name="tab_beverage">Beverages</string>
+    <string name="tab_desert">Deserts</string>
+
+    <!--toasts-->
+    <string name="toast_used">The table is currently used</string>
+    <string name="toast_password_mismatch">Username or password is incorrect</string>
+    <string name="toast_waiter_called">The waiter has been called, please wait..</string>
+    <string name="toast_no_food_order">No food has been ordered yet</string>
+    <string name="toast_main_menu">You have reached the main menu..</string>
+    <string name="toast_logout">Logout success..</string>
+    <string name="toast_thank">Thank you, have a great day..</string>
+    <string name="toast_billing">Your bill is being prepared, please wait..</string>
+    <string name="toast_empty">The table is empty now</string>
+
+    <!--labels-->
+    <string name="label_item_name">Item Name</string>
+    <string name="label_qty">Qty</string>
+    <string name="label_sub_total">Sub Total</string>
+    <string name="label_sub_total_value">Sub total \t\t:</string>
+    <string name="label_ppn_value">PPN (10%) \t\t:</string>
+    <string name="label_grand_total_value">Grand Total \t:</string>
+    <string name="label_feedback">Please rate our restaurant :</string>
+    <string name="label_version">Customer ver.</string>
+    <string name="label_no_internet_connection">No Internet Connection..</string>
+    <string name="label_minus_sign">-</string>
+    <string name="label_plus_sign">+</string>
+    <string name="label_zero">0</string>
+
+    <!--buttons-->
+    <string name="button_ask_for_bill">Ask For Bill</string>
+    <string name="button_submit">Submit</string>
+    <string name="button_login">login</string>
+    <string name="button_order">order</string>
+    <string name="button_menu">See my menu</string>
+    <string name="button_ok">OK</string>
+    <string name="button_add_chef_note">Add Chef\'s Note</string>
+    <string name="button_edit_chef">Edit Chef\'s Note</string>
+
+    <!--hints-->
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_notes">Add your chef\'s notes here.. </string>
+
+    <!--menus-->
+    <string name="menu_call_waiter">Call waiter</string>
+    <string name="menu_note">Note</string>
+
+    <!--drawers-->
+    <string name="drawer_developed_by">Developed by Jasuke Squad</string>
+    <string name="drawer_item_logout">Log out</string>
+    <string name="drawer_item_chef_note">Chef\'s Note</string>
+    <string name="drawer_item_empty_the_table">Empty the table</string>
 </resources>

@@ -87,10 +87,10 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } else if (mStatus == 1 || mStatus == 2) {
-                Toast.makeText(mContext, R.string.used, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.toast_used, Toast.LENGTH_SHORT).show();
             } else {
 
-                Toast.makeText(mContext, R.string.password_mismatch, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.toast_password_mismatch, Toast.LENGTH_SHORT).show();
             }
         }
 

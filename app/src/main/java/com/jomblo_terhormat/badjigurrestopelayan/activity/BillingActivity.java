@@ -75,7 +75,7 @@ public class BillingActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(mContext, getString(R.string.billing), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, getString(R.string.toast_billing), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(mContext, FeedBackActivity.class));
         }
 

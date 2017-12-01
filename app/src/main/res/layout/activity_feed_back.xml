@@ -22,7 +22,7 @@
         android:layout_above="@id/ratingnya"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:text="@string/feedback"
+        android:text="@string/label_feedback"
         android:textSize="17sp" />
 
 
@@ -33,6 +33,6 @@
         android:layout_below="@id/ratingnya"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="@string/submit" />
+        android:text="@string/button_submit" />
 
 </RelativeLayout>

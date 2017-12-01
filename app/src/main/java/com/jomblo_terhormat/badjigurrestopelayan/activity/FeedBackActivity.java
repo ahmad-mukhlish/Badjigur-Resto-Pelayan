@@ -49,7 +49,7 @@ public class FeedBackActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             new FeedBackAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_FEEDBACK);
-            Toast.makeText(mContext, getString(R.string.thank), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, getString(R.string.toast_thank), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(mContext, MulaiMenuActivity.class));
 
 

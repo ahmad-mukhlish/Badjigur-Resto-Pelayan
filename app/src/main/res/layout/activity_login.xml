@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/version"
+            android:text="@string/label_version"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
 
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="10dp"
-            android:hint="@string/username"
+            android:hint="@string/hint_username"
             android:inputType="text"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white" />
@@ -52,7 +52,7 @@
             android:id="@+id/edPassword"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:hint="@string/password"
+            android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white" />
@@ -64,7 +64,7 @@
             android:layout_marginTop="20dp"
             android:background="@android:color/darker_gray"
             android:onClick="login"
-            android:text="@string/login"
+            android:text="@string/button_login"
             android:textAllCaps="true"
             android:textSize="15sp" />
     </LinearLayout>
