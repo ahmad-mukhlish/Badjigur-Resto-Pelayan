@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mToolBar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(mToolBar);
+        setTitle(getString(R.string.label_table) + " " + Produk.NO_MEJA);
 
 
         mToolBar.setVisibility(View.GONE);
@@ -158,10 +159,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         switch (position) {
 
                             case 1: {
-                                mDrawer.closeDrawer();
-                                Intent intent = new Intent(MainActivity.this, BillingActivity.class);
-                                intent.putExtra("produks", (ArrayList<Produk>) cartedList(mProduk));
-                                startActivity(intent);
+                                if (!cartedList(mProduk).isEmpty()) {
+                                    mDrawer.closeDrawer();
+                                    Intent intent = new Intent(MainActivity.this, BillingActivity.class);
+                                    intent.putExtra("produks", (ArrayList<Produk>) cartedList(mProduk));
+                                    intent.putExtra("code","see") ;
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(getBaseContext(), R.string.toast_no_carted, Toast.LENGTH_SHORT).show();
+                                }
                                 break;
                             }
 
@@ -375,6 +381,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     mKeterangan = keterangan.getText().toString();
                     Intent intent = new Intent(MainActivity.this, BillingActivity.class);
                     intent.putExtra("produks", (ArrayList<Produk>) cartedList(produks));
+                    intent.putExtra("code","order") ;
                     new PesanAsyncTask(cartedList(produks)).execute(Produk.BASE_PATH + Produk.JSON_NOTA, Produk.BASE_PATH + Produk.JSON_PESAN);
                     startActivity(intent);
                 }
@@ -385,6 +392,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 @Override
                 public void onClick(View view) {
                     dialog.dismiss();
+                    mKeterangan = keterangan.getText().toString();
                 }
             });
         }

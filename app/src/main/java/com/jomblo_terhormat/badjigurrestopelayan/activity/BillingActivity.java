@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +22,7 @@ public class BillingActivity extends AppCompatActivity {
     private final String LOG_TAG = BillingActivity.class.getName();
 
     private List<Produk> mProduks;
+    private String mCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,24 +35,32 @@ public class BillingActivity extends AppCompatActivity {
         BillingRecycleAdapter billingRecycleAdapter =
                 new BillingRecycleAdapter(this, mProduks);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvBilling);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
+        RecyclerView recyclerView = findViewById(R.id.rvBilling);
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(billingRecycleAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        TextView sub = (TextView) findViewById(R.id.sub);
+
+        TextView sub = findViewById(R.id.sub);
         sub.setText(Produk.formatter("" + hitungSub(mProduks)));
 
-        TextView ppn = (TextView) findViewById(R.id.ppn);
+        TextView ppn = findViewById(R.id.ppn);
         ppn.setText(Produk.formatter("" + ((int) (hitungSub(mProduks) * 0.1))));
 
-        TextView grand = (TextView) findViewById(R.id.grand);
+        TextView grand = findViewById(R.id.grand);
         grand.setText(Produk.formatter("" + (((int) (hitungSub(mProduks) * 0.1)) + hitungSub(mProduks))));
 
-        Button ask = (Button) findViewById(R.id.ask);
+        Button ask = findViewById(R.id.ask);
         ask.setOnClickListener(new askListener(this));
+
+        mCode = bundle.getString("code");
+
+        if (mCode.equals("see")) {
+            setTitle(getString(R.string.label_cart_list) + " " + Produk.NO_MEJA);
+            ask.setVisibility(View.GONE);
+        } else
+            setTitle(getString(R.string.label_order_list) + " " + Produk.NO_MEJA);
 
 
     }

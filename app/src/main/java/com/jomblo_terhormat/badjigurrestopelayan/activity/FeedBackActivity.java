@@ -35,6 +35,8 @@ public class FeedBackActivity extends AppCompatActivity {
         submit.setOnClickListener(new submitListener(this));
 
         mRatingBar = (RatingBar) findViewById(R.id.ratingnya);
+        setTitle(getString(R.string.label_table) + " " + Produk.NO_MEJA);
+
     }
 
     private class submitListener implements View.OnClickListener {
@@ -70,7 +72,7 @@ public class FeedBackActivity extends AppCompatActivity {
             try {
                 Log.v(LOG_TAG, QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[0]), createJsonMessage()));
             } catch (IOException e) {
-                Log.e(LOG_TAG, "Error when post with http" ,e);
+                Log.e(LOG_TAG, "Error when post with http", e);
             }
 
             return null;
@@ -93,7 +95,7 @@ public class FeedBackActivity extends AppCompatActivity {
 
 
             } catch (JSONException e) {
-                Log.e(LOG_TAG, "Error when create JSON message" ,e);
+                Log.e(LOG_TAG, "Error when create JSON message", e);
             }
 
             return jsonObject.toString();

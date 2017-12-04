@@ -1,7 +1,6 @@
 package com.jomblo_terhormat.badjigurrestopelayan.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -80,11 +79,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
             }
         });
 
-
-        if (position % 2 != 0) {
-            holder.mItemView.setBackgroundColor(Color.rgb(255, 255, 255));
-        }
-
+        
         holder.mItemView.setOnClickListener(new ProdukListener(position));
 
     }

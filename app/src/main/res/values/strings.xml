@@ -16,6 +16,7 @@
     <string name="toast_thank">Thank you, have a great day..</string>
     <string name="toast_billing">Your bill is being prepared, please wait..</string>
     <string name="toast_empty">The table is empty now</string>
+    <string name="toast_no_carted">No food has been carted yet ..</string>
 
     <!--labels-->
     <string name="label_item_name">Item Name</string>
@@ -30,6 +31,11 @@
     <string name="label_minus_sign">-</string>
     <string name="label_plus_sign">+</string>
     <string name="label_zero">0</string>
+    <string name="label_table">Table</string>
+    <string name="label_cart_list">Cart List For Table</string>
+    <string name="label_order_list">Order List For Table</string>
+
+
 
     <!--buttons-->
     <string name="button_ask_for_bill">Ask For Bill</string>
