@@ -31,12 +31,13 @@ public class FeedBackActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_back);
 
-        Button submit = (Button) findViewById(R.id.submit);
+        Button submit = findViewById(R.id.submit);
         submit.setOnClickListener(new submitListener(this));
 
-        mRatingBar = (RatingBar) findViewById(R.id.ratingnya);
-        setTitle(getString(R.string.label_table) + " " + Produk.NO_MEJA);
+        mRatingBar = findViewById(R.id.ratingnya);
+        setTitle(getString(R.string.title_main) + " " + Produk.NO_MEJA);
 
+        setTitle(getString(R.string.title_feedback) + " " + Produk.NO_MEJA);
     }
 
     private class submitListener implements View.OnClickListener {

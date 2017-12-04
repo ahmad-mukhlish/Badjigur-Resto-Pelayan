@@ -32,6 +32,9 @@
         <activity
             android:name=".activity.MulaiMenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.BillingActivity"
+            android:parentActivityName=".activity.MainActivity"/>
     </application>
 
 </manifest>

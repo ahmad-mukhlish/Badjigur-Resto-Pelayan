@@ -4,18 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,50 +26,52 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 import static com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils.fetchResponse;
 
-public class CartActivity extends AppCompatActivity {
+public class BillingActivity extends AppCompatActivity {
+    private final String LOG_TAG = BillingActivity.class.getName();
 
-    private final String LOG_TAG = CartActivity.class.getName();
-
-    List<Produk> mProduks;
+    List<Produk> mOrders;
     String mKeterangan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
+        setContentView(R.layout.activity_billing);
 
-        Bundle bundle = getIntent().getExtras();
-        mProduks = bundle.getParcelableArrayList("produks");
+        mOrders = new ArrayList<>();
+        //TODO get mOrders from database
 
-        CartRecycleAdapter cartRecycleAdapter =
-                new CartRecycleAdapter(this, mProduks);
+        CartRecycleAdapter billingRecycleAdapter =
+                new CartRecycleAdapter(this, mOrders);
 
-        RecyclerView recyclerView = findViewById(R.id.rvCart);
+        RecyclerView recyclerView = findViewById(R.id.rvBilling);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(cartRecycleAdapter);
+        recyclerView.setAdapter(billingRecycleAdapter);
 
         TextView sub = findViewById(R.id.sub);
-        sub.setText(Produk.formatter("" + hitungSub(mProduks)));
+        sub.setText(Produk.formatter("" + hitungSub(mOrders)));
 
         TextView ppn = findViewById(R.id.ppn);
-        ppn.setText(Produk.formatter("" + ((int) (hitungSub(mProduks) * 0.1))));
+        ppn.setText(Produk.formatter("" + ((int) (hitungSub(mOrders) * 0.1))));
 
         TextView grand = findViewById(R.id.grand);
-        grand.setText(Produk.formatter("" + (((int) (hitungSub(mProduks) * 0.1)) + hitungSub(mProduks))));
+        grand.setText(Produk.formatter("" + (((int) (hitungSub(mOrders) * 0.1)) + hitungSub(mOrders))));
 
-        Button order = findViewById(R.id.order);
-        order.setOnClickListener(new OrderListener(this));
+        Button ask = findViewById(R.id.ask);
+        ask.setOnClickListener(new askListener(this));
 
-        setTitle(getString(R.string.title_cart) + " " + Produk.NO_MEJA) ;
+        setTitle(getString(R.string.title_billing) + " " + Produk.NO_MEJA);
+
+
 
     }
 
@@ -87,22 +84,36 @@ public class CartActivity extends AppCompatActivity {
     }
 
 
-    private class OrderListener implements View.OnClickListener {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(BillingActivity.this, MainActivity.class));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private class askListener implements View.OnClickListener {
 
         private Context mContext;
 
-        OrderListener(Context mContext) {
+        askListener(Context mContext) {
             this.mContext = mContext;
         }
 
         @Override
         public void onClick(View view) {
-            dialogueKeterangan(1);
+            //TODO add ask for bill asyntask here
+            new AskForBillAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_NOTA, Produk.BASE_PATH + Produk.JSON_PESAN);
+            Toast.makeText(mContext, getString(R.string.toast_billing), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(mContext, FeedBackActivity.class));
         }
+
+
     }
 
 
-    private class OrderAsyncTask extends AsyncTask<String, Void, String> {
+    private class AskForBillAsyncTask extends AsyncTask<String, Void, String> {
 
 
         @Override
@@ -137,10 +148,10 @@ public class CartActivity extends AppCompatActivity {
 
                 JSONArray jsonArray = new JSONArray();
 
-                for (int i = 0; i < mProduks.size(); i++) {
+                for (int i = 0; i < mOrders.size(); i++) {
                     JSONObject jsonProduk = new JSONObject();
-                    jsonProduk.accumulate("id_makanan", mProduks.get(i).getmIdMakanan());
-                    jsonProduk.accumulate("qty", mProduks.get(i).getmQty());
+                    jsonProduk.accumulate("id_makanan", mOrders.get(i).getmIdMakanan());
+                    jsonProduk.accumulate("qty", mOrders.get(i).getmQty());
 
                     jsonArray.put(i, jsonProduk);
 
@@ -168,61 +179,9 @@ public class CartActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_cart, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void onBackPressed() {
+        startActivity(new Intent(BillingActivity.this, MainActivity.class));
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.note) {
-            dialogueKeterangan(0);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void dialogueKeterangan(int kode) {
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View rootDialog = LayoutInflater.from(this).inflate(R.layout.dialogue_keterangan, null);
-        final EditText keterangan = rootDialog.findViewById(R.id.keterangan);
-        keterangan.setText(mKeterangan);
-        keterangan.setSelection(keterangan.getText().length());
-
-        builder.setView(rootDialog);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-
-        TextView ok = rootDialog.findViewById(R.id.ok);
-        if (kode == 1) {
-            ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                    mKeterangan = keterangan.getText().toString();
-                    new OrderAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_NOTA, Produk.BASE_PATH + Produk.JSON_PESAN);
-                    Intent intent = new Intent(CartActivity.this, BillingActivity.class);
-                    startActivity(intent);
-                    Toast.makeText(getBaseContext(), R.string.toast_order, Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            ok.setText(R.string.button_edit_chef);
-            ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                    mKeterangan = keterangan.getText().toString();
-                }
-            });
-        }
-
-    }
 
 }
-
-

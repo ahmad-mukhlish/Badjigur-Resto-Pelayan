@@ -14,14 +14,14 @@ import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import java.util.List;
 
 
-public class BillingRecycleAdapter extends RecyclerView.Adapter<BillingRecycleAdapter.BillingViewHolder> {
+public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.BillingViewHolder> {
 
-    private final String LOG_TAG = BillingRecycleAdapter.class.getName();
+    private final String LOG_TAG = CartRecycleAdapter.class.getName();
 
     private Context mContext;
     private List<Produk> mProduks;
 
-    public BillingRecycleAdapter(Context mContext, List<Produk> produks) {
+    public CartRecycleAdapter(Context mContext, List<Produk> produks) {
         this.mContext = mContext;
         this.mProduks = produks;
     }

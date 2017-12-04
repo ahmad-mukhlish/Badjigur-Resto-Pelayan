@@ -10,20 +10,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
@@ -40,19 +35,8 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-
-import static com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils.fetchResponse;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Produk>> {
 
@@ -63,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private LinearLayout mLoading;
     private static final int LOADER_ID = 54;
     private Button mBilling;
-    private String mKeterangan;
     private Drawer mDrawer;
 
 
@@ -80,19 +63,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        LinearLayout error = (LinearLayout) findViewById(R.id.error);
+        LinearLayout error = findViewById(R.id.error);
         error.setVisibility(View.GONE);
 
-        mLoading = (LinearLayout) findViewById(R.id.loading);
+        mLoading = findViewById(R.id.loading);
 
 
-        mToolBar = (Toolbar) findViewById(R.id.my_toolbar);
+        mToolBar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mToolBar);
-        setTitle(getString(R.string.label_table) + " " + Produk.NO_MEJA);
-
-
         mToolBar.setVisibility(View.GONE);
-
 
         if (isConnected) {
             LoaderManager loaderManager = getLoaderManager();
@@ -101,10 +80,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             error.setVisibility(View.VISIBLE);
         }
 
-        mBilling = (Button) findViewById(R.id.billing);
+        mBilling = findViewById(R.id.billing);
         new DrawerBuilder().withActivity(this).build();
 
         initNavigationDrawer(savedInstanceState);
+
+        setTitle(getString(R.string.title_main) + " " + Produk.NO_MEJA);
+
     }
 
 
@@ -123,25 +105,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 )
                 .build();
 
-        PrimaryDrawerItem chefNote = new PrimaryDrawerItem().
+
+        PrimaryDrawerItem cart = new PrimaryDrawerItem().
                 withIdentifier(1).
-                withName(R.string.drawer_item_chef_note)
-                .withIcon(R.mipmap.chef_note);
+                withName(R.string.drawer_cart)
+                .withIcon(R.mipmap.cart);
+
+
+        PrimaryDrawerItem orderList = new PrimaryDrawerItem().
+                withIdentifier(2).
+                withName(R.string.drawer_order_list)
+                .withIcon(R.mipmap.order_list);
+
 
         PrimaryDrawerItem emptyTable = new PrimaryDrawerItem().
-                withIdentifier(2).
+                withIdentifier(3).
                 withName(R.string.drawer_item_empty_the_table)
                 .withIcon(R.mipmap.empty_table);
 
+
         PrimaryDrawerItem logout = new PrimaryDrawerItem().
-                withIdentifier(3).
+                withIdentifier(4).
                 withName(R.string.drawer_item_logout)
                 .withIcon(R.mipmap.logout);
-
-        PrimaryDrawerItem orderList = new PrimaryDrawerItem().
-                withIdentifier(3).
-                withName(R.string.drawer_order_list)
-                .withIcon(R.mipmap.order_list);
 
 
         mDrawer = new DrawerBuilder()
@@ -151,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 .withSavedInstance(savedInstanceState)
                 .withToolbar(mToolBar)
                 .withSelectedItem(-1)
-                .addDrawerItems(orderList, chefNote, emptyTable, logout, new DividerDrawerItem()
+                .addDrawerItems(cart, orderList, emptyTable, logout, new DividerDrawerItem()
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -171,11 +157,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             }
 
                             case 2: {
-                                mDrawer.closeDrawer();
-                                dialogueKeterangan(mProduk, 0);
+                                startActivity(new Intent(MainActivity.this, BillingActivity.class));
                                 break;
-
                             }
+
                             case 3: {
                                 mDrawer.closeDrawer();
                                 mProduk = null;
@@ -250,10 +235,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mToolBar.setVisibility(View.VISIBLE);
         mLoading.setVisibility(View.GONE);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager viewPager = findViewById(R.id.viewpager);
         MenuTabAdapter adapter = new MenuTabAdapter(getSupportFragmentManager(), setTitle(), list);
         viewPager.setAdapter(adapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        TabLayout tabLayout = findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
         mBilling.setOnClickListener(new BillingClicked(this, list));
 
@@ -314,7 +299,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         @Override
         public void onClick(View view) {
             if (cartedList(mProduks).size() > 0) {
-                dialogueKeterangan(mProduks, 1);
+                Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                intent.putExtra("produks", (ArrayList<Produk>) cartedList(mProduks));
+                startActivity(intent);
             } else {
                 Toast.makeText(mContext, R.string.toast_no_food_order, Toast.LENGTH_SHORT).show();
             }
@@ -355,118 +342,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         protected void onPostExecute(String response) {
             Toast.makeText(mContext, R.string.toast_logout, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void dialogueKeterangan(final List<Produk> produks, int kode) {
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View rootDialog = LayoutInflater.from(this).inflate(R.layout.dialogue_keterangan, null);
-        final EditText keterangan = rootDialog.findViewById(R.id.keterangan);
-        keterangan.setText(mKeterangan);
-        keterangan.setSelection(keterangan.getText().length());
-
-        builder.setView(rootDialog);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-
-        TextView ok = rootDialog.findViewById(R.id.ok);
-        if (kode == 1) {
-            ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                    mKeterangan = keterangan.getText().toString();
-                    Intent intent = new Intent(MainActivity.this, CartActivity.class);
-                    intent.putExtra("produks", (ArrayList<Produk>) cartedList(produks));
-                    new PesanAsyncTask(cartedList(produks)).execute(Produk.BASE_PATH + Produk.JSON_NOTA, Produk.BASE_PATH + Produk.JSON_PESAN);
-                    startActivity(intent);
-                }
-            });
-        } else {
-            ok.setText(R.string.button_edit_chef);
-            ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                    mKeterangan = keterangan.getText().toString();
-                }
-            });
-        }
-
-    }
-
-
-    private class PesanAsyncTask extends AsyncTask<String, Void, String> {
-
-
-        private List<Produk> mProduks;
-
-        private PesanAsyncTask(List<Produk> mProduks) {
-            this.mProduks = mProduks;
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-
-            if (urls.length < 1 || urls[0] == null) {
-                return null;
-            }
-
-            try {
-                Produk.NO_NOTA = Integer.parseInt(new JSONObject(fetchResponse(urls[0])).getString("nota"));
-                Log.v(LOG_TAG, QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), createJsonMessage()));
-            } catch (IOException | JSONException e) {
-                Log.v(LOG_TAG, "Error when send billing", e);
-            }
-
-            return null;
-        }
-
-
-        @Override
-        protected void onPostExecute(String response) {
-
-        }
-
-
-        private String createJsonMessage() {
-
-            JSONObject jsonObject = new JSONObject();
-
-            try {
-
-                JSONArray jsonArray = new JSONArray();
-
-                for (int i = 0; i < mProduks.size(); i++) {
-                    JSONObject jsonProduk = new JSONObject();
-                    jsonProduk.accumulate("id_makanan", mProduks.get(i).getmIdMakanan());
-                    jsonProduk.accumulate("qty", mProduks.get(i).getmQty());
-
-                    jsonArray.put(i, jsonProduk);
-
-                }
-
-
-                jsonObject.accumulate("meja", Produk.NO_MEJA);
-                jsonObject.accumulate("no_nota", Produk.NO_NOTA);
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                String date = df.format(Calendar.getInstance().getTime());
-
-                jsonObject.accumulate("tanggal", date);
-                jsonObject.accumulate("catatan", mKeterangan);
-                jsonObject.accumulate("pesanan", jsonArray);
-
-
-            } catch (JSONException e) {
-                Log.e(LOG_TAG, "Error when create JSON message", e);
-            }
-
-            return jsonObject.toString();
-
-        }
-
     }
 
 }

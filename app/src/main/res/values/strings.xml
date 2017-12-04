@@ -16,7 +16,16 @@
     <string name="toast_thank">Thank you, have a great day..</string>
     <string name="toast_billing">Your bill is being prepared, please wait..</string>
     <string name="toast_empty">The table is empty now</string>
-    <string name="toast_no_carted">No food has been carted yet ..</string>
+    <string name="toast_no_carted">No food has been carted yet..</string>
+    <string name="toast_order">Your food has been ordered..</string>
+
+
+    <!--titles-->
+    <string name="title_billing">Orders Table</string>
+    <string name="title_main">Table</string>
+    <string name="title_cart">Carted Table</string>
+    <string name="title_feedback">Feedback For Table</string>
+
 
     <!--labels-->
     <string name="label_item_name">Item Name</string>
@@ -31,10 +40,6 @@
     <string name="label_minus_sign">-</string>
     <string name="label_plus_sign">+</string>
     <string name="label_zero">0</string>
-    <string name="label_table">Table</string>
-    <string name="label_cart_list">Cart List For Table</string>
-    <string name="label_order_list">Order List For Table</string>
-
 
 
     <!--buttons-->
@@ -42,6 +47,7 @@
     <string name="button_submit">Submit</string>
     <string name="button_login">login</string>
     <string name="button_cart">add to cart</string>
+    <string name="button_ask_for_bill">ask for bill</string>
     <string name="button_menu">See my menu</string>
     <string name="button_ok">OK</string>
     <string name="button_add_chef_note">Add Chef\'s Note</string>
@@ -59,7 +65,7 @@
     <!--drawers-->
     <string name="drawer_developed_by">Developed by Jasuke Squad</string>
     <string name="drawer_item_logout">Log out</string>
-    <string name="drawer_item_chef_note">Chef\'s Note</string>
     <string name="drawer_item_empty_the_table">Empty the table</string>
     <string name="drawer_order_list">See my order list</string>
+    <string name="drawer_cart">See my cart</string>
 </resources>
