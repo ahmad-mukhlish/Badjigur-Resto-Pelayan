@@ -137,6 +137,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 withName(R.string.drawer_item_logout)
                 .withIcon(R.mipmap.logout);
 
+        PrimaryDrawerItem cart = new PrimaryDrawerItem().
+                withIdentifier(3).
+                withName(R.string.drawer_cart)
+                .withIcon(R.mipmap.cart);
+
 
         mDrawer = new DrawerBuilder()
                 .withAccountHeader(accountHeader)
@@ -145,30 +150,39 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 .withSavedInstance(savedInstanceState)
                 .withToolbar(mToolBar)
                 .withSelectedItem(-1)
-                .addDrawerItems(chefNote, emptyTable, logout, new DividerDrawerItem()
+                .addDrawerItems(cart, chefNote, emptyTable, logout, new DividerDrawerItem()
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         switch (position) {
+
                             case 1: {
+                                mDrawer.closeDrawer();
+                                Intent intent = new Intent(MainActivity.this, BillingActivity.class);
+                                intent.putExtra("produks", (ArrayList<Produk>) cartedList(mProduk));
+                                startActivity(intent);
+                                break;
+                            }
+
+                            case 2: {
                                 mDrawer.closeDrawer();
                                 dialogueKeterangan(mProduk, 0);
                                 break;
 
                             }
-                            case 2: {
+                            case 3: {
                                 mDrawer.closeDrawer();
                                 mProduk = null;
                                 Intent intent = new Intent(MainActivity.this, MulaiMenuActivity.class);
                                 startActivity(intent);
-                                Toast.makeText(getBaseContext(), R.string.toast_empty,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getBaseContext(), R.string.toast_empty, Toast.LENGTH_SHORT).show();
                                 //TODO notify the database the table is empty now
                                 break;
 
                             }
 
-                            case 3: {
+                            case 4: {
                                 mDrawer.closeDrawer();
                                 mProduk = null;
                                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -260,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 Toast.makeText(this, R.string.toast_waiter_called, Toast.LENGTH_SHORT).show();
                 break;
             }
+
 
         }
         return super.onOptionsItemSelected(item);

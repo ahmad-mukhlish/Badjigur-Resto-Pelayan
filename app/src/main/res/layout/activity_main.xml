@@ -12,9 +12,15 @@
         android:background="@color/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ToolBarStyle"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:subtitleTextColor="#FFFFFF"
-        app:titleTextColor="#FFFFFF" />
+        app:titleTextColor="#FFFFFF"/>
+
 
     <LinearLayout
 

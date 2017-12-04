@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-    android:id="@+id/waiter"
-    android:icon="@drawable/bel"
-    android:orderInCategory="0"
-    android:title="@string/menu_call_waiter"
-    app:showAsAction="always" />
+        android:id="@+id/waiter"
+        android:icon="@drawable/bel"
+        android:orderInCategory="0"
+        android:title="@string/menu_call_waiter"
+        app:showAsAction="always" />
 
 
 </menu>
