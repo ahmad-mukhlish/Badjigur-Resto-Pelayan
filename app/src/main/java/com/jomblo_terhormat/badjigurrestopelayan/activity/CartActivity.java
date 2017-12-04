@@ -17,9 +17,9 @@ import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
 import java.util.List;
 
-public class BillingActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity {
 
-    private final String LOG_TAG = BillingActivity.class.getName();
+    private final String LOG_TAG = CartActivity.class.getName();
 
     private List<Produk> mProduks;
     private String mCode;
@@ -54,13 +54,8 @@ public class BillingActivity extends AppCompatActivity {
         Button ask = findViewById(R.id.ask);
         ask.setOnClickListener(new askListener(this));
 
-        mCode = bundle.getString("code");
 
-        if (mCode.equals("see")) {
-            setTitle(getString(R.string.label_cart_list) + " " + Produk.NO_MEJA);
-            ask.setVisibility(View.GONE);
-        } else
-            setTitle(getString(R.string.label_order_list) + " " + Produk.NO_MEJA);
+
 
 
     }

@@ -38,10 +38,10 @@
 
 
     <!--buttons-->
-    <string name="button_ask_for_bill">Ask For Bill</string>
+    <string name="button_order">Order</string>
     <string name="button_submit">Submit</string>
     <string name="button_login">login</string>
-    <string name="button_order">order</string>
+    <string name="button_cart">add to cart</string>
     <string name="button_menu">See my menu</string>
     <string name="button_ok">OK</string>
     <string name="button_add_chef_note">Add Chef\'s Note</string>
@@ -61,5 +61,5 @@
     <string name="drawer_item_logout">Log out</string>
     <string name="drawer_item_chef_note">Chef\'s Note</string>
     <string name="drawer_item_empty_the_table">Empty the table</string>
-    <string name="drawer_cart">See my cart</string>
+    <string name="drawer_order_list">See my order list</string>
 </resources>

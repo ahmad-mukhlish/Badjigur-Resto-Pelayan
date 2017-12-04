@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.BillingActivity"
+            android:name=".activity.CartActivity"
             android:parentActivityName=".activity.MainActivity" />
         <activity android:name=".activity.FeedBackActivity" />
         <activity

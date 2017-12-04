@@ -79,7 +79,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
             }
         });
 
-        
+
         holder.mItemView.setOnClickListener(new ProdukListener(position));
 
     }

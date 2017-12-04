@@ -138,10 +138,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 withName(R.string.drawer_item_logout)
                 .withIcon(R.mipmap.logout);
 
-        PrimaryDrawerItem cart = new PrimaryDrawerItem().
+        PrimaryDrawerItem orderList = new PrimaryDrawerItem().
                 withIdentifier(3).
-                withName(R.string.drawer_cart)
-                .withIcon(R.mipmap.cart);
+                withName(R.string.drawer_order_list)
+                .withIcon(R.mipmap.order_list);
 
 
         mDrawer = new DrawerBuilder()
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 .withSavedInstance(savedInstanceState)
                 .withToolbar(mToolBar)
                 .withSelectedItem(-1)
-                .addDrawerItems(cart, chefNote, emptyTable, logout, new DividerDrawerItem()
+                .addDrawerItems(orderList, chefNote, emptyTable, logout, new DividerDrawerItem()
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -161,9 +161,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             case 1: {
                                 if (!cartedList(mProduk).isEmpty()) {
                                     mDrawer.closeDrawer();
-                                    Intent intent = new Intent(MainActivity.this, BillingActivity.class);
+                                    Intent intent = new Intent(MainActivity.this, CartActivity.class);
                                     intent.putExtra("produks", (ArrayList<Produk>) cartedList(mProduk));
-                                    intent.putExtra("code","see") ;
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(getBaseContext(), R.string.toast_no_carted, Toast.LENGTH_SHORT).show();
@@ -379,9 +378,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 public void onClick(View view) {
                     dialog.dismiss();
                     mKeterangan = keterangan.getText().toString();
-                    Intent intent = new Intent(MainActivity.this, BillingActivity.class);
+                    Intent intent = new Intent(MainActivity.this, CartActivity.class);
                     intent.putExtra("produks", (ArrayList<Produk>) cartedList(produks));
-                    intent.putExtra("code","order") ;
                     new PesanAsyncTask(cartedList(produks)).execute(Produk.BASE_PATH + Produk.JSON_NOTA, Produk.BASE_PATH + Produk.JSON_PESAN);
                     startActivity(intent);
                 }
