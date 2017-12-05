@@ -74,7 +74,7 @@ public class CartActivity extends AppCompatActivity {
         Button order = findViewById(R.id.order);
         order.setOnClickListener(new OrderListener(this));
 
-        setTitle(getString(R.string.title_cart) + " " + Produk.NO_MEJA) ;
+        setTitle(getString(R.string.title_cart) + " " + Produk.NO_MEJA);
 
     }
 
@@ -112,9 +112,16 @@ public class CartActivity extends AppCompatActivity {
                 return null;
             }
 
+            Log.v("cik", urls[1]);
+
             try {
-                Produk.NO_NOTA = Integer.parseInt(new JSONObject(fetchResponse(urls[0])).getString("nota"));
+
+                if (Produk.PEMESANAN == 1) {
+                    Produk.NO_NOTA = Integer.parseInt(new JSONObject(fetchResponse(urls[0])).getString("nota"));
+                }
+                Log.v("cik", createJsonMessage());
                 Log.v(LOG_TAG, QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), createJsonMessage()));
+
             } catch (IOException | JSONException e) {
                 Log.v(LOG_TAG, "Error when send billing", e);
             }
@@ -125,7 +132,7 @@ public class CartActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
-
+            Produk.PEMESANAN++;
         }
 
 
@@ -204,7 +211,8 @@ public class CartActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     dialog.dismiss();
                     mKeterangan = keterangan.getText().toString();
-                    new OrderAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_NOTA, Produk.BASE_PATH + Produk.JSON_PESAN);
+                    new OrderAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_NOTA,
+                            Produk.BASE_PATH + Produk.JSON_PESAN + Produk.PEMESANAN);
                     Intent intent = new Intent(CartActivity.this, BillingActivity.class);
                     startActivity(intent);
                     Toast.makeText(getBaseContext(), R.string.toast_order, Toast.LENGTH_SHORT).show();

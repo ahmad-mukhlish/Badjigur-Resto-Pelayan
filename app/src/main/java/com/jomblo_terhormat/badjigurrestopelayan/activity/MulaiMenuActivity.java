@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
+import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
 public class MulaiMenuActivity extends AppCompatActivity {
 
@@ -34,7 +35,7 @@ public class MulaiMenuActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-
+            Produk.PEMESANAN = 1;
             startActivity(new Intent(mContext, MainActivity.class));
 
         }
