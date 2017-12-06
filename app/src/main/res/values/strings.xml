@@ -23,7 +23,7 @@
     <!--titles-->
     <string name="title_billing">Orders Table</string>
     <string name="title_main">Table</string>
-    <string name="title_cart">Carted Table</string>
+    <string name="title_confrim">Confirm Order </string>
     <string name="title_feedback">Feedback For Table</string>
 
 
@@ -44,6 +44,7 @@
 
     <!--buttons-->
     <string name="button_order">Order</string>
+    <string name="button_add">Add more items</string>
     <string name="button_submit">Submit</string>
     <string name="button_login">login</string>
     <string name="button_cart">add to cart</string>
@@ -67,6 +68,5 @@
 
     <!--drawers-->
     <string name="drawer_developed_by">Developed by Jasuke Squad</string>
-    <string name="drawer_order_list">See my order list</string>
-    <string name="drawer_cart">See my cart</string>
+    <string name="drawer_about_us">About Us</string>
 </resources>

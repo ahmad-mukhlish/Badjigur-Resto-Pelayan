@@ -91,16 +91,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private void initNavigationDrawer(Bundle savedInstanceState) {
 
-        PrimaryDrawerItem cart = new PrimaryDrawerItem().
+        PrimaryDrawerItem aboutUs = new PrimaryDrawerItem().
                 withIdentifier(1).
-                withName(R.string.drawer_cart)
-                .withIcon(R.mipmap.cart);
-
-
-        PrimaryDrawerItem orderList = new PrimaryDrawerItem().
-                withIdentifier(2).
-                withName(R.string.drawer_order_list)
-                .withIcon(R.mipmap.order_list);
+                withName(R.string.drawer_about_us)
+                .withIcon(R.mipmap.about_us);
 
 
         mDrawer = new DrawerBuilder()
@@ -110,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 .withSavedInstance(savedInstanceState)
                 .withToolbar(mToolBar)
                 .withSelectedItem(-1)
-                .addDrawerItems(cart, orderList, new DividerDrawerItem()
+                .addDrawerItems(aboutUs, new DividerDrawerItem()
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -118,21 +112,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         switch (position) {
 
                             case 1: {
-                                if (!cartedList(mProduk).isEmpty()) {
-                                    mDrawer.closeDrawer();
-                                    Intent intent = new Intent(MainActivity.this, CartActivity.class);
-                                    intent.putExtra("produks", (ArrayList<Produk>) cartedList(mProduk));
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(getBaseContext(), R.string.toast_no_carted, Toast.LENGTH_SHORT).show();
-                                }
+                                //TODO ADD ABOUT US HERE
                                 break;
                             }
 
-                            case 2: {
-                                startActivity(new Intent(MainActivity.this, BillingActivity.class));
-                                break;
-                            }
 
                         }
 
@@ -249,9 +232,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         switch (item.getItemId()) {
 
-            case R.id.waiter: {
+            case R.id.id_menu_waiter: {
                 // TODO add notif to kasir here
                 Toast.makeText(this, R.string.toast_waiter_called, Toast.LENGTH_SHORT).show();
+                break;
+            }
+
+            case R.id.id_menu_billing: {
+                startActivity(new Intent(MainActivity.this, BillingActivity.class));
                 break;
             }
 
@@ -289,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         @Override
         public void onClick(View view) {
             if (cartedList(mProduks).size() > 0) {
-                Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                Intent intent = new Intent(MainActivity.this, ConfirmActivity.class);
                 intent.putExtra("produks", (ArrayList<Produk>) cartedList(mProduks));
                 startActivity(intent);
             } else {

@@ -37,9 +37,9 @@ import java.util.Locale;
 
 import static com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils.fetchResponse;
 
-public class CartActivity extends AppCompatActivity {
+public class ConfirmActivity extends AppCompatActivity {
 
-    private final String LOG_TAG = CartActivity.class.getName();
+    private final String LOG_TAG = ConfirmActivity.class.getName();
 
     List<Produk> mProduks;
     String mKeterangan;
@@ -47,7 +47,7 @@ public class CartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
+        setContentView(R.layout.activity_confim);
 
         Bundle bundle = getIntent().getExtras();
         mProduks = bundle.getParcelableArrayList("produks");
@@ -71,10 +71,19 @@ public class CartActivity extends AppCompatActivity {
         TextView grand = findViewById(R.id.grand);
         grand.setText(Produk.formatter("" + (((int) (hitungSub(mProduks) * 0.1)) + hitungSub(mProduks))));
 
-        Button order = findViewById(R.id.order);
+        Button order = findViewById(R.id.id_btn_order);
         order.setOnClickListener(new OrderListener(this));
 
-        setTitle(getString(R.string.title_cart) + " " + Produk.NO_MEJA);
+        Button add = findViewById(R.id.id_btn_add);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConfirmActivity.super.onBackPressed();
+            }
+        });
+
+
+        setTitle(getString(R.string.title_confrim) + " " + Produk.NO_MEJA);
 
     }
 
@@ -211,7 +220,7 @@ public class CartActivity extends AppCompatActivity {
                     mKeterangan = keterangan.getText().toString();
                     new OrderAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_NOTA,
                             Produk.BASE_PATH + Produk.JSON_PESAN + Produk.PEMESANAN);
-                    Intent intent = new Intent(CartActivity.this, BillingActivity.class);
+                    Intent intent = new Intent(ConfirmActivity.this, BillingActivity.class);
                     startActivity(intent);
                     Toast.makeText(getBaseContext(), R.string.toast_order, Toast.LENGTH_SHORT).show();
                 }

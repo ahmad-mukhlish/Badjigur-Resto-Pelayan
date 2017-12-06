@@ -69,8 +69,16 @@ public class BillingActivity extends AppCompatActivity {
         Button ask = findViewById(R.id.ask);
         ask.setOnClickListener(new askListener(this));
 
-        setTitle(getString(R.string.title_billing) + " " + Produk.NO_MEJA);
+        Button add = findViewById(R.id.id_btn_add_billing);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BillingActivity.this, MainActivity.class));
 
+            }
+        });
+
+        setTitle(getString(R.string.title_billing) + " " + Produk.NO_MEJA);
 
 
     }
