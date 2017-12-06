@@ -52,6 +52,9 @@
     <string name="button_ok">OK</string>
     <string name="button_add_chef_note">Add Chef\'s Note</string>
     <string name="button_edit_chef">Edit Chef\'s Note</string>
+    <string name="button_empty_table">Empty table</string>
+    <string name="button_logout">Log out</string>
+
 
     <!--hints-->
     <string name="hint_username">Username</string>
@@ -64,8 +67,6 @@
 
     <!--drawers-->
     <string name="drawer_developed_by">Developed by Jasuke Squad</string>
-    <string name="drawer_item_logout">Log out</string>
-    <string name="drawer_item_empty_the_table">Empty the table</string>
     <string name="drawer_order_list">See my order list</string>
     <string name="drawer_cart">See my cart</string>
 </resources>

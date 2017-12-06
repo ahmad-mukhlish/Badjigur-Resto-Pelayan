@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tool="http://schemas.android.com/tools"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
 
@@ -13,9 +13,9 @@
         android:layout_margin="15dp"
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
-        tool:text="Burger"
         android:textColor="#000000"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        tool:text="Burger" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -55,10 +55,10 @@
                 android:background="#77000000"
                 android:gravity="center_vertical"
                 android:padding="10dp"
-                tool:text="Rp. 20000"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                tool:text="Rp. 20000" />
 
         </FrameLayout>
 
@@ -70,9 +70,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginStart="16dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="15dp"
+        android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="16sp" />
 

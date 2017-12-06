@@ -112,14 +112,12 @@ public class CartActivity extends AppCompatActivity {
                 return null;
             }
 
-            Log.v("cik", urls[1]);
 
             try {
 
                 if (Produk.PEMESANAN == 1) {
                     Produk.NO_NOTA = Integer.parseInt(new JSONObject(fetchResponse(urls[0])).getString("nota"));
                 }
-                Log.v("cik", createJsonMessage());
                 Log.v(LOG_TAG, QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), createJsonMessage()));
 
             } catch (IOException | JSONException e) {

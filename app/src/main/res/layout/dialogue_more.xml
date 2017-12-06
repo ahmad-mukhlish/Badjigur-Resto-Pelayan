@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@color/primary_dark"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/img_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/empty_table" />
+
+        <Button
+            android:id="@+id/btn_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_empty"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:background="@color/primary"
+            android:text="@string/button_empty_table"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp" />
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/primary" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_weight="1">
+
+
+        <ImageView
+            android:id="@+id/img_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/logout" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_logout"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:background="@color/primary"
+            android:text="@string/button_logout"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

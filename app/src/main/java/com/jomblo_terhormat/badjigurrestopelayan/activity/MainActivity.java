@@ -10,9 +10,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,13 +28,10 @@ import com.jomblo_terhormat.badjigurrestopelayan.adapter.MenuTabAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.ProdukLoader;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
@@ -92,20 +91,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private void initNavigationDrawer(Bundle savedInstanceState) {
 
-        AccountHeader accountHeader = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.color.colorPrimary)
-                .withCompactStyle(false)
-                .withSavedInstance(savedInstanceState)
-                .addProfiles(
-                        new ProfileDrawerItem()
-                                .withName(getString(R.string.app_name)).
-                                withEmail(R.string.drawer_developed_by).
-                                withIcon(getResources().getDrawable(R.mipmap.ic_launcher))
-                )
-                .build();
-
-
         PrimaryDrawerItem cart = new PrimaryDrawerItem().
                 withIdentifier(1).
                 withName(R.string.drawer_cart)
@@ -118,26 +103,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 .withIcon(R.mipmap.order_list);
 
 
-        PrimaryDrawerItem emptyTable = new PrimaryDrawerItem().
-                withIdentifier(3).
-                withName(R.string.drawer_item_empty_the_table)
-                .withIcon(R.mipmap.empty_table);
-
-
-        PrimaryDrawerItem logout = new PrimaryDrawerItem().
-                withIdentifier(4).
-                withName(R.string.drawer_item_logout)
-                .withIcon(R.mipmap.logout);
-
-
         mDrawer = new DrawerBuilder()
-                .withAccountHeader(accountHeader)
                 .withActivity(this)
+                .withHeader(R.layout.drawer_header)
                 .withDrawerGravity(Gravity.LEFT)
                 .withSavedInstance(savedInstanceState)
                 .withToolbar(mToolBar)
                 .withSelectedItem(-1)
-                .addDrawerItems(cart, orderList, emptyTable, logout, new DividerDrawerItem()
+                .addDrawerItems(cart, orderList, new DividerDrawerItem()
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -161,29 +134,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                                 break;
                             }
 
-                            case 3: {
-                                mDrawer.closeDrawer();
-                                mProduk = null;
-                                Intent intent = new Intent(MainActivity.this, MulaiMenuActivity.class);
-                                startActivity(intent);
-                                Toast.makeText(getBaseContext(), R.string.toast_empty, Toast.LENGTH_SHORT).show();
-                                //TODO notify the database the table is empty now
-                                break;
-
-                            }
-
-                            case 4: {
-                                mDrawer.closeDrawer();
-                                mProduk = null;
-                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                                new LogoutAsyncTask(MainActivity.this).
-                                        execute(Produk.BASE_PATH + Produk.JSON_LOGOUT + Produk.NO_MEJA);
-                                finish();
-                                break;
-                            }
-
-
                         }
 
                         return true;
@@ -197,6 +147,46 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     }
+
+
+    public void dialogueMore(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View rootDialog = LayoutInflater.from(this).inflate(R.layout.dialogue_more, null);
+
+        Button empty = rootDialog.findViewById(R.id.btn_empty);
+        empty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawer.closeDrawer();
+                mProduk = null;
+                Intent intent = new Intent(MainActivity.this, MulaiMenuActivity.class);
+                startActivity(intent);
+                Toast.makeText(getBaseContext(), R.string.toast_empty, Toast.LENGTH_SHORT).show();
+                //TODO notify the database the table is empty now
+            }
+        });
+
+        Button logout = rootDialog.findViewById(R.id.btn_logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawer.closeDrawer();
+                mProduk = null;
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                new LogoutAsyncTask(MainActivity.this).
+                        execute(Produk.BASE_PATH + Produk.JSON_LOGOUT + Produk.NO_MEJA);
+                finish();
+            }
+        });
+
+        builder.setView(rootDialog);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
 
     private String[] setTitle() {
         String titles[] = new String[MenuTabAdapter.TOTAL_FRAGMENT];
