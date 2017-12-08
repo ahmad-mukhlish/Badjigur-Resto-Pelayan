@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
-import com.jomblo_terhormat.badjigurrestopelayan.adapter.CartRecycleAdapter;
+import com.jomblo_terhormat.badjigurrestopelayan.adapter.BillingRecycleAdapter;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
 
@@ -23,33 +23,28 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-
-import static com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils.fetchResponse;
 
 public class BillingActivity extends AppCompatActivity {
     private final String LOG_TAG = BillingActivity.class.getName();
 
-    List<Produk> mOrders;
-    String mKeterangan;
+    private List<Produk> mBillings;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_billing);
 
-        mOrders = new ArrayList<>();
-        //TODO get mOrders from database
+        new BillingAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_BILLING + Produk.NO_MEJA);
 
-        CartRecycleAdapter billingRecycleAdapter =
-                new CartRecycleAdapter(this, mOrders);
 
+    }
+
+    private void updateUI(List<Produk> billings) {
+        BillingRecycleAdapter billingRecycleAdapter =
+                new BillingRecycleAdapter(this, billings);
         RecyclerView recyclerView = findViewById(R.id.rvBilling);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
 
@@ -58,13 +53,13 @@ public class BillingActivity extends AppCompatActivity {
         recyclerView.setAdapter(billingRecycleAdapter);
 
         TextView sub = findViewById(R.id.sub);
-        sub.setText(Produk.formatter("" + hitungSub(mOrders)));
+        sub.setText(Produk.formatter("" + hitungSub(billings)));
 
         TextView ppn = findViewById(R.id.ppn);
-        ppn.setText(Produk.formatter("" + ((int) (hitungSub(mOrders) * 0.1))));
+        ppn.setText(Produk.formatter("" + ((int) (hitungSub(billings) * 0.1))));
 
         TextView grand = findViewById(R.id.grand);
-        grand.setText(Produk.formatter("" + (((int) (hitungSub(mOrders) * 0.1)) + hitungSub(mOrders))));
+        grand.setText(Produk.formatter("" + (((int) (hitungSub(billings) * 0.1)) + hitungSub(billings))));
 
         Button ask = findViewById(R.id.ask);
         ask.setOnClickListener(new askListener(this));
@@ -80,13 +75,15 @@ public class BillingActivity extends AppCompatActivity {
 
         setTitle(getString(R.string.title_billing) + " " + Produk.NO_MEJA);
 
-
     }
 
     private int hitungSub(List<Produk> produks) {
         int sub = 0;
         for (Produk produk : produks) {
+            Log.v("cik", produk.getmHarga_jual() + "");
             sub += produk.getmHarga_jual() * produk.getmQty();
+            Log.v("cik", sub + "");
+
         }
         return sub;
     }
@@ -112,7 +109,7 @@ public class BillingActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             //TODO add ask for bill asyntask here
-            new AskForBillAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_NOTA, Produk.BASE_PATH + Produk.JSON_PESAN);
+            new AskForBillAsyncTask().execute();
             Toast.makeText(mContext, getString(R.string.toast_billing), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(mContext, FeedBackActivity.class));
         }
@@ -127,16 +124,6 @@ public class BillingActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... urls) {
 
-            if (urls.length < 1 || urls[0] == null) {
-                return null;
-            }
-
-            try {
-                Produk.NO_NOTA = Integer.parseInt(new JSONObject(fetchResponse(urls[0])).getString("nota"));
-                Log.v(LOG_TAG, QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), createJsonMessage()));
-            } catch (IOException | JSONException e) {
-                Log.v(LOG_TAG, "Error when send billing", e);
-            }
 
             return null;
         }
@@ -148,41 +135,62 @@ public class BillingActivity extends AppCompatActivity {
         }
 
 
-        private String createJsonMessage() {
+    }
 
-            JSONObject jsonObject = new JSONObject();
+    private class BillingAsyncTask extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            List<Produk> billingProduks = new ArrayList<>();
 
             try {
+                JSONArray arrayBill = new JSONArray(QueryUtils.fetchResponse(urls[0]));
+                for (int i = 0; i < arrayBill.length(); i++) {
+                    JSONObject billingNow = arrayBill.getJSONObject(i);
+                    Produk produk = new Produk(billingNow.getInt("id_makanan"), billingNow.getInt("qty"));
+                    billingProduks.add(produk);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-                JSONArray jsonArray = new JSONArray();
 
-                for (int i = 0; i < mOrders.size(); i++) {
-                    JSONObject jsonProduk = new JSONObject();
-                    jsonProduk.accumulate("id_makanan", mOrders.get(i).getmIdMakanan());
-                    jsonProduk.accumulate("qty", mOrders.get(i).getmQty());
+            createBillingProduks(billingProduks);
 
-                    jsonArray.put(i, jsonProduk);
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(String response) {
+
+            updateUI(mBillings);
+
+        }
+
+        private void createBillingProduks(List<Produk> produks) {
+
+            mBillings = MainActivity.mProduk;
+
+            for (Produk produkNow : mBillings) {
+                produkNow.setmQty(0);
+
+                for (Produk billingNow : produks) {
+
+                    if (produkNow.getmIdMakanan() == billingNow.getmIdMakanan()) {
+                        produkNow.setmQty(billingNow.getmQty());
+                    }
 
                 }
 
-
-                jsonObject.accumulate("meja", Produk.NO_MEJA);
-                jsonObject.accumulate("no_nota", Produk.NO_NOTA);
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                String date = df.format(Calendar.getInstance().getTime());
-
-                jsonObject.accumulate("tanggal", date);
-                jsonObject.accumulate("catatan", mKeterangan);
-                jsonObject.accumulate("pesanan", jsonArray);
-
-
-            } catch (JSONException e) {
-                Log.e(LOG_TAG, "Error when create JSON message", e);
             }
 
-            return jsonObject.toString();
 
         }
+
 
     }
 
