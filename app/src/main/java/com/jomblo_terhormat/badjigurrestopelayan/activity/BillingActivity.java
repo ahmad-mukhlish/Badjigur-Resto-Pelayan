@@ -200,6 +200,9 @@ public class BillingActivity extends AppCompatActivity {
 
                     }
 
+                    if (produkNow.getmQty() == 0)
+                        mBillings.remove(produkNow);
+
                 }
             } else {
                 mBillings = new ArrayList<>();
