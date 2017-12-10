@@ -105,6 +105,9 @@ public class FeedBackActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, R.string.toast_feedback, Toast.LENGTH_SHORT).show();
+    }
 }
 

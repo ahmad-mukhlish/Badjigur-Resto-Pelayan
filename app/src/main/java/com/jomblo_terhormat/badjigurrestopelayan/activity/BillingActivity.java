@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,27 +30,37 @@ public class BillingActivity extends AppCompatActivity {
     private final String LOG_TAG = BillingActivity.class.getName();
 
     private List<Produk> mBillings;
+    private ProgressBar mProgress;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_billing);
-
         new BillingAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_BILLING + Produk.NO_MEJA);
 
 
     }
 
     private void updateUI(List<Produk> billings) {
-        BillingRecycleAdapter billingRecycleAdapter =
-                new BillingRecycleAdapter(this, billings);
-        RecyclerView recyclerView = findViewById(R.id.rvBilling);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(billingRecycleAdapter);
+        mProgress = findViewById(R.id.progressBar);
+        mProgress.setVisibility(View.GONE);
+
+        if (!billings.isEmpty()) {
+            BillingRecycleAdapter billingRecycleAdapter =
+                    new BillingRecycleAdapter(this, billings);
+            RecyclerView recyclerView = findViewById(R.id.rvBilling);
+            recyclerView.setVisibility(View.VISIBLE);
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
+
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(billingRecycleAdapter);
+        } else {
+            TextView textView = findViewById(R.id.no_food);
+            textView.setVisibility(View.VISIBLE);
+        }
 
         TextView sub = findViewById(R.id.sub);
         sub.setText(Produk.formatter("" + hitungSub(billings)));
@@ -80,9 +90,7 @@ public class BillingActivity extends AppCompatActivity {
     private int hitungSub(List<Produk> produks) {
         int sub = 0;
         for (Produk produk : produks) {
-            Log.v("cik", produk.getmHarga_jual() + "");
             sub += produk.getmHarga_jual() * produk.getmQty();
-            Log.v("cik", sub + "");
 
         }
         return sub;
@@ -108,10 +116,15 @@ public class BillingActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            //TODO add ask for bill asyntask here
-            new AskForBillAsyncTask().execute();
-            Toast.makeText(mContext, getString(R.string.toast_billing), Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(mContext, FeedBackActivity.class));
+
+            if (!mBillings.isEmpty()) {
+                //TODO add ask for bill asyntask here
+                new AskForBillAsyncTask().execute();
+                Toast.makeText(mContext, getString(R.string.toast_billing), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(mContext, FeedBackActivity.class));
+            } else {
+                Toast.makeText(mContext, getString(R.string.label_no_food), Toast.LENGTH_SHORT).show();
+            }
         }
 
 
@@ -173,19 +186,23 @@ public class BillingActivity extends AppCompatActivity {
 
         private void createBillingProduks(List<Produk> produks) {
 
-            mBillings = MainActivity.mProduk;
+            if (!produks.isEmpty()) {
+                mBillings = MainActivity.mProduk;
 
-            for (Produk produkNow : mBillings) {
-                produkNow.setmQty(0);
+                for (Produk produkNow : mBillings) {
+                    produkNow.setmQty(0);
 
-                for (Produk billingNow : produks) {
+                    for (Produk billingNow : produks) {
 
-                    if (produkNow.getmIdMakanan() == billingNow.getmIdMakanan()) {
-                        produkNow.setmQty(billingNow.getmQty());
+                        if (produkNow.getmIdMakanan() == billingNow.getmIdMakanan()) {
+                            produkNow.setmQty(billingNow.getmQty());
+                        }
+
                     }
 
                 }
-
+            } else {
+                mBillings = new ArrayList<>();
             }
 
 

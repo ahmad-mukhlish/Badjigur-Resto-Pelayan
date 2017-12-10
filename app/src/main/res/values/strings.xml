@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name"> Mr. Broto Resto </string>
 
-    <!--tab names :-->
+    <!--tab names-->
     <string name="tab_food">Foods</string>
     <string name="tab_beverage">Beverages</string>
     <string name="tab_desert">Deserts</string>
@@ -18,7 +17,7 @@
     <string name="toast_empty">The table is empty now</string>
     <string name="toast_no_carted">No food has been carted yet..</string>
     <string name="toast_order">Your food has been ordered..</string>
-
+    <string name="toast_feedback">You have reached the feedback..</string>
 
     <!--titles-->
     <string name="title_billing">Orders Table</string>
@@ -26,8 +25,8 @@
     <string name="title_confrim">Confirm Order </string>
     <string name="title_feedback">Feedback For Table</string>
 
-
     <!--labels-->
+    <string name="label_app_name"> Mr. Broto Resto </string>
     <string name="label_item_name">Item Name</string>
     <string name="label_qty">Qty</string>
     <string name="label_sub_total">Sub Total</string>
@@ -40,6 +39,8 @@
     <string name="label_minus_sign">-</string>
     <string name="label_plus_sign">+</string>
     <string name="label_zero">0</string>
+    <string name="label_no_food">No food has been billed yet</string>
+    <string name="label_swipe">Swipe up to see the menu..</string>
 
 
     <!--buttons-->
@@ -49,13 +50,11 @@
     <string name="button_login">login</string>
     <string name="button_cart">add to cart</string>
     <string name="button_ask_for_bill">ask for bill</string>
-    <string name="button_menu">See my menu</string>
     <string name="button_ok">OK</string>
     <string name="button_add_chef_note">Add Chef\'s Note</string>
     <string name="button_edit_chef">Edit Chef\'s Note</string>
     <string name="button_empty_table">Empty table</string>
     <string name="button_logout">Log out</string>
-
 
     <!--hints-->
     <string name="hint_username">Username</string>
