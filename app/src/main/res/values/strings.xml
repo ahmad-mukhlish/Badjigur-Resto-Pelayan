@@ -43,6 +43,7 @@
     <string name="label_swipe">Swipe up to see the menu..</string>
 
 
+
     <!--buttons-->
     <string name="button_order">Order</string>
     <string name="button_add">Add more items</string>
@@ -55,6 +56,7 @@
     <string name="button_edit_chef">Edit Chef\'s Note</string>
     <string name="button_empty_table">Empty table</string>
     <string name="button_logout">Log out</string>
+    <string name="button_add_order"> Add </string>
 
     <!--hints-->
     <string name="hint_username">Username</string>
