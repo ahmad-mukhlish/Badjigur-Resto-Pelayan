@@ -30,7 +30,6 @@ public class BillingActivity extends AppCompatActivity {
     private final String LOG_TAG = BillingActivity.class.getName();
 
     private List<Produk> mBillings;
-    private ProgressBar mProgress;
 
 
     @Override
@@ -44,7 +43,7 @@ public class BillingActivity extends AppCompatActivity {
 
     private void updateUI(List<Produk> billings) {
 
-        mProgress = findViewById(R.id.progressBar);
+        ProgressBar mProgress = findViewById(R.id.progressBar);
         mProgress.setVisibility(View.GONE);
 
         if (!billings.isEmpty()) {
@@ -188,6 +187,7 @@ public class BillingActivity extends AppCompatActivity {
 
             if (!produks.isEmpty()) {
                 mBillings = MainActivity.mProduk;
+                List<Produk> remover = new ArrayList<>();
 
                 for (Produk produkNow : mBillings) {
                     produkNow.setmQty(0);
@@ -201,9 +201,12 @@ public class BillingActivity extends AppCompatActivity {
                     }
 
                     if (produkNow.getmQty() == 0)
-                        mBillings.remove(produkNow);
+                        remover.add(produkNow);
 
                 }
+
+                mBillings.removeAll(remover);
+
             } else {
                 mBillings = new ArrayList<>();
             }
