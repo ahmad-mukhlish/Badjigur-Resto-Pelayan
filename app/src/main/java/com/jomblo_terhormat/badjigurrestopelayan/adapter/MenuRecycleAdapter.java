@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -66,12 +65,10 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                 holder.mQtySet.setVisibility(View.VISIBLE);
                 currentProduk.setmQty(1);
                 holder.mQty.setText(currentProduk.getmQty() + "");
-                holder.mCart.setChecked(currentProduk.ismCart());
             }
         });
 
         holder.mPrice.setText(Produk.formatter("" + currentProduk.getmHarga_jual()));
-        holder.mCart.setChecked(currentProduk.ismCart());
 
         holder.mPlus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +77,6 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                 qty++;
                 currentProduk.setmQty(qty);
                 holder.mQty.setText(qty + "");
-                holder.mCart.setChecked(currentProduk.ismCart());
 
             }
         });
@@ -93,12 +89,10 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                     qty--;
                     currentProduk.setmQty(qty);
                     holder.mQty.setText(qty + "");
-                    holder.mCart.setChecked(currentProduk.ismCart());
                 } else {
                     currentProduk.setmQty(0);
                     holder.mQtySet.setVisibility(View.GONE);
                     holder.mAdd.setVisibility(View.VISIBLE);
-                    holder.mCart.setChecked(currentProduk.ismCart());
                 }
 
             }
@@ -120,7 +114,6 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         TextView mJudul, mTag, mPrice, mQty;
         View mItemView;
         Button mPlus, mMinus, mAdd;
-        CheckBox mCart;
         RelativeLayout mQtySet;
 
 
@@ -133,7 +126,6 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
             mQty = itemView.findViewById(R.id.qty);
             mPlus = itemView.findViewById(R.id.plus);
             mMinus = itemView.findViewById(R.id.minus);
-            mCart = itemView.findViewById(R.id.cart);
             mAdd = itemView.findViewById(R.id.btn_add_order);
             mQtySet = itemView.findViewById(R.id.qty_set);
             mItemView = itemView;
