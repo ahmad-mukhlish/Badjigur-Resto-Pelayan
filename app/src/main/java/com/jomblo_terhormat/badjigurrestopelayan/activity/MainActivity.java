@@ -42,10 +42,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private final String LOG_TAG = MainActivity.class.getName();
 
     public static List<Produk> mProduk;
+    public static Button mBilling;
+
     private Toolbar mToolBar;
     private LinearLayout mLoading;
     private static final int LOADER_ID = 54;
-    private Button mBilling;
     private Drawer mDrawer;
 
 
@@ -322,5 +323,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    public static void countEstimatedPrice() {
+
+        Long estimated = 0L;
+
+        for (Produk produkNow : mProduk) {
+
+            estimated += produkNow.getmHarga_jual() * produkNow.getmQty();
+
+        }
+
+        if (estimated == 0) {
+            mBilling.setVisibility(View.GONE);
+        } else {
+            mBilling.setVisibility(View.VISIBLE);
+            mBilling.setText("Estimated Price\t : \t" + Produk.formatter(estimated+""));
+
+        }
+    }
 }
 

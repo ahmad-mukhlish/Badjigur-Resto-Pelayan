@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
+import com.jomblo_terhormat.badjigurrestopelayan.activity.MainActivity;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -65,6 +66,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                 holder.mQtySet.setVisibility(View.VISIBLE);
                 currentProduk.setmQty(1);
                 holder.mQty.setText(currentProduk.getmQty() + "");
+                MainActivity.countEstimatedPrice();
             }
         });
 
@@ -77,6 +79,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                 qty++;
                 currentProduk.setmQty(qty);
                 holder.mQty.setText(qty + "");
+                MainActivity.countEstimatedPrice();
 
             }
         });
@@ -85,6 +88,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
             @Override
             public void onClick(View view) {
                 int qty = currentProduk.getmQty();
+
                 if (qty > 1) {
                     qty--;
                     currentProduk.setmQty(qty);
@@ -94,6 +98,8 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                     holder.mQtySet.setVisibility(View.GONE);
                     holder.mAdd.setVisibility(View.VISIBLE);
                 }
+
+                MainActivity.countEstimatedPrice();
 
             }
         });

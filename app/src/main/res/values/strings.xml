@@ -49,7 +49,6 @@
     <string name="button_add">Add more items</string>
     <string name="button_submit">Submit</string>
     <string name="button_login">login</string>
-    <string name="button_cart">add to cart</string>
     <string name="button_ask_for_bill">ask for bill</string>
     <string name="button_ok">OK</string>
     <string name="button_add_chef_note">Add Chef\'s Note</string>

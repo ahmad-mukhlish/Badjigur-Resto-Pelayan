@@ -121,7 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:text="@string/button_cart"
+            android:visibility="gone"
             android:textColor="#FFFFFF" />
 
     </LinearLayout>
