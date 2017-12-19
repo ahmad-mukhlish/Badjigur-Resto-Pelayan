@@ -140,6 +140,7 @@ public class ConfirmActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String response) {
             Produk.PEMESANAN++;
+            Log.v("cik",createJsonMessage()) ;
         }
 
 

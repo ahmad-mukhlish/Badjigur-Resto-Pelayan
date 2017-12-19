@@ -107,7 +107,7 @@ public class MulaiMenuActivity extends AppCompatActivity {
         }
 
         void onSwipeUp() {
-            //TODO ADD INFORM THE DATABASE : THE TABLE IS ACTIVE NOW
+            //TODO add inform the database : the table is active now
             Produk.PEMESANAN = 1;
             startActivity(new Intent(context, MainActivity.class));
         }

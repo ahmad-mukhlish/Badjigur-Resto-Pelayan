@@ -34,7 +34,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.BillingActivity"
-            android:parentActivityName=".activity.MainActivity"/>
+            android:parentActivityName=".activity.MainActivity" />
+        <activity
+            android:name=".activity.AboutActivity"
+            android:parentActivityName=".activity.MainActivity" />
     </application>
 
 </manifest>

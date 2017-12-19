@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -117,10 +118,7 @@ public class BillingActivity extends AppCompatActivity {
         public void onClick(View view) {
 
             if (!mBillings.isEmpty()) {
-                //TODO add ask for bill asyntask here
-                new AskForBillAsyncTask().execute();
-                Toast.makeText(mContext, getString(R.string.toast_billing), Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(mContext, FeedBackActivity.class));
+                new AskForBillAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_ASK + Produk.NO_MEJA);
             } else {
                 Toast.makeText(mContext, getString(R.string.label_no_food), Toast.LENGTH_SHORT).show();
             }
@@ -132,9 +130,13 @@ public class BillingActivity extends AppCompatActivity {
 
     private class AskForBillAsyncTask extends AsyncTask<String, Void, String> {
 
+        private boolean uncooked = false;
 
         @Override
         protected String doInBackground(String... urls) {
+
+            Log.v("cik",QueryUtils.fetchResponse(urls[0])) ;
+            uncooked = QueryUtils.fetchResponse(urls[0]).equals("masih ada makanan yang belum selesai dimasak");
 
 
             return null;
@@ -143,6 +145,16 @@ public class BillingActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
+
+            if (!uncooked) {
+                Toast.makeText(getBaseContext(), getString(R.string.toast_billing), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getBaseContext(), FeedBackActivity.class));
+            }
+            else
+            {
+                Toast.makeText(getBaseContext(), "The food has not been cooked yet..", Toast.LENGTH_SHORT).show();
+
+            }
 
         }
 

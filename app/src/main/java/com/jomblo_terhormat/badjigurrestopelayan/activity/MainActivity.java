@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         switch (position) {
 
                             case 1: {
-                                //TODO ADD ABOUT US HERE
+                                startActivity(new Intent(MainActivity.this,AboutActivity.class));
                                 break;
                             }
 
