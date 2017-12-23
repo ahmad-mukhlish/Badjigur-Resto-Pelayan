@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Personil;
 
+
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class AboutRecycleAdapter extends RecyclerView.Adapter<AboutRecycleAdapte
 
         holder.mAvatar.setImageResource(personilNow.getAvatar());
         holder.mName.setText(personilNow.getName());
-//        holder.mRole.setText(personilNow.getRole());
+        holder.mRole.setText(personilNow.getRole());
 
     }
 
@@ -55,15 +56,16 @@ public class AboutRecycleAdapter extends RecyclerView.Adapter<AboutRecycleAdapte
 
     class AboutViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView mAvatar;
+        de.hdodenhof.circleimageview.CircleImageView mAvatar;
         TextView mName;
-        // TextView mRole;
+        TextView mRole;
         View mItemView;
 
 
         AboutViewHolder(View itemView) {
             super(itemView);
             mName = itemView.findViewById(R.id.personil_name);
+            mRole = itemView.findViewById(R.id.personil_role);
             mAvatar = itemView.findViewById(R.id.avatar);
             mItemView = itemView;
         }

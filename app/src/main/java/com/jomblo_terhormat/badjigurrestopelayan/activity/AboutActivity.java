@@ -36,12 +36,12 @@ public class AboutActivity extends AppCompatActivity {
 
         List<Personil> personils = new ArrayList<>();
 
-        personils.add(new Personil(R.drawable.hatta, "Mouhamad Hatta Hiroshi Sasmita", "System Analyst"));
-        personils.add(new Personil(R.drawable.mukhlis, "Ahmad Mukhlis Saputra", "Android developer"));
+        personils.add(new Personil(R.drawable.hatta, "Mouhamad Hatta H. S.", "System Analyst"));
+        personils.add(new Personil(R.drawable.mukhlis, "Ahmad Mukhlis S.", "Android developer"));
         personils.add(new Personil(R.drawable.kevin, "Kevin Arden Islamey", "UI / UX, mockup"));
         personils.add(new Personil(R.drawable.agung, "Moch Agung Gumelar", "Website programmer"));
         personils.add(new Personil(R.drawable.randa, "Randa Kurniadi", "Tester"));
-        personils.add(new Personil(R.drawable.geri, "Geri Fitrah R R", "Requirement Engineer"));
+        personils.add(new Personil(R.drawable.geri, "Geri Fitrah R. R.", "Requirement Engineer"));
 
 
         return personils;
