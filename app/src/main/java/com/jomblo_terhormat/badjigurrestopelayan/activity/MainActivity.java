@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         switch (position) {
 
                             case 1: {
-                                startActivity(new Intent(MainActivity.this,AboutActivity.class));
+                                startActivity(new Intent(MainActivity.this, AboutActivity.class));
                                 break;
                             }
 
@@ -146,7 +146,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 Intent intent = new Intent(MainActivity.this, MulaiMenuActivity.class);
                 startActivity(intent);
                 Toast.makeText(getBaseContext(), R.string.toast_empty, Toast.LENGTH_SHORT).show();
-                //TODO notify the database the table is empty now
+                new LogoutOrEmptyAsyncTask(MainActivity.this, false).
+                        execute(Produk.BASE_PATH + Produk.JSON_EMPTY + Produk.NO_MEJA,
+                                Produk.BASE_PATH + Produk.JSON_LOGOUT + Produk.NO_MEJA
+                        );
             }
         });
 
@@ -158,8 +161,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 mProduk = null;
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
-                new LogoutAsyncTask(MainActivity.this).
-                        execute(Produk.BASE_PATH + Produk.JSON_LOGOUT + Produk.NO_MEJA);
+                new LogoutOrEmptyAsyncTask(MainActivity.this, true).
+                        execute(Produk.BASE_PATH + Produk.JSON_EMPTY + Produk.NO_MEJA,
+                                Produk.BASE_PATH + Produk.JSON_LOGOUT + Produk.NO_MEJA
+                        );
                 finish();
             }
         });
@@ -296,12 +301,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    private class LogoutAsyncTask extends AsyncTask<String, Void, String> {
+    private class LogoutOrEmptyAsyncTask extends AsyncTask<String, Void, String> {
 
         private Context mContext;
+        private boolean mLogout;
 
-        LogoutAsyncTask(Context mContext) {
+        LogoutOrEmptyAsyncTask(Context mContext, boolean mLogout) {
             this.mContext = mContext;
+            this.mLogout = mLogout;
         }
 
         @Override
@@ -311,7 +318,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 return null;
             }
 
+
             QueryUtils.fetchResponse(urls[0]);
+            if (mLogout)
+                QueryUtils.fetchResponse(urls[1]);
 
             return null;
         }
@@ -319,7 +329,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         @Override
         protected void onPostExecute(String response) {
-            Toast.makeText(mContext, R.string.toast_logout, Toast.LENGTH_SHORT).show();
+            if (mLogout)
+                Toast.makeText(mContext, R.string.toast_logout, Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(mContext, R.string.toast_empty_table, Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -337,9 +351,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mBilling.setVisibility(View.GONE);
         } else {
             mBilling.setVisibility(View.VISIBLE);
-            mBilling.setText("Estimated Price\t : \t" + Produk.formatter(estimated+""));
+            mBilling.setText("Estimated Price\t : \t" + Produk.formatter(estimated + ""));
 
         }
     }
+
+
 }
 

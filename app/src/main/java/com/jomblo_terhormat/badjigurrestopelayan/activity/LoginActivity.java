@@ -35,8 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_login);
-        mEdUser = (EditText) findViewById(R.id.edUsername);
-        mEdPass = (EditText) findViewById(R.id.edPassword);
+        mEdUser = findViewById(R.id.edUsername);
+        mEdPass = findViewById(R.id.edPassword);
     }
 
     public void login(View v) {
@@ -86,14 +86,41 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, MulaiMenuActivity.class);
                 startActivity(intent);
                 finish();
+                new LoginMejaAsyncTask(getBaseContext()).execute(Produk.BASE_PATH + Produk.JSON_LOGIN_MEJA + Produk.NO_MEJA);
             } else if (mStatus == 1 || mStatus == 2) {
                 Toast.makeText(mContext, R.string.toast_used, Toast.LENGTH_SHORT).show();
             } else {
-
                 Toast.makeText(mContext, R.string.toast_password_mismatch, Toast.LENGTH_SHORT).show();
             }
         }
 
+    }
+
+    private class LoginMejaAsyncTask extends AsyncTask<String, Void, String> {
+
+        private Context mContext;
+
+        LoginMejaAsyncTask(Context mContext) {
+            this.mContext = mContext;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            if (urls.length < 1 || urls[0] == null) {
+                return null;
+            }
+
+            QueryUtils.fetchResponse(urls[0]);
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(String response) {
+            Toast.makeText(mContext, R.string.toast_login_meja, Toast.LENGTH_SHORT).show();
+        }
     }
 
 

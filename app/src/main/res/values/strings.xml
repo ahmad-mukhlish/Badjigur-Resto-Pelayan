@@ -6,7 +6,7 @@
     <string name="tab_desert">Deserts</string>
 
     <!--toasts-->
-    <string name="toast_used">The table is currently used</string>
+    <string name="toast_used">The table account is currently used</string>
     <string name="toast_password_mismatch">Username or password is incorrect</string>
     <string name="toast_waiter_called">The waiter has been called, please wait..</string>
     <string name="toast_no_food_order">No food has been ordered yet</string>
@@ -18,6 +18,8 @@
     <string name="toast_no_carted">No food has been carted yet..</string>
     <string name="toast_order">Your food has been ordered..</string>
     <string name="toast_feedback">You have reached the feedback..</string>
+    <string name="toast_active">The table is active now</string>
+
 
     <!--titles-->
     <string name="title_billing">Orders Table</string>
@@ -68,4 +70,6 @@
     <!--drawers-->
     <string name="drawer_developed_by">Developed by Jasuke Squad</string>
     <string name="drawer_about_us">About Us</string>
+    <string name="toast_login_meja">Login Success..</string>
+    <string name="toast_empty_table">Empty success</string>
 </resources>

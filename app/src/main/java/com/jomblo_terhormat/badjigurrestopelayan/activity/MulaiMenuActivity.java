@@ -2,15 +2,19 @@ package com.jomblo_terhormat.badjigurrestopelayan.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
+import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
 
 public class MulaiMenuActivity extends AppCompatActivity {
 
@@ -107,7 +111,7 @@ public class MulaiMenuActivity extends AppCompatActivity {
         }
 
         void onSwipeUp() {
-            //TODO add inform the database : the table is active now
+            new ActiveAsyncTask(getBaseContext()).execute(Produk.BASE_PATH + Produk.JSON_ACTIVE + Produk.NO_MEJA);
             Produk.PEMESANAN = 1;
             startActivity(new Intent(context, MainActivity.class));
         }
@@ -125,6 +129,33 @@ public class MulaiMenuActivity extends AppCompatActivity {
 
         void onLongClick() {
 
+        }
+    }
+
+    private class ActiveAsyncTask extends AsyncTask<String, Void, String> {
+
+        private Context mContext;
+
+        ActiveAsyncTask(Context mContext) {
+            this.mContext = mContext;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            if (urls.length < 1 || urls[0] == null) {
+                return null;
+            }
+
+            QueryUtils.fetchResponse(urls[0]);
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(String response) {
+            Toast.makeText(mContext, R.string.toast_active, Toast.LENGTH_SHORT).show();
         }
     }
 

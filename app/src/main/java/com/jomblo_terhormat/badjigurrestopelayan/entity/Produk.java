@@ -10,15 +10,20 @@ public class Produk implements Parcelable {
 
     private final String LOG_TAG = Produk.class.getName();
 
-    public static final String BASE_PATH = "http://192.168.1.3/restoran/";
+    public static final String BASE_PATH = "http://192.168.1.9/restoran/";
     public static final String JSON_REPLY_MENU = "server.php?operasi=makanan";
     public static final String JSON_PESAN = "server.php?operasi=pesan&pemesanan=";
     public static final String JSON_NOTA = "server.php?operasi=nota";
     public static final String JSON_FEEDBACK = "server.php?operasi=rate";
     public static final String JSON_LOGIN = "server.php?operasi=get_passlog&username=";
     public static final String JSON_LOGOUT = "server.php?operasi=logout_meja&no_meja=";
+    public static final String JSON_LOGIN_MEJA = "server.php?operasi=login_meja&no_meja=";
     public static final String JSON_ASK = "server.php?operasi=ask_bill&meja=";
     public static final String JSON_BILLING = "server.php?operasi=total_pesanan&meja=";
+    public static final String JSON_EMPTY = "server.php?operasi=empty&no_meja=";
+    public static final String JSON_ACTIVE = "server.php?operasi=active&no_meja=";
+
+
     public static int NO_NOTA;
     public static int NO_MEJA;
     public static int PEMESANAN;
