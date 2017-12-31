@@ -14,10 +14,6 @@ import com.jomblo_terhormat.badjigurrestopelayan.entity.Personil;
 
 import java.util.List;
 
-/**
- * Created by GOODWARE1 on 12/19/2017.
- */
-
 public class AboutRecycleAdapter extends RecyclerView.Adapter<AboutRecycleAdapter.AboutViewHolder> {
 
     private final String LOG_TAG = AboutRecycleAdapter.class.getName();

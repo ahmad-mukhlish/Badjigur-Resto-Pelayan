@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,6 +40,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Produk>> {
 
+    //
+    // TODO If bahan is not availiable the menu should be disabled
     private final String LOG_TAG = MainActivity.class.getName();
 
     public static List<Produk> mProduk;
@@ -220,8 +223,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         TabLayout tabLayout = findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
         mBilling.setOnClickListener(new BillingClicked(this, list));
-
-
     }
 
 

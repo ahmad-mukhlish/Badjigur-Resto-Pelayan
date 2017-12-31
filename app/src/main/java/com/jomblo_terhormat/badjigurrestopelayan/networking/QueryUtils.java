@@ -3,6 +3,7 @@ package com.jomblo_terhormat.badjigurrestopelayan.networking;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.jomblo_terhormat.badjigurrestopelayan.entity.Bahan;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 
 import org.json.JSONArray;
@@ -148,15 +149,26 @@ public class QueryUtils {
             for (int i = 0; i < root.length(); i++) {
 
                 JSONObject produkNow = root.getJSONObject(i);
-                int id_makanan = Integer.parseInt(produkNow.getString("id_makanan"));
+                int idMakanan = Integer.parseInt(produkNow.getString("id_makanan"));
                 String nama = produkNow.getString("nama");
                 int jenis = Integer.parseInt(produkNow.getString("jenis"));
                 String tag = produkNow.getString("tag");
                 String deskripsi = produkNow.getString("deskripsi");
-                int harga_jual = Integer.parseInt(produkNow.getString("harga_jual"));
-                int harga_beli = Integer.parseInt(produkNow.getString("harga_beli"));
+                int hargaJual = Integer.parseInt(produkNow.getString("harga"));
                 String path = produkNow.getString("path");
-                Produk currentProduk = new Produk(id_makanan, nama, jenis, tag, deskripsi, harga_jual, harga_beli, path);
+
+                List<Bahan> listBahans = new ArrayList<>();
+                JSONArray jsonBahan = produkNow.getJSONArray("bahan") ;
+
+
+                for (int j = 0; j < jsonBahan.length(); j++) {
+                    JSONObject bahanNow = jsonBahan.getJSONObject(j) ;
+                    int idBahan = bahanNow.getInt("id_bahan") ;
+                    int qty = bahanNow.getInt("qty") ;
+                    listBahans.add(new Bahan(idBahan,qty)) ;
+                }
+
+                Produk currentProduk = new Produk(idMakanan, nama, jenis, tag, deskripsi, hargaJual, path, listBahans);
                 listProduks.add(currentProduk);
             }
 

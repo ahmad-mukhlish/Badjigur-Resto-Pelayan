@@ -5,12 +5,13 @@ import android.os.Parcelable;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.List;
 
 public class Produk implements Parcelable {
 
     private final String LOG_TAG = Produk.class.getName();
 
-    public static final String BASE_PATH = "http://192.168.1.9/restoran/";
+    public static final String BASE_PATH = "http://192.168.1.3/restoran/";
     public static final String JSON_REPLY_MENU = "server.php?operasi=makanan";
     public static final String JSON_PESAN = "server.php?operasi=pesan&pemesanan=";
     public static final String JSON_NOTA = "server.php?operasi=nota";
@@ -34,6 +35,74 @@ public class Produk implements Parcelable {
         this.mQty = mQty;
     }
 
+
+
+    private int mIdMakanan;
+    private String mNama;
+    private int mJenis;
+    private String mTag;
+    private String mDeskripsi;
+    private int mHarga_jual;
+    private String mPath;
+
+
+    //field tambahan
+    private int mQty = 0;
+    private boolean mCart = false;
+
+    private List<Bahan> mBahans;
+
+    public Produk(int id, String nama, int jenis, String tag, String deskripsi, int harga_jual, String path, List<Bahan> bahans) {
+        this.mIdMakanan = id;
+        this.mNama = nama;
+        this.mJenis = jenis;
+        this.mTag = tag;
+        this.mDeskripsi = deskripsi;
+        this.mHarga_jual = harga_jual;
+        this.mPath = path;
+        this.mBahans = bahans;
+    }
+
+
+
+    public Produk(String nama, int harga_jual) {
+        this.mNama = nama;
+        this.mHarga_jual = harga_jual;
+    }
+
+
+    protected Produk(Parcel in) {
+        mIdMakanan = in.readInt();
+        mNama = in.readString();
+        mJenis = in.readInt();
+        mTag = in.readString();
+        mDeskripsi = in.readString();
+        mHarga_jual = in.readInt();
+        mPath = in.readString();
+        mQty = in.readInt();
+        mCart = in.readByte() != 0;
+        mBahans = in.createTypedArrayList(Bahan.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mIdMakanan);
+        dest.writeString(mNama);
+        dest.writeInt(mJenis);
+        dest.writeString(mTag);
+        dest.writeString(mDeskripsi);
+        dest.writeInt(mHarga_jual);
+        dest.writeString(mPath);
+        dest.writeInt(mQty);
+        dest.writeByte((byte) (mCart ? 1 : 0));
+        dest.writeTypedList(mBahans);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
     public static final Creator<Produk> CREATOR = new Creator<Produk>() {
         @Override
         public Produk createFromParcel(Parcel in) {
@@ -46,51 +115,11 @@ public class Produk implements Parcelable {
         }
     };
 
-    private int mIdMakanan;
-    private String mNama;
-    private int mJenis;
-    private String mTag;
-    private String mDeskripsi;
-    private int mHarga_beli;
-    private int mHarga_jual;
-    private String mPath;
-
-    //field tambahan
-    private int mQty = 0;
-    private boolean mCart = false;
-
-
-    public Produk(int id, String nama, int jenis, String tag, String deskripsi, int harga_beli, int harga_jual, String path) {
-        this.mIdMakanan = id;
-        this.mNama = nama;
-        this.mJenis = jenis;
-        this.mTag = tag;
-        this.mDeskripsi = deskripsi;
-        this.mHarga_beli = harga_beli;
-        this.mHarga_jual = harga_jual;
-        this.mPath = path;
-    }
-
-    public Produk(String nama, int harga_jual) {
-        this.mNama = nama;
-        this.mHarga_jual = harga_jual;
-    }
-
     public int getmIdMakanan() {
         return mIdMakanan;
     }
 
-    protected Produk(Parcel in) {
-        mIdMakanan = in.readInt();
-        mNama = in.readString();
-        mTag = in.readString();
-        mDeskripsi = in.readString();
-        mHarga_beli = in.readInt();
-        mHarga_jual = in.readInt();
-        mPath = in.readString();
-        mQty = in.readInt();
-        mCart = in.readByte() != 0;
-    }
+
 
     public boolean ismCart() {
         return (mQty > 0);
@@ -128,24 +157,10 @@ public class Produk implements Parcelable {
         return mJenis;
     }
 
-    @Override
-
-    public int describeContents() {
-        return 0;
+    public List<Bahan> getmBahans() {
+        return mBahans;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(mIdMakanan);
-        parcel.writeString(mNama);
-        parcel.writeString(mTag);
-        parcel.writeString(mDeskripsi);
-        parcel.writeInt(mHarga_beli);
-        parcel.writeInt(mHarga_jual);
-        parcel.writeString(mPath);
-        parcel.writeInt(mQty);
-        parcel.writeByte((byte) (mCart ? 1 : 0));
-    }
 
     public static String formatter(String input) {
         if (!input.isEmpty()) {
@@ -161,4 +176,6 @@ public class Produk implements Parcelable {
         }
 
     }
+
+
 }
