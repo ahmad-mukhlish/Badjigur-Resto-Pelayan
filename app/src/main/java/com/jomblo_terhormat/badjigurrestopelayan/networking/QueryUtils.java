@@ -30,7 +30,7 @@ public class QueryUtils {
     }
 
 
-    static List<Produk> fetchData(String link) {
+    static List<Produk> fetchMakanan(String link) {
 
         URL url = parseStringLinkToURL(link);
 
@@ -41,7 +41,22 @@ public class QueryUtils {
             Log.e(LOG_TAG, "Error when closing input stream", e);
         }
 
-        return extract(jsonResponse);
+        return extractMakanan(jsonResponse);
+
+    }
+
+    public static List<Bahan> fetchBahan(String link) {
+
+        URL url = parseStringLinkToURL(link);
+
+        String jsonResponse = null;
+        try {
+            jsonResponse = httpConnectRequestJson(url);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error when closing input stream", e);
+        }
+
+        return extractBahan(jsonResponse);
 
     }
 
@@ -133,7 +148,7 @@ public class QueryUtils {
     }
 
 
-    private static List<Produk> extract(String jason) {
+    private static List<Produk> extractMakanan(String jason) {
 
 
         if (TextUtils.isEmpty(jason)) {
@@ -179,6 +194,39 @@ public class QueryUtils {
 
         return listProduks;
     }
+
+
+    private static List<Bahan> extractBahan(String jason) {
+
+
+        if (TextUtils.isEmpty(jason)) {
+            return null;
+        }
+
+        List<Bahan> listBahan = new ArrayList<>();
+
+        try {
+
+            JSONArray root = new JSONArray(jason);
+
+            for (int i = 0; i < root.length(); i++) {
+
+                JSONObject bahanNow = root.getJSONObject(i);
+                int idBahan = bahanNow.getInt("id_bahan");
+                int stok = bahanNow.getInt("stok");
+
+                Bahan currentBahan = new Bahan(idBahan, stok);
+                listBahan.add(currentBahan);
+            }
+
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "Problem parsing JSON results", e);
+        }
+
+        return listBahan;
+    }
+
 
     public static String postWithHttp(URL url, String message) throws IOException {
 

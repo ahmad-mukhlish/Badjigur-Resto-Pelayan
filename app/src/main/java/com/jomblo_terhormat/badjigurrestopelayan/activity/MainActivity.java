@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.adapter.MenuTabAdapter;
+import com.jomblo_terhormat.badjigurrestopelayan.entity.Bahan;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.ProdukLoader;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private LinearLayout mLoading;
     private static final int LOADER_ID = 54;
     private Drawer mDrawer;
+    private List<Bahan> mBahan;
 
 
     @Override
@@ -131,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mDrawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+        new BahanAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_BAHAN);
 
 
     }
@@ -357,6 +360,30 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    //fetch the mBahan data
+
+    public class BahanAsyncTask extends AsyncTask<String, Void, List<Bahan>> {
+
+
+        BahanAsyncTask() {
+        }
+
+
+        @Override
+        protected List<Bahan> doInBackground(String... urls) {
+
+            if (urls[0] == null || urls.length < 1)
+                return null;
+
+            return QueryUtils.fetchBahan(urls[0]);
+        }
+
+        @Override
+        protected void onPostExecute(List<Bahan> bahans) {
+            super.onPostExecute(bahans);
+            mBahan = bahans;
+        }
+    }
 
 }
 

@@ -23,6 +23,7 @@ public class Produk implements Parcelable {
     public static final String JSON_BILLING = "server.php?operasi=total_pesanan&meja=";
     public static final String JSON_EMPTY = "server.php?operasi=empty&no_meja=";
     public static final String JSON_ACTIVE = "server.php?operasi=active&no_meja=";
+    public static final String JSON_BAHAN = "server.php?operasi=bahan";
 
 
     public static int NO_NOTA;

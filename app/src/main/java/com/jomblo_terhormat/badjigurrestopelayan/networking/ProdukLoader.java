@@ -27,7 +27,7 @@ public class ProdukLoader extends AsyncTaskLoader<List<Produk>> {
 
     @Override
     public List<Produk> loadInBackground() {
-        return QueryUtils.fetchData(mUrl) ;
+        return QueryUtils.fetchMakanan(mUrl) ;
     }
 
 }
