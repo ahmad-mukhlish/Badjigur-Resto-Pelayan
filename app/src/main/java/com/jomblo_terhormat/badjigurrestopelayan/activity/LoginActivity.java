@@ -13,11 +13,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
+import com.jomblo_terhormat.badjigurrestopelayan.entity.Bahan;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -122,6 +125,8 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(mContext, R.string.toast_login_meja, Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
 
 }

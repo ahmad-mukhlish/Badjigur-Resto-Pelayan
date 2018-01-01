@@ -1,9 +1,11 @@
 package com.jomblo_terhormat.badjigurrestopelayan.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +14,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
 import com.jomblo_terhormat.badjigurrestopelayan.activity.MainActivity;
+import com.jomblo_terhormat.badjigurrestopelayan.entity.Bahan;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -53,59 +57,100 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         holder.mTag.setText(currentProduk.getmTag());
         holder.mQty.setText(currentProduk.getmQty() + "");
 
-        if (currentProduk.getmQty() > 0) {
-            holder.mQtySet.setVisibility(View.VISIBLE);
-            holder.mAdd.setVisibility(View.GONE);
-        }
+        holder.mItemView.setOnClickListener(new ProdukListener(position));
 
-
-        holder.mAdd.setOnClickListener(new View.OnClickListener() {
+        holder.mOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.mAdd.setVisibility(View.GONE);
+                Toast.makeText(mContext, R.string.toast_out_stock, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        if (!cekDisabled(MainActivity.mBahan, currentProduk.getmBahans())) {
+            if (currentProduk.getmQty() > 0) {
                 holder.mQtySet.setVisibility(View.VISIBLE);
-                currentProduk.setmQty(1);
-                holder.mQty.setText(currentProduk.getmQty() + "");
-                MainActivity.countEstimatedPrice();
+                holder.mAdd.setVisibility(View.GONE);
             }
-        });
 
-        holder.mPrice.setText(Produk.formatter("" + currentProduk.getmHarga_jual()));
 
-        holder.mPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int qty = currentProduk.getmQty();
-                qty++;
-                currentProduk.setmQty(qty);
-                holder.mQty.setText(qty + "");
-                MainActivity.countEstimatedPrice();
+            holder.mAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                    if (!currentProduk.ismDisabled() && !cekDisabled(MainActivity.mBahan, currentProduk.getmBahans())) {
+                        holder.mAdd.setVisibility(View.GONE);
+                        holder.mQtySet.setVisibility(View.VISIBLE);
+                        currentProduk.setmQty(1);
+                        holder.mQty.setText(currentProduk.getmQty() + "");
+                        MainActivity.countEstimatedPrice();
+                        currentProduk.setmDisabled(minusMbahan(MainActivity.mBahan, currentProduk.getmBahans()));
+                    } else if (cekDisabled(MainActivity.mBahan, currentProduk.getmBahans())) {
+                        holder.mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
+                        holder.mAdd.setVisibility(View.GONE);
+                        holder.mQtySet.setVisibility(View.GONE);
+                        holder.mOut.setVisibility(View.VISIBLE);
+                        holder.mPrice.setVisibility(View.GONE);
+                        Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
+                    } else {
+                        holder.mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
+                        holder.mPlus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                        holder.mMinus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                        Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
+                    }
 
-        holder.mMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int qty = currentProduk.getmQty();
-
-                if (qty > 1) {
-                    qty--;
-                    currentProduk.setmQty(qty);
-                    holder.mQty.setText(qty + "");
-                } else {
-                    currentProduk.setmQty(0);
-                    holder.mQtySet.setVisibility(View.GONE);
-                    holder.mAdd.setVisibility(View.VISIBLE);
                 }
+            });
 
-                MainActivity.countEstimatedPrice();
+            holder.mPrice.setText(Produk.formatter("" + currentProduk.getmHarga_jual()));
 
-            }
-        });
+            holder.mPlus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                    if (!currentProduk.ismDisabled() && !cekDisabled(MainActivity.mBahan, currentProduk.getmBahans())) {
+                        int qty = currentProduk.getmQty();
+                        qty++;
+                        currentProduk.setmQty(qty);
+                        holder.mQty.setText(qty + "");
+                        MainActivity.countEstimatedPrice();
+                        currentProduk.setmDisabled(minusMbahan(MainActivity.mBahan, currentProduk.getmBahans()));
+                        Log.v("cek", MainActivity.mBahan.get(0).getQty() + "");
+                        Log.v("cek", currentProduk.ismDisabled() + "");
+                    } else {
+                        holder.mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
+                        holder.mPlus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                        holder.mMinus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                        Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
-        holder.mItemView.setOnClickListener(new ProdukListener(position));
+            holder.mMinus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int qty = currentProduk.getmQty();
+
+                    if (qty > 1) {
+                        qty--;
+                        currentProduk.setmQty(qty);
+                        holder.mQty.setText(qty + "");
+                    } else {
+                        currentProduk.setmQty(0);
+                        holder.mQtySet.setVisibility(View.GONE);
+                        holder.mAdd.setVisibility(View.VISIBLE);
+                    }
+
+                    MainActivity.countEstimatedPrice();
+
+                }
+            });
+        } else {
+            holder.mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
+            holder.mAdd.setVisibility(View.GONE);
+            holder.mOut.setVisibility(View.VISIBLE);
+        }
+
 
     }
 
@@ -119,8 +164,9 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         ImageView mGambar;
         TextView mJudul, mTag, mPrice, mQty;
         View mItemView;
-        Button mPlus, mMinus, mAdd;
+        Button mPlus, mMinus, mAdd, mOut;
         RelativeLayout mQtySet;
+        CardView mCard;
 
 
         MenuViewHolder(View itemView) {
@@ -133,7 +179,9 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
             mPlus = itemView.findViewById(R.id.plus);
             mMinus = itemView.findViewById(R.id.minus);
             mAdd = itemView.findViewById(R.id.btn_add_order);
+            mOut = itemView.findViewById(R.id.btn_out);
             mQtySet = itemView.findViewById(R.id.qty_set);
+            mCard = itemView.findViewById(R.id.card);
             mItemView = itemView;
         }
 
@@ -197,7 +245,6 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
             deskripsi.setText(clickedProduk.getmDeskripsi());
             harga.setText(Produk.formatter("" + clickedProduk.getmHarga_jual()));
-
             builder.setView(rootDialog);
             final AlertDialog dialog = builder.create();
             dialog.show();
@@ -215,5 +262,50 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
     }
 
+    private Boolean minusMbahan(List<Bahan> bahanUtama, List<Bahan> makananBahan) {
+
+        Boolean disabled = false;
+
+        for (Bahan mBahanNow : bahanUtama) {
+
+            for (Bahan makananBahanNow : makananBahan) {
+                if (mBahanNow.getIdBahan() == makananBahanNow.getIdBahan()) {
+                    if (mBahanNow.getQty() > makananBahanNow.getQty())
+                        //if bahan is enough then subtract
+                        mBahanNow.setQty(mBahanNow.getQty() - makananBahanNow.getQty());
+                    else if (mBahanNow.getQty() == makananBahanNow.getQty()) {
+                        //if bahan is equal subtract then disable it
+                        mBahanNow.setQty(mBahanNow.getQty() - makananBahanNow.getQty());
+                        disabled = true;
+                    } else
+                        //if bahan is not enough just disable it
+                        disabled = true;
+                }
+            }
+        }
+
+        if (!disabled) {
+            MainActivity.mBahan = bahanUtama;
+        }
+
+        return disabled;
+    }
+
+    private Boolean cekDisabled(List<Bahan> bahanUtama, List<Bahan> makananBahan) {
+
+        Boolean disabled = false;
+
+        for (Bahan mBahanNow : bahanUtama) {
+
+            for (Bahan makananBahanNow : makananBahan) {
+                if (mBahanNow.getIdBahan() == makananBahanNow.getIdBahan()) {
+                    if (mBahanNow.getQty() < makananBahanNow.getQty())
+                        disabled = true;
+                }
+            }
+        }
+
+        return disabled;
+    }
 
 }

@@ -13,8 +13,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
+import com.jomblo_terhormat.badjigurrestopelayan.entity.Bahan;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
+
+import java.util.List;
 
 public class MulaiMenuActivity extends AppCompatActivity {
 
@@ -27,6 +30,8 @@ public class MulaiMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mulai_menu);
         ImageView imageView = findViewById(R.id.gambarbg);
         imageView.setOnTouchListener(new OnSwipeTouchListener(this));
+        new BahanAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_BAHAN);
+
     }
 
 
@@ -156,6 +161,31 @@ public class MulaiMenuActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String response) {
             Toast.makeText(mContext, R.string.toast_active, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //fetch the mBahan data
+
+    public class BahanAsyncTask extends AsyncTask<String, Void, List<Bahan>> {
+
+
+        BahanAsyncTask() {
+        }
+
+
+        @Override
+        protected List<Bahan> doInBackground(String... urls) {
+
+            if (urls[0] == null || urls.length < 1)
+                return null;
+
+            return QueryUtils.fetchBahan(urls[0]);
+        }
+
+        @Override
+        protected void onPostExecute(List<Bahan> bahans) {
+            super.onPostExecute(bahans);
+            MainActivity.mBahan = bahans;
         }
     }
 

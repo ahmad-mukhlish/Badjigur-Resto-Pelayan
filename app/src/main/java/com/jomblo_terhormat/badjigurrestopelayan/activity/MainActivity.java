@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private LinearLayout mLoading;
     private static final int LOADER_ID = 54;
     private Drawer mDrawer;
-    private List<Bahan> mBahan;
+    public static List<Bahan> mBahan;
 
 
     @Override
@@ -133,7 +134,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mDrawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
-        new BahanAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_BAHAN);
 
 
     }
@@ -202,12 +202,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Produk>> loader, List<Produk> produks) {
+    public void onLoadFinished(Loader<List<Produk>> loader, final List<Produk> produks) {
         if (mProduk == null || mProduk.isEmpty()) {
             mProduk = produks;
         }
 
-        updateUI(mProduk);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateUI(produks);
+            }
+        }, 3000);
 
     }
 
@@ -360,30 +366,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    //fetch the mBahan data
-
-    public class BahanAsyncTask extends AsyncTask<String, Void, List<Bahan>> {
-
-
-        BahanAsyncTask() {
-        }
-
-
-        @Override
-        protected List<Bahan> doInBackground(String... urls) {
-
-            if (urls[0] == null || urls.length < 1)
-                return null;
-
-            return QueryUtils.fetchBahan(urls[0]);
-        }
-
-        @Override
-        protected void onPostExecute(List<Bahan> bahans) {
-            super.onPostExecute(bahans);
-            mBahan = bahans;
-        }
-    }
 
 }
 

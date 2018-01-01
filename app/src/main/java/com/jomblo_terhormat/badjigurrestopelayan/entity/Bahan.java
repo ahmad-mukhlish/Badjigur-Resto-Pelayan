@@ -29,6 +29,10 @@ public class Bahan implements Parcelable{
         }
     };
 
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+
     public int getIdBahan() {
         return idBahan;
     }

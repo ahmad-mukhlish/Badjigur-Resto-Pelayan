@@ -19,6 +19,10 @@
     <string name="toast_order">Your food has been ordered..</string>
     <string name="toast_feedback">You have reached the feedback..</string>
     <string name="toast_active">The table is active now</string>
+    <string name="toast_login_meja">Login Success..</string>
+    <string name="toast_empty_table">Empty success</string>
+    <string name="toast_max_stock">Cannot add more food, out of stock</string>
+    <string name="toast_out_stock">The food is out of stock</string>
 
 
     <!--titles-->
@@ -57,6 +61,8 @@
     <string name="button_empty_table">Empty table</string>
     <string name="button_logout">Log out</string>
     <string name="button_add_order"> Add </string>
+    <string name="button_out">out of stock</string>
+
 
     <!--hints-->
     <string name="hint_username">Username</string>
@@ -70,6 +76,5 @@
     <!--drawers-->
     <string name="drawer_developed_by">Developed by Jasuke Squad</string>
     <string name="drawer_about_us">About Us</string>
-    <string name="toast_login_meja">Login Success..</string>
-    <string name="toast_empty_table">Empty success</string>
+
 </resources>

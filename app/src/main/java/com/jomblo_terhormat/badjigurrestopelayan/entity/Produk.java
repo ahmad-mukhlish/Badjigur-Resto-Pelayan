@@ -37,7 +37,6 @@ public class Produk implements Parcelable {
     }
 
 
-
     private int mIdMakanan;
     private String mNama;
     private int mJenis;
@@ -49,7 +48,7 @@ public class Produk implements Parcelable {
 
     //field tambahan
     private int mQty = 0;
-    private boolean mCart = false;
+    private boolean mCart = false, mDisabled = false;
 
     private List<Bahan> mBahans;
 
@@ -63,7 +62,6 @@ public class Produk implements Parcelable {
         this.mPath = path;
         this.mBahans = bahans;
     }
-
 
 
     public Produk(String nama, int harga_jual) {
@@ -82,8 +80,11 @@ public class Produk implements Parcelable {
         mPath = in.readString();
         mQty = in.readInt();
         mCart = in.readByte() != 0;
+        mDisabled = in.readByte() != 0;
         mBahans = in.createTypedArrayList(Bahan.CREATOR);
     }
+
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -96,6 +97,7 @@ public class Produk implements Parcelable {
         dest.writeString(mPath);
         dest.writeInt(mQty);
         dest.writeByte((byte) (mCart ? 1 : 0));
+        dest.writeByte((byte) (mDisabled ? 1 : 0));
         dest.writeTypedList(mBahans);
     }
 
@@ -119,7 +121,6 @@ public class Produk implements Parcelable {
     public int getmIdMakanan() {
         return mIdMakanan;
     }
-
 
 
     public boolean ismCart() {
@@ -178,5 +179,12 @@ public class Produk implements Parcelable {
 
     }
 
+    public boolean ismDisabled() {
+        return mDisabled;
+    }
+
+    public void setmDisabled(boolean mDisabled) {
+        this.mDisabled = mDisabled;
+    }
 
 }
