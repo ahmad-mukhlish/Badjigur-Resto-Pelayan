@@ -25,8 +25,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import static com.jomblo_terhormat.badjigurrestopelayan.fragment.MenuProdukFragment.recyclerView;
-
 
 public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.MenuViewHolder> {
 
@@ -47,14 +45,16 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final MenuViewHolder holder, int position) {
-        final Produk currentProduk = mProduks.get(position);
+    public void onBindViewHolder(MenuViewHolder holder, int position) {
+        Produk currentProduk = mProduks.get(position);
 
         Picasso.with(mContext).
                 load(Produk.BASE_PATH + currentProduk.getmPath()).
                 into(holder.mGambar);
 
-        currentProduk.setHolder(holder);
+        if (currentProduk.getHolder() == null) {
+            currentProduk.setHolder(holder);
+        }
 
 
         holder.mJudul.setText(currentProduk.getmNama());
@@ -71,88 +71,19 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         });
 
 
-        if (!cekDisabled(MainActivity.mBahan, currentProduk.getmBahans())) {
+        if (!checkDisabled(MainActivity.mBahan, currentProduk.getmBahans())) {
             if (currentProduk.getmQty() > 0) {
                 holder.mQtySet.setVisibility(View.VISIBLE);
                 holder.mAdd.setVisibility(View.GONE);
             }
 
 
-            holder.mAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (!currentProduk.ismDisabled() && !cekDisabled(MainActivity.mBahan, currentProduk.getmBahans())) {
-                        holder.mAdd.setVisibility(View.GONE);
-                        holder.mQtySet.setVisibility(View.VISIBLE);
-                        currentProduk.setmQty(1);
-                        holder.mQty.setText(currentProduk.getmQty() + "");
-                        MainActivity.countEstimatedPrice();
-                        currentProduk.setmDisabled(minusMbahan(MainActivity.mBahan, currentProduk.getmBahans()));
-                    } else if (cekDisabled(MainActivity.mBahan, currentProduk.getmBahans())) {
-                        holder.mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
-                        holder.mAdd.setVisibility(View.GONE);
-                        holder.mQtySet.setVisibility(View.GONE);
-                        holder.mOut.setVisibility(View.VISIBLE);
-                        holder.mPrice.setVisibility(View.GONE);
-                        Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
-                    } else {
-                        holder.mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
-                        holder.mPlus.setBackgroundColor(Color.parseColor("#9E9E9E"));
-                        holder.mMinus.setBackgroundColor(Color.parseColor("#9E9E9E"));
-                        Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            });
+            holder.mAdd.setOnClickListener(new AddListener(currentProduk, holder));
 
             holder.mPrice.setText(Produk.formatter("" + currentProduk.getmHarga_jual()));
 
-            holder.mPlus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    if (!currentProduk.ismDisabled() && !cekDisabled(MainActivity.mBahan, currentProduk.getmBahans())) {
-                        int qty = currentProduk.getmQty();
-                        qty++;
-                        currentProduk.setmQty(qty);
-                        holder.mQty.setText(qty + "");
-                        MainActivity.countEstimatedPrice();
-                        currentProduk.setmDisabled(minusMbahan(MainActivity.mBahan, currentProduk.getmBahans()));
-                        Log.v("cek", MainActivity.mBahan.get(0).getQty() + "");
-                        Log.v("cek", currentProduk.ismDisabled() + "");
-                    } else {
-                        holder.mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
-                        holder.mPlus.setBackgroundColor(Color.parseColor("#9E9E9E"));
-                        holder.mMinus.setBackgroundColor(Color.parseColor("#9E9E9E"));
-                        Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-
-            holder.mMinus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int qty = currentProduk.getmQty();
-
-                    if (qty > 1) {
-                        qty--;
-                        currentProduk.setmQty(qty);
-                        holder.mQty.setText(qty + "");
-                    } else {
-                        currentProduk.setmQty(0);
-                        holder.mQtySet.setVisibility(View.GONE);
-                        holder.mAdd.setVisibility(View.VISIBLE);
-
-                    }
-
-                    plusMbahan(MainActivity.mBahan, currentProduk.getmBahans());
-                    checkDisabledAll();
-
-                    MainActivity.countEstimatedPrice();
-
-                }
-            });
+            holder.mPlus.setOnClickListener(new PlusListener(currentProduk, holder));
+            holder.mMinus.setOnClickListener(new MinusListener(currentProduk, holder));
         } else {
             holder.mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
             holder.mAdd.setVisibility(View.GONE);
@@ -270,20 +201,20 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
     }
 
-    private Boolean minusMbahan(List<Bahan> bahanUtama, List<Bahan> makananBahan) {
+    private Boolean minusMbahan(List<Bahan> availables, List<Bahan> costs) {
 
         Boolean disabled = false;
 
-        for (Bahan mBahanNow : bahanUtama) {
+        for (Bahan availNow : availables) {
 
-            for (Bahan makananBahanNow : makananBahan) {
-                if (mBahanNow.getIdBahan() == makananBahanNow.getIdBahan()) {
-                    if (mBahanNow.getQty() > makananBahanNow.getQty())
+            for (Bahan costNow : costs) {
+                if (availNow.getIdBahan() == costNow.getIdBahan()) {
+                    if (availNow.getQty() > costNow.getQty())
                         //if bahan is enough then subtract
-                        mBahanNow.setQty(mBahanNow.getQty() - makananBahanNow.getQty());
-                    else if (mBahanNow.getQty() == makananBahanNow.getQty()) {
+                        availNow.setQty(availNow.getQty() - costNow.getQty());
+                    else if (availNow.getQty() == costNow.getQty()) {
                         //if bahan is equal subtract then disable it
-                        mBahanNow.setQty(mBahanNow.getQty() - makananBahanNow.getQty());
+                        availNow.setQty(availNow.getQty() - costNow.getQty());
                         disabled = true;
                     } else
                         //if bahan is not enough just disable it
@@ -293,21 +224,22 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         }
 
         if (!disabled) {
-            MainActivity.mBahan = bahanUtama;
+            MainActivity.mBahan = availables;
         }
 
         return disabled;
     }
 
-    private Boolean cekDisabled(List<Bahan> bahanUtama, List<Bahan> makananBahan) {
+    private Boolean checkDisabled(List<Bahan> availables, List<Bahan> costs) {
 
         Boolean disabled = false;
 
-        for (Bahan mBahanNow : bahanUtama) {
+        for (Bahan availNow : availables) {
 
-            for (Bahan makananBahanNow : makananBahan) {
-                if (mBahanNow.getIdBahan() == makananBahanNow.getIdBahan()) {
-                    if (mBahanNow.getQty() < makananBahanNow.getQty())
+            for (Bahan costNow : costs) {
+                if (availNow.getIdBahan() == costNow.getIdBahan()) {
+                    //if something did not enough then the food should be disabled
+                    if (availNow.getQty() < costNow.getQty())
                         disabled = true;
                 }
             }
@@ -315,117 +247,65 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         return disabled;
     }
 
-    private void plusMbahan(List<Bahan> bahanUtama, List<Bahan> makananBahan) {
+    private Boolean plusMbahan(List<Bahan> availables, List<Bahan> costs) {
 
+        //assume the food is disabled
+        Boolean disabled = true;
 
-        for (Bahan mBahanNow : bahanUtama) {
+        int enough = 0;
 
-            for (Bahan makananBahanNow : makananBahan) {
-                if (mBahanNow.getIdBahan() == makananBahanNow.getIdBahan()) {
-                    mBahanNow.setQty(mBahanNow.getQty() + makananBahanNow.getQty());
+        for (Bahan availableNow : availables) {
+
+            for (Bahan costNow : costs) {
+                if (availableNow.getIdBahan() == costNow.getIdBahan()) {
+                    //add the available again
+                    availableNow.setQty(availableNow.getQty() + costNow.getQty());
+
+                    //if the available is more than cost then it's enough
+                    if (availableNow.getQty() >= costNow.getQty()) {
+                        enough++;
+                    }
                 }
-
-
-                MainActivity.mBahan = bahanUtama;
-
+                MainActivity.mBahan = availables;
             }
-
         }
 
+        //if the food is enough then it should not be disabled
+        if (enough == costs.size())
+            disabled = false;
+
+        return disabled;
     }
 
 
     private void checkDisabledAll() {
 
-        for (final Produk produkNow : MainActivity.mProduk) {
+        //checks wether all of food is disabled or not
 
-            if (!(cekDisabled(MainActivity.mBahan, produkNow.getmBahans())) && produkNow.getHolder() != null) {
+        for (Produk produkNow : MainActivity.mProduk) {
+
+            //recheck the disable status
+            produkNow.setmDisabled(checkDisabled(MainActivity.mBahan, produkNow.getmBahans()));
+
+            //if the food is not disabled and has holder view, then return it back to normal
+            if (!(produkNow.ismDisabled()) && produkNow.getHolder() != null) {
 
                 produkNow.getHolder().mCard.setCardBackgroundColor(Color.WHITE);
                 produkNow.getHolder().mOut.setVisibility(View.GONE);
 
                 if (produkNow.getmQty() > 0) {
                     produkNow.getHolder().mQtySet.setVisibility(View.VISIBLE);
+                    produkNow.getHolder().mPlus.setBackgroundColor(Color.parseColor("#009688"));
+                    produkNow.getHolder().mMinus.setBackgroundColor(Color.parseColor("#009688"));
                     produkNow.getHolder().mAdd.setVisibility(View.GONE);
-                } else
+                } else {
                     produkNow.getHolder().mAdd.setVisibility(View.VISIBLE);
-
-
-                produkNow.getHolder().mAdd.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if (!produkNow.ismDisabled() && !cekDisabled(MainActivity.mBahan, produkNow.getmBahans())) {
-                            produkNow.getHolder().mAdd.setVisibility(View.GONE);
-                            produkNow.getHolder().mQtySet.setVisibility(View.VISIBLE);
-                            produkNow.setmQty(1);
-                            produkNow.getHolder().mQty.setText(produkNow.getmQty() + "");
-                            MainActivity.countEstimatedPrice();
-                            produkNow.setmDisabled(minusMbahan(MainActivity.mBahan, produkNow.getmBahans()));
-                        } else if (cekDisabled(MainActivity.mBahan, produkNow.getmBahans())) {
-                            produkNow.getHolder().mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
-                            produkNow.getHolder().mAdd.setVisibility(View.GONE);
-                            produkNow.getHolder().mQtySet.setVisibility(View.GONE);
-                            produkNow.getHolder().mOut.setVisibility(View.VISIBLE);
-                            produkNow.getHolder().mPrice.setVisibility(View.GONE);
-                            Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
-                        } else {
-                            produkNow.getHolder().mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
-                            produkNow.getHolder().mPlus.setBackgroundColor(Color.parseColor("#9E9E9E"));
-                            produkNow.getHolder().mMinus.setBackgroundColor(Color.parseColor("#9E9E9E"));
-                            Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
+                }
 
                 produkNow.getHolder().mPrice.setText(Produk.formatter("" + produkNow.getmHarga_jual()));
-
-                produkNow.getHolder().mPlus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if (!produkNow.ismDisabled() && !cekDisabled(MainActivity.mBahan, produkNow.getmBahans())) {
-                            int qty = produkNow.getmQty();
-                            qty++;
-                            produkNow.setmQty(qty);
-                            produkNow.getHolder().mQty.setText(qty + "");
-                            MainActivity.countEstimatedPrice();
-                            produkNow.setmDisabled(minusMbahan(MainActivity.mBahan, produkNow.getmBahans()));
-                            Log.v("cek", MainActivity.mBahan.get(0).getQty() + "");
-                            Log.v("cek", produkNow.ismDisabled() + "");
-                        } else {
-                            produkNow.getHolder().mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
-                            produkNow.getHolder().mPlus.setBackgroundColor(Color.parseColor("#9E9E9E"));
-                            produkNow.getHolder().mMinus.setBackgroundColor(Color.parseColor("#9E9E9E"));
-                            Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-                produkNow.getHolder().mMinus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int qty = produkNow.getmQty();
-
-                        if (qty > 1) {
-                            qty--;
-                            produkNow.setmQty(qty);
-                            produkNow.getHolder().mQty.setText(qty + "");
-                        } else {
-                            produkNow.setmQty(0);
-                            produkNow.getHolder().mQtySet.setVisibility(View.GONE);
-                            produkNow.getHolder().mAdd.setVisibility(View.VISIBLE);
-
-                        }
-
-                        plusMbahan(MainActivity.mBahan, produkNow.getmBahans());
-                        checkDisabledAll();
-
-                        MainActivity.countEstimatedPrice();
-
-                    }
-                });
+                produkNow.getHolder().mAdd.setOnClickListener(new AddListener(produkNow, produkNow.getHolder()));
+                produkNow.getHolder().mPlus.setOnClickListener(new PlusListener(produkNow, produkNow.getHolder()));
+                produkNow.getHolder().mMinus.setOnClickListener(new MinusListener(produkNow, produkNow.getHolder()));
             }
 
 
@@ -433,6 +313,111 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
 
     }
+
+    private class AddListener implements View.OnClickListener {
+
+        private Produk mProduk;
+        private MenuViewHolder mHolder;
+
+        AddListener(Produk mProduk, MenuViewHolder mHolder) {
+            this.mProduk = mProduk;
+            this.mHolder = mHolder;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            if (!mProduk.ismDisabled() && !checkDisabled(MainActivity.mBahan, mProduk.getmBahans())) {
+                mHolder.mAdd.setVisibility(View.GONE);
+                mHolder.mQtySet.setVisibility(View.VISIBLE);
+                mProduk.setmQty(1);
+                mHolder.mQty.setText(mProduk.getmQty() + "");
+                MainActivity.countEstimatedPrice();
+                mProduk.setmDisabled(minusMbahan(MainActivity.mBahan, mProduk.getmBahans()));
+            } else if (checkDisabled(MainActivity.mBahan, mProduk.getmBahans())) {
+                mHolder.mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
+                mHolder.mAdd.setVisibility(View.GONE);
+                mHolder.mQtySet.setVisibility(View.GONE);
+                mHolder.mOut.setVisibility(View.VISIBLE);
+                mHolder.mPrice.setVisibility(View.GONE);
+                Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
+            } else {
+                mHolder.mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
+                mHolder.mPlus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                mHolder.mMinus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+    }
+
+    private class PlusListener implements View.OnClickListener {
+
+        private Produk mProduk;
+        private MenuViewHolder mHolder;
+
+        PlusListener(Produk mProduk, MenuViewHolder mHolder) {
+            this.mProduk = mProduk;
+            this.mHolder = mHolder;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            if (!mProduk.ismDisabled() && !checkDisabled(MainActivity.mBahan, mProduk.getmBahans())) {
+                int qty = mProduk.getmQty();
+                qty++;
+                mProduk.setmQty(qty);
+                mHolder.mQty.setText(qty + "");
+                MainActivity.countEstimatedPrice();
+                mProduk.setmDisabled(minusMbahan(MainActivity.mBahan, mProduk.getmBahans()));
+            } else {
+                mHolder.mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
+                mHolder.mPlus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                mHolder.mMinus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+    }
+
+    private class MinusListener implements View.OnClickListener {
+
+        private Produk mProduk;
+        private MenuViewHolder mHolder;
+
+        MinusListener(Produk mProduk, MenuViewHolder mHolder) {
+            this.mProduk = mProduk;
+            this.mHolder = mHolder;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            int qty = mProduk.getmQty();
+
+            if (qty > 1) {
+                qty--;
+                mProduk.setmQty(qty);
+                mHolder.mQty.setText(qty + "");
+            } else {
+                mProduk.setmQty(0);
+                mHolder.mQtySet.setVisibility(View.GONE);
+                mHolder.mAdd.setVisibility(View.VISIBLE);
+
+            }
+            mProduk.setmDisabled(plusMbahan(MainActivity.mBahan, mProduk.getmBahans()));
+            checkDisabledAll();
+            Log.v("cek", MainActivity.mBahan.get(0).getQty() + "");
+
+            MainActivity.countEstimatedPrice();
+
+
+        }
+    }
+
 
 }
 

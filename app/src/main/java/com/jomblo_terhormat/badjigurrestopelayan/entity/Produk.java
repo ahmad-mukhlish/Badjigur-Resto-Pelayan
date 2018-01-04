@@ -13,7 +13,7 @@ public class Produk implements Parcelable {
 
     private final String LOG_TAG = Produk.class.getName();
 
-    public static final String BASE_PATH = "http://192.168.0.15/restoran/";
+    public static final String BASE_PATH = "http://192.168.1.3/restoran/";
     public static final String JSON_REPLY_MENU = "server.php?operasi=makanan";
     public static final String JSON_PESAN = "server.php?operasi=pesan&pemesanan=";
     public static final String JSON_NOTA = "server.php?operasi=nota";
