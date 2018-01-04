@@ -25,6 +25,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static com.jomblo_terhormat.badjigurrestopelayan.fragment.MenuProdukFragment.recyclerView;
+
 
 public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.MenuViewHolder> {
 
@@ -51,6 +53,8 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         Picasso.with(mContext).
                 load(Produk.BASE_PATH + currentProduk.getmPath()).
                 into(holder.mGambar);
+
+        currentProduk.setHolder(holder);
 
 
         holder.mJudul.setText(currentProduk.getmNama());
@@ -139,7 +143,11 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                         currentProduk.setmQty(0);
                         holder.mQtySet.setVisibility(View.GONE);
                         holder.mAdd.setVisibility(View.VISIBLE);
+
                     }
+
+                    plusMbahan(MainActivity.mBahan, currentProduk.getmBahans());
+                    checkDisabledAll();
 
                     MainActivity.countEstimatedPrice();
 
@@ -159,7 +167,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         return mProduks.size();
     }
 
-    class MenuViewHolder extends RecyclerView.ViewHolder {
+    public class MenuViewHolder extends RecyclerView.ViewHolder {
 
         ImageView mGambar;
         TextView mJudul, mTag, mPrice, mQty;
@@ -304,8 +312,127 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                 }
             }
         }
-
         return disabled;
     }
 
+    private void plusMbahan(List<Bahan> bahanUtama, List<Bahan> makananBahan) {
+
+
+        for (Bahan mBahanNow : bahanUtama) {
+
+            for (Bahan makananBahanNow : makananBahan) {
+                if (mBahanNow.getIdBahan() == makananBahanNow.getIdBahan()) {
+                    mBahanNow.setQty(mBahanNow.getQty() + makananBahanNow.getQty());
+                }
+
+
+                MainActivity.mBahan = bahanUtama;
+
+            }
+
+        }
+
+    }
+
+
+    private void checkDisabledAll() {
+
+        for (final Produk produkNow : MainActivity.mProduk) {
+
+            if (!(cekDisabled(MainActivity.mBahan, produkNow.getmBahans())) && produkNow.getHolder() != null) {
+
+                produkNow.getHolder().mCard.setCardBackgroundColor(Color.WHITE);
+                produkNow.getHolder().mOut.setVisibility(View.GONE);
+
+                if (produkNow.getmQty() > 0) {
+                    produkNow.getHolder().mQtySet.setVisibility(View.VISIBLE);
+                    produkNow.getHolder().mAdd.setVisibility(View.GONE);
+                } else
+                    produkNow.getHolder().mAdd.setVisibility(View.VISIBLE);
+
+
+                produkNow.getHolder().mAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (!produkNow.ismDisabled() && !cekDisabled(MainActivity.mBahan, produkNow.getmBahans())) {
+                            produkNow.getHolder().mAdd.setVisibility(View.GONE);
+                            produkNow.getHolder().mQtySet.setVisibility(View.VISIBLE);
+                            produkNow.setmQty(1);
+                            produkNow.getHolder().mQty.setText(produkNow.getmQty() + "");
+                            MainActivity.countEstimatedPrice();
+                            produkNow.setmDisabled(minusMbahan(MainActivity.mBahan, produkNow.getmBahans()));
+                        } else if (cekDisabled(MainActivity.mBahan, produkNow.getmBahans())) {
+                            produkNow.getHolder().mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
+                            produkNow.getHolder().mAdd.setVisibility(View.GONE);
+                            produkNow.getHolder().mQtySet.setVisibility(View.GONE);
+                            produkNow.getHolder().mOut.setVisibility(View.VISIBLE);
+                            produkNow.getHolder().mPrice.setVisibility(View.GONE);
+                            Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
+                        } else {
+                            produkNow.getHolder().mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
+                            produkNow.getHolder().mPlus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                            produkNow.getHolder().mMinus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                            Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+                produkNow.getHolder().mPrice.setText(Produk.formatter("" + produkNow.getmHarga_jual()));
+
+                produkNow.getHolder().mPlus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if (!produkNow.ismDisabled() && !cekDisabled(MainActivity.mBahan, produkNow.getmBahans())) {
+                            int qty = produkNow.getmQty();
+                            qty++;
+                            produkNow.setmQty(qty);
+                            produkNow.getHolder().mQty.setText(qty + "");
+                            MainActivity.countEstimatedPrice();
+                            produkNow.setmDisabled(minusMbahan(MainActivity.mBahan, produkNow.getmBahans()));
+                            Log.v("cek", MainActivity.mBahan.get(0).getQty() + "");
+                            Log.v("cek", produkNow.ismDisabled() + "");
+                        } else {
+                            produkNow.getHolder().mCard.setCardBackgroundColor(Color.parseColor("#E0E0E0"));
+                            produkNow.getHolder().mPlus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                            produkNow.getHolder().mMinus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                            Toast.makeText(mContext, R.string.toast_max_stock, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                produkNow.getHolder().mMinus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int qty = produkNow.getmQty();
+
+                        if (qty > 1) {
+                            qty--;
+                            produkNow.setmQty(qty);
+                            produkNow.getHolder().mQty.setText(qty + "");
+                        } else {
+                            produkNow.setmQty(0);
+                            produkNow.getHolder().mQtySet.setVisibility(View.GONE);
+                            produkNow.getHolder().mAdd.setVisibility(View.VISIBLE);
+
+                        }
+
+                        plusMbahan(MainActivity.mBahan, produkNow.getmBahans());
+                        checkDisabledAll();
+
+                        MainActivity.countEstimatedPrice();
+
+                    }
+                });
+            }
+
+
+        }
+
+
+    }
+
 }
+

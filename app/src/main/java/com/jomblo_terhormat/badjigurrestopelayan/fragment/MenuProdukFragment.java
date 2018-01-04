@@ -20,6 +20,8 @@ public class MenuProdukFragment extends Fragment {
 
     private final String LOG_TAG = MenuProdukFragment.class.getName();
 
+    public static RecyclerView recyclerView;
+
     public MenuProdukFragment() {
         // Required empty public constructor
     }
@@ -33,14 +35,16 @@ public class MenuProdukFragment extends Fragment {
         MenuRecycleAdapter menuRecycleAdapter =
                 new MenuRecycleAdapter(getContext(), listProduk);
 
-        RecyclerView recyclerView = rootView.findViewById(R.id.rvItems);
+        recyclerView = rootView.findViewById(R.id.rvItems);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(menuRecycleAdapter);
 
+
         return rootView;
     }
+
 
 }

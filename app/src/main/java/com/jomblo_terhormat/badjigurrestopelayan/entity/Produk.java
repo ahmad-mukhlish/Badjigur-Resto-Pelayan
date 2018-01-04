@@ -3,6 +3,8 @@ package com.jomblo_terhormat.badjigurrestopelayan.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.jomblo_terhormat.badjigurrestopelayan.adapter.MenuRecycleAdapter;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
@@ -11,7 +13,7 @@ public class Produk implements Parcelable {
 
     private final String LOG_TAG = Produk.class.getName();
 
-    public static final String BASE_PATH = "http://192.168.1.3/restoran/";
+    public static final String BASE_PATH = "http://192.168.0.15/restoran/";
     public static final String JSON_REPLY_MENU = "server.php?operasi=makanan";
     public static final String JSON_PESAN = "server.php?operasi=pesan&pemesanan=";
     public static final String JSON_NOTA = "server.php?operasi=nota";
@@ -36,6 +38,13 @@ public class Produk implements Parcelable {
         this.mQty = mQty;
     }
 
+    public MenuRecycleAdapter.MenuViewHolder getHolder() {
+        return holder;
+    }
+
+    public void setHolder(MenuRecycleAdapter.MenuViewHolder holder) {
+        this.holder = holder;
+    }
 
     private int mIdMakanan;
     private String mNama;
@@ -44,6 +53,8 @@ public class Produk implements Parcelable {
     private String mDeskripsi;
     private int mHarga_jual;
     private String mPath;
+    private MenuRecycleAdapter.MenuViewHolder holder ;
+
 
 
     //field tambahan
@@ -83,7 +94,6 @@ public class Produk implements Parcelable {
         mDisabled = in.readByte() != 0;
         mBahans = in.createTypedArrayList(Bahan.CREATOR);
     }
-
 
 
     @Override

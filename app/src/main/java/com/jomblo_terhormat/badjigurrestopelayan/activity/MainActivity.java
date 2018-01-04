@@ -364,7 +364,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mBilling.setText("Estimated Price\t : \t" + Produk.formatter(estimated + ""));
 
         }
+
     }
+
 
 
 }
