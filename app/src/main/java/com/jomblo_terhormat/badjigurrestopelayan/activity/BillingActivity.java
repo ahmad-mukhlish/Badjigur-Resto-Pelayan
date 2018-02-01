@@ -138,8 +138,7 @@ public class BillingActivity extends AppCompatActivity {
 
 
             try {
-                uncooked = QueryUtils.putWithHttp(QueryUtils.parseStringLinkToURL(urls[0]),createJsonMessage())
-                        .equals("masih ada makanan yang belum selesai dimasak");
+                 uncooked = QueryUtils.putWithHttp(QueryUtils.parseStringLinkToURL(urls[0]),createJsonMessage()).equals("500") ;
             } catch (IOException e) {
                 e.printStackTrace();
             }

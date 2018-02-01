@@ -215,7 +215,6 @@ public class QueryUtils {
                 JSONObject bahanNow = root.getJSONObject(i);
                 int idBahan = bahanNow.getInt("id_bahan");
                 int stok = bahanNow.getInt("stok");
-                
 
                 Bahan currentBahan = new Bahan(idBahan, stok);
                 listBahan.add(currentBahan);
@@ -303,10 +302,11 @@ public class QueryUtils {
             dataOutputStream.flush();
             dataOutputStream.close();
 
+            jsonResponse += urlConnection.getResponseCode() ;
             urlConnection.connect();
             if (urlConnection.getResponseCode() == 200) {
                 inputStream = urlConnection.getInputStream();
-                jsonResponse = QueryUtils.streamToSting(inputStream);
+//                jsonResponse = QueryUtils.streamToSting(inputStream);
             } else {
                 Log.e(LOG_TAG, "Error response code " + urlConnection.getResponseCode());
             }
