@@ -17,6 +17,10 @@ import com.jomblo_terhormat.badjigurrestopelayan.entity.Bahan;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
 
 public class MulaiMenuActivity extends AppCompatActivity {
@@ -30,7 +34,7 @@ public class MulaiMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mulai_menu);
         ImageView imageView = findViewById(R.id.gambarbg);
         imageView.setOnTouchListener(new OnSwipeTouchListener(this));
-        new BahanAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_BAHAN);
+        new BahanAsyncTask().execute(Produk.BASE_PATH + Produk.GET_BAHAN);
 
     }
 
@@ -116,7 +120,7 @@ public class MulaiMenuActivity extends AppCompatActivity {
         }
 
         void onSwipeUp() {
-            new ActiveAsyncTask(getBaseContext()).execute(Produk.BASE_PATH + Produk.JSON_ACTIVE + Produk.NO_MEJA);
+            new ActiveAsyncTask(getBaseContext()).execute(Produk.BASE_PATH + Produk.PUT_ACTIVE);
             Produk.PEMESANAN = 1;
             startActivity(new Intent(context, MainActivity.class));
         }
@@ -152,7 +156,13 @@ public class MulaiMenuActivity extends AppCompatActivity {
                 return null;
             }
 
-            QueryUtils.fetchResponse(urls[0]);
+            try {
+                Log.v("cik",urls[0]) ;
+                Log.v("cik",createJsonMessage()) ;
+                QueryUtils.putWithHttp(QueryUtils.parseStringLinkToURL(urls[0]),createJsonMessage());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             return null;
         }
@@ -161,6 +171,23 @@ public class MulaiMenuActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String response) {
             Toast.makeText(mContext, R.string.toast_active, Toast.LENGTH_SHORT).show();
+        }
+
+        private String createJsonMessage() {
+
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+
+                jsonObject.accumulate("no_meja", Produk.NO_MEJA);
+
+
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error when create JSON message", e);
+            }
+
+            return jsonObject.toString();
+
         }
     }
 

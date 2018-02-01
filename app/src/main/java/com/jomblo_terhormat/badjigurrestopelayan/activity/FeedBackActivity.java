@@ -51,7 +51,7 @@ public class FeedBackActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            new FeedBackAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_FEEDBACK);
+            new FeedBackAsyncTask().execute(Produk.BASE_PATH + Produk.PUT_FEEDBACK);
             Toast.makeText(mContext, getString(R.string.toast_thank), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(mContext, MulaiMenuActivity.class));
 
@@ -92,7 +92,7 @@ public class FeedBackActivity extends AppCompatActivity {
             try {
 
                 jsonObject.accumulate("no_nota", Produk.NO_NOTA);
-                jsonObject.accumulate("rate", Math.round(mRatingBar.getRating() * 2));
+                jsonObject.accumulate("feedback", Math.round(mRatingBar.getRating() * 2));
 
 
             } catch (JSONException e) {

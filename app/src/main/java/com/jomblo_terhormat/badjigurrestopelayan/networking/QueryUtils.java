@@ -76,6 +76,7 @@ public class QueryUtils {
     }
 
 
+
     private static String httpConnectRequestJson(URL url) throws IOException {
 
         String jsonResponse = "";
@@ -214,6 +215,7 @@ public class QueryUtils {
                 JSONObject bahanNow = root.getJSONObject(i);
                 int idBahan = bahanNow.getInt("id_bahan");
                 int stok = bahanNow.getInt("stok");
+                
 
                 Bahan currentBahan = new Bahan(idBahan, stok);
                 listBahan.add(currentBahan);
@@ -245,6 +247,53 @@ public class QueryUtils {
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setReadTimeout(10000 /*miliseconds*/);
+            urlConnection.setConnectTimeout(150000 /*miliseconds*/);
+
+            DataOutputStream dataOutputStream = new DataOutputStream(urlConnection.getOutputStream());
+            dataOutputStream.writeBytes(message);
+            dataOutputStream.flush();
+            dataOutputStream.close();
+
+            urlConnection.connect();
+            if (urlConnection.getResponseCode() == 200) {
+                inputStream = urlConnection.getInputStream();
+                jsonResponse = QueryUtils.streamToSting(inputStream);
+            } else {
+                Log.e(LOG_TAG, "Error response code " + urlConnection.getResponseCode());
+            }
+
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error while retrieving jsonResponse", e);
+        } finally {
+            //close the url and input stream.. regardless exception thrown or not..
+            if (urlConnection != null)
+                urlConnection.disconnect();
+            if (inputStream != null)
+                inputStream.close();
+        }
+
+        return jsonResponse;
+    }
+
+    public static String putWithHttp(URL url, String message) throws IOException {
+
+        String jsonResponse = "";
+
+        if (url == null) {
+            return jsonResponse;
+        }
+
+        HttpURLConnection urlConnection = null;
+
+
+        InputStream inputStream = null;
+
+        try {
+
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("PUT");
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setReadTimeout(10000 /*miliseconds*/);
             urlConnection.setConnectTimeout(150000 /*miliseconds*/);

@@ -13,14 +13,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jomblo_terhormat.badjigurrestopelayan.R;
-import com.jomblo_terhormat.badjigurrestopelayan.entity.Bahan;
 import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.jomblo_terhormat.badjigurrestopelayan.networking.QueryUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
+import java.io.IOException;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -45,16 +45,16 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View v) {
         mStuser = mEdUser.getText().toString();
         mStpass = mEdPass.getText().toString();
-        new LoginAsyncTask(this).execute(Produk.BASE_PATH + Produk.JSON_LOGIN + mEdUser.getText().toString());
+        new PasslogAsyncTask(this).execute(Produk.BASE_PATH + Produk.GET_PASSLOG + mEdUser.getText().toString());
     }
 
 
-    private class LoginAsyncTask extends AsyncTask<String, Void, String> {
+    private class PasslogAsyncTask extends AsyncTask<String, Void, String> {
 
 
         private Context mContext;
 
-        LoginAsyncTask(Context mContext) {
+        PasslogAsyncTask(Context mContext) {
             this.mContext = mContext;
         }
 
@@ -66,14 +66,15 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             try {
-                JSONObject root = new JSONObject(QueryUtils.fetchResponse(urls[0]));
+                JSONArray root = new JSONArray(QueryUtils.fetchResponse(urls[0]));
                 if (root.length() == 0) {
                     mRealPass = "salah";
                 } else {
+                    JSONObject object = root.getJSONObject(0);
                     mRealUser = mStuser;
-                    mRealPass = root.getString("pass");
-                    Produk.NO_MEJA = Integer.parseInt(root.getString("no_meja"));
-                    mStatus = Integer.parseInt(root.getString("status"));
+                    mRealPass = object.getString("pass");
+                    Produk.NO_MEJA = Integer.parseInt(object.getString("no_meja"));
+                    mStatus = Integer.parseInt(object.getString("status"));
                 }
             } catch (JSONException e) {
                 Log.e(LOG_TAG, "Problem parsing the JSON results", e);
@@ -89,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, MulaiMenuActivity.class);
                 startActivity(intent);
                 finish();
-                new LoginMejaAsyncTask(getBaseContext()).execute(Produk.BASE_PATH + Produk.JSON_LOGIN_MEJA + Produk.NO_MEJA);
+                new LoginAsyncTask(getBaseContext()).execute(Produk.BASE_PATH + Produk.PUT_LOGIN);
             } else if (mStatus == 1 || mStatus == 2) {
                 Toast.makeText(mContext, R.string.toast_used, Toast.LENGTH_SHORT).show();
             } else {
@@ -99,11 +100,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private class LoginMejaAsyncTask extends AsyncTask<String, Void, String> {
+    private class LoginAsyncTask extends AsyncTask<String, Void, String> {
 
         private Context mContext;
 
-        LoginMejaAsyncTask(Context mContext) {
+        LoginAsyncTask(Context mContext) {
             this.mContext = mContext;
         }
 
@@ -114,9 +115,16 @@ public class LoginActivity extends AppCompatActivity {
                 return null;
             }
 
-            QueryUtils.fetchResponse(urls[0]);
+            try {
+
+                QueryUtils.putWithHttp(QueryUtils.parseStringLinkToURL(urls[0]),createJsonMessage());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             return null;
+
+
         }
 
 
@@ -124,9 +132,24 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             Toast.makeText(mContext, R.string.toast_login_meja, Toast.LENGTH_SHORT).show();
         }
+
+        private String createJsonMessage() {
+
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+
+                jsonObject.accumulate("no_meja", Produk.NO_MEJA);
+
+
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error when create JSON message", e);
+            }
+
+            return jsonObject.toString();
+
+        }
     }
-
-
 
 
 }

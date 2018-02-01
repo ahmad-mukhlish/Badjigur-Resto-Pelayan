@@ -24,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class BillingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_billing);
-        new BillingAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_BILLING + Produk.NO_MEJA);
+        new BillingAsyncTask().execute(Produk.BASE_PATH + Produk.GET_BILLING + Produk.NO_MEJA);
 
 
     }
@@ -118,7 +119,7 @@ public class BillingActivity extends AppCompatActivity {
         public void onClick(View view) {
 
             if (!mBillings.isEmpty()) {
-                new AskForBillAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_ASK + Produk.NO_MEJA);
+                new AskForBillAsyncTask().execute(Produk.BASE_PATH + Produk.PUT_ASK_BILL);
             } else {
                 Toast.makeText(mContext, getString(R.string.label_no_food), Toast.LENGTH_SHORT).show();
             }
@@ -135,8 +136,13 @@ public class BillingActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... urls) {
 
-            Log.v("cik",QueryUtils.fetchResponse(urls[0])) ;
-            uncooked = QueryUtils.fetchResponse(urls[0]).equals("masih ada makanan yang belum selesai dimasak");
+
+            try {
+                uncooked = QueryUtils.putWithHttp(QueryUtils.parseStringLinkToURL(urls[0]),createJsonMessage())
+                        .equals("masih ada makanan yang belum selesai dimasak");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
 
             return null;
@@ -155,6 +161,23 @@ public class BillingActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "The food has not been cooked yet..", Toast.LENGTH_SHORT).show();
 
             }
+
+        }
+
+        private String createJsonMessage() {
+
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+
+                jsonObject.accumulate("no_nota", Produk.NO_NOTA);
+
+
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error when create JSON message", e);
+            }
+
+            return jsonObject.toString();
 
         }
 

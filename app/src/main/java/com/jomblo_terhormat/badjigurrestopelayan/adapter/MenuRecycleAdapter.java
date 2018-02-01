@@ -49,19 +49,20 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
         Produk currentProduk = mProduks.get(position);
 
         Picasso.with(mContext).
-                load(Produk.BASE_PATH + currentProduk.getmPath()).
+                load(Produk.BASE_PATH + Produk.GET_GAMBAR + currentProduk.getmPath()).
                 into(holder.mGambar);
+
+        Log.v("cik",Produk.BASE_PATH + Produk.GET_GAMBAR + currentProduk.getmPath()) ;
 
         if (currentProduk.getHolder() == null) {
             currentProduk.setHolder(holder);
         }
 
+        holder.mGambar.setOnClickListener(new ProdukListener(position));
 
         holder.mJudul.setText(currentProduk.getmNama());
         holder.mTag.setText(currentProduk.getmTag());
         holder.mQty.setText(currentProduk.getmQty() + "");
-
-        holder.mItemView.setOnClickListener(new ProdukListener(position));
 
         holder.mOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,6 +235,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
         Boolean disabled = false;
 
+        //TODO Add A Condition To Check Whether The Particular Food Is Expired Or Not
         for (Bahan availNow : availables) {
 
             for (Bahan costNow : costs) {

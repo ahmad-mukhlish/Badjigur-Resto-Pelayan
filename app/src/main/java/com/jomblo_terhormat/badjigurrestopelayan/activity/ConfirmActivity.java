@@ -44,6 +44,8 @@ public class ConfirmActivity extends AppCompatActivity {
     List<Produk> mProduks;
     String mKeterangan;
 
+    //TODO The Confirmation Design Should Be Match With Adobe XD
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,9 +127,10 @@ public class ConfirmActivity extends AppCompatActivity {
             try {
 
                 if (Produk.PEMESANAN == 1) {
-                    Produk.NO_NOTA = Integer.parseInt(new JSONObject(fetchResponse(urls[0])).getString("nota"));
+                    Produk.NO_NOTA = Integer.parseInt(new JSONObject(fetchResponse(urls[0])).getString("no_nota"));
                 }
-                Log.v(LOG_TAG, QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), createJsonMessage()));
+                Log.v("cik",createJsonMessage()) ;
+                Log.v("cik", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), createJsonMessage()));
 
             } catch (IOException | JSONException e) {
                 Log.v(LOG_TAG, "Error when send billing", e);
@@ -139,8 +142,8 @@ public class ConfirmActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
+            //TODO The Order Might Be Rejected Due To Ingredients Avaliability.. Add Exceptions Here
             Produk.PEMESANAN++;
-            Log.v("cik",createJsonMessage()) ;
         }
 
 
@@ -219,8 +222,8 @@ public class ConfirmActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     dialog.dismiss();
                     mKeterangan = keterangan.getText().toString();
-                    new OrderAsyncTask().execute(Produk.BASE_PATH + Produk.JSON_NOTA,
-                            Produk.BASE_PATH + Produk.JSON_PESAN + Produk.PEMESANAN);
+                    new OrderAsyncTask().execute(Produk.BASE_PATH + Produk.GET_NOTA,
+                            Produk.BASE_PATH + Produk.POST_PESAN + Produk.PEMESANAN);
                     Intent intent = new Intent(ConfirmActivity.this, BillingActivity.class);
                     startActivity(intent);
                     Toast.makeText(getBaseContext(), R.string.toast_order, Toast.LENGTH_SHORT).show();

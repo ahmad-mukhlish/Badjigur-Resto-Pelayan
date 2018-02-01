@@ -37,13 +37,21 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Produk>> {
 
-    //
-    // TODO If bahan is not availiable the menu should be disabled
+
     private final String LOG_TAG = MainActivity.class.getName();
 
     public static List<Produk> mProduk;
@@ -153,8 +161,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivity(intent);
                 Toast.makeText(getBaseContext(), R.string.toast_empty, Toast.LENGTH_SHORT).show();
                 new LogoutOrEmptyAsyncTask(MainActivity.this, false).
-                        execute(Produk.BASE_PATH + Produk.JSON_EMPTY + Produk.NO_MEJA,
-                                Produk.BASE_PATH + Produk.JSON_LOGOUT + Produk.NO_MEJA
+                        execute(Produk.BASE_PATH + Produk.PUT_EMPTY,
+                                Produk.BASE_PATH + Produk.PUT_LOGOUT
                         );
             }
         });
@@ -168,8 +176,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 new LogoutOrEmptyAsyncTask(MainActivity.this, true).
-                        execute(Produk.BASE_PATH + Produk.JSON_EMPTY + Produk.NO_MEJA,
-                                Produk.BASE_PATH + Produk.JSON_LOGOUT + Produk.NO_MEJA
+                        execute(Produk.BASE_PATH + Produk.PUT_EMPTY,
+                                Produk.BASE_PATH + Produk.PUT_LOGOUT
                         );
                 finish();
             }
@@ -196,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<List<Produk>> onCreateLoader(int i, Bundle bundle) {
         if (mProduk == null) {
-            return new ProdukLoader(this, Produk.BASE_PATH + Produk.JSON_REPLY_MENU);
+            return new ProdukLoader(this, Produk.BASE_PATH + Produk.GET_MAKANAN);
         } else
             return null;
     }
@@ -249,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         switch (item.getItemId()) {
 
             case R.id.id_menu_waiter: {
-                // TODO add notif to kasir here
+                // TODO Add Notification To Kasir Here
                 Toast.makeText(this, R.string.toast_waiter_called, Toast.LENGTH_SHORT).show();
                 break;
             }
@@ -329,9 +337,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
 
 
-            QueryUtils.fetchResponse(urls[0]);
-            if (mLogout)
-                QueryUtils.fetchResponse(urls[1]);
+            try {
+                QueryUtils.putWithHttp(QueryUtils.parseStringLinkToURL(urls[0]),createJsonMessage());
+                if (mLogout)
+                    QueryUtils.putWithHttp(QueryUtils.parseStringLinkToURL(urls[1]),createJsonMessage());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             return null;
         }
@@ -343,6 +356,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 Toast.makeText(mContext, R.string.toast_logout, Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(mContext, R.string.toast_empty_table, Toast.LENGTH_SHORT).show();
+
+        }
+
+        private String createJsonMessage() {
+
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+
+                jsonObject.accumulate("no_meja", Produk.NO_MEJA);
+
+
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error when create JSON message", e);
+            }
+
+            return jsonObject.toString();
 
         }
     }

@@ -13,20 +13,29 @@ public class Produk implements Parcelable {
 
     private final String LOG_TAG = Produk.class.getName();
 
-    public static final String BASE_PATH = "http://192.168.1.3/restoran/";
-    public static final String JSON_REPLY_MENU = "server.php?operasi=makanan";
-    public static final String JSON_PESAN = "server.php?operasi=pesan&pemesanan=";
-    public static final String JSON_NOTA = "server.php?operasi=nota";
-    public static final String JSON_FEEDBACK = "server.php?operasi=rate";
-    public static final String JSON_LOGIN = "server.php?operasi=get_passlog&username=";
-    public static final String JSON_LOGOUT = "server.php?operasi=logout_meja&no_meja=";
-    public static final String JSON_LOGIN_MEJA = "server.php?operasi=login_meja&no_meja=";
-    public static final String JSON_ASK = "server.php?operasi=ask_bill&meja=";
-    public static final String JSON_BILLING = "server.php?operasi=total_pesanan&meja=";
-    public static final String JSON_EMPTY = "server.php?operasi=empty&no_meja=";
-    public static final String JSON_ACTIVE = "server.php?operasi=active&no_meja=";
-    public static final String JSON_BAHAN = "server.php?operasi=bahan";
 
+    //BASE PATH
+    public static final String BASE_PATH = "http://192.168.1.11/ci-restserver/";
+
+    //GET FOR CI
+    public static final String GET_MAKANAN = "index.php/Makanan";
+    public static final String GET_GAMBAR = "assets/";
+    public static final String GET_PASSLOG = "index.php/Meja/passlog/username/";
+    public static final String GET_BAHAN = "index.php/Bahan";
+    //belum
+    public static final String GET_BILLING = "index.php/Pesanan/index/meja/";
+    public static final String GET_NOTA = "index.php/Customer/nota";
+
+    //POST FOR CI
+    public static final String POST_PESAN = "index.php/Customer/pesan/pemesanan/";
+
+    //PUT FOR CI AND STILL NOT JSON
+    public static final String PUT_LOGOUT = "index.php/meja/logout";
+    public static final String PUT_LOGIN = "index.php/meja/login";
+    public static final String PUT_EMPTY = "index.php/meja/outofservice";
+    public static final String PUT_ACTIVE = "index.php/meja/onservice";
+    public static final String PUT_FEEDBACK = "index.php/Customer/feedback";
+    public static final String PUT_ASK_BILL = "index.php/Customer/askbill";
 
     public static int NO_NOTA;
     public static int NO_MEJA;

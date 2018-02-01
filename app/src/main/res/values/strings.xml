@@ -1,5 +1,7 @@
 <resources>
 
+    <!--TODO Add Indonesian Translation -->
+
     <!--tab names-->
     <string name="tab_food">Foods</string>
     <string name="tab_beverage">Beverages</string>
