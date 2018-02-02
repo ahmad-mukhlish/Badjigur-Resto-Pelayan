@@ -23,6 +23,7 @@ import com.jomblo_terhormat.badjigurrestopelayan.entity.Produk;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -52,7 +53,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
                 load(Produk.BASE_PATH + Produk.GET_GAMBAR + currentProduk.getmPath()).
                 into(holder.mGambar);
 
-        Log.v("cik",Produk.BASE_PATH + Produk.GET_GAMBAR + currentProduk.getmPath()) ;
+        Log.v("cik", Produk.BASE_PATH + Produk.GET_GAMBAR + currentProduk.getmPath());
 
         if (currentProduk.getHolder() == null) {
             currentProduk.setHolder(holder);
@@ -241,7 +242,8 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
             for (Bahan costNow : costs) {
                 if (availNow.getIdBahan() == costNow.getIdBahan()) {
                     //if something did not enough then the food should be disabled
-                    if (availNow.getQty() < costNow.getQty())
+                    if (availNow.getQty() < costNow.getQty()
+                            || Calendar.getInstance().getTime().after(availNow.getKadaluarsa()))
                         disabled = true;
                 }
             }
