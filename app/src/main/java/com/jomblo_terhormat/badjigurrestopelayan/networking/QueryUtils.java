@@ -19,7 +19,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class QueryUtils {
@@ -215,14 +218,18 @@ public class QueryUtils {
                 JSONObject bahanNow = root.getJSONObject(i);
                 int idBahan = bahanNow.getInt("id_bahan");
                 int stok = bahanNow.getInt("stok");
+                SimpleDateFormat sqlFormat = new SimpleDateFormat("yyyy-MM-dd") ;
+                Date date = sqlFormat.parse(bahanNow.getString("tgl_kadaluarsa")) ;
 
-                Bahan currentBahan = new Bahan(idBahan, stok);
+                Bahan currentBahan = new Bahan(idBahan, stok, date);
                 listBahan.add(currentBahan);
             }
 
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing JSON results", e);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
         return listBahan;

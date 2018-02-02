@@ -3,13 +3,22 @@ package com.jomblo_terhormat.badjigurrestopelayan.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Bahan implements Parcelable{
+import java.util.Date;
+
+public class Bahan implements Parcelable {
 
     private int idBahan, qty;
+    private Date kadaluarsa;
 
     public Bahan(int idBahan, int qty) {
         this.idBahan = idBahan;
         this.qty = qty;
+    }
+
+    public Bahan(int idBahan, int qty, Date kadaluarsa) {
+        this.idBahan = idBahan;
+        this.qty = qty;
+        this.kadaluarsa = kadaluarsa;
     }
 
     protected Bahan(Parcel in) {
@@ -41,6 +50,7 @@ public class Bahan implements Parcelable{
         return qty;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -51,4 +61,10 @@ public class Bahan implements Parcelable{
         dest.writeInt(idBahan);
         dest.writeInt(qty);
     }
+
+    public Date getKadaluarsa() {
+        return kadaluarsa;
+    }
+
+
 }

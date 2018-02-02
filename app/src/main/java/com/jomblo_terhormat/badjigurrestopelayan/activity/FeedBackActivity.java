@@ -71,7 +71,7 @@ public class FeedBackActivity extends AppCompatActivity {
             }
 
             try {
-                Log.v(LOG_TAG, QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[0]), createJsonMessage()));
+                Log.v(LOG_TAG, QueryUtils.putWithHttp(QueryUtils.parseStringLinkToURL(urls[0]), createJsonMessage()));
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error when post with http", e);
             }
