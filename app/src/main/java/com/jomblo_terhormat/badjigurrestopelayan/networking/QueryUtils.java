@@ -263,9 +263,10 @@ public class QueryUtils {
             dataOutputStream.close();
 
             urlConnection.connect();
+            jsonResponse += urlConnection.getResponseCode() ;
             if (urlConnection.getResponseCode() == 200) {
                 inputStream = urlConnection.getInputStream();
-                jsonResponse = QueryUtils.streamToSting(inputStream);
+//                jsonResponse = QueryUtils.streamToSting(inputStream);
             } else {
                 Log.e(LOG_TAG, "Error response code " + urlConnection.getResponseCode());
             }

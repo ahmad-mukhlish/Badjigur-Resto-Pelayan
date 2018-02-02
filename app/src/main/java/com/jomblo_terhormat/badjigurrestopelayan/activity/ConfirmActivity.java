@@ -116,6 +116,8 @@ public class ConfirmActivity extends AppCompatActivity {
     private class OrderAsyncTask extends AsyncTask<String, Void, String> {
 
 
+        boolean mHabis = false;
+
         @Override
         protected String doInBackground(String... urls) {
 
@@ -129,8 +131,10 @@ public class ConfirmActivity extends AppCompatActivity {
                 if (Produk.PEMESANAN == 1) {
                     Produk.NO_NOTA = Integer.parseInt(new JSONObject(fetchResponse(urls[0])).getString("no_nota"));
                 }
-                Log.v("cik",createJsonMessage()) ;
-                Log.v("cik", QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), createJsonMessage()));
+                Log.v("cik", createJsonMessage());
+
+
+                mHabis = QueryUtils.postWithHttp(QueryUtils.parseStringLinkToURL(urls[1]), createJsonMessage()).contains("500");
 
             } catch (IOException | JSONException e) {
                 Log.v(LOG_TAG, "Error when send billing", e);
@@ -142,8 +146,16 @@ public class ConfirmActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
-            //TODO The Order Might Be Rejected Due To Ingredients Avaliability.. Add Exceptions Here
-            Produk.PEMESANAN++;
+
+            if (!mHabis) {
+                Produk.PEMESANAN++;
+                Intent intent = new Intent(ConfirmActivity.this, BillingActivity.class);
+                startActivity(intent);
+                Toast.makeText(getBaseContext(), R.string.toast_order, Toast.LENGTH_SHORT).show();
+            } else {
+                ConfirmActivity.super.onBackPressed();
+                Toast.makeText(getBaseContext(), "Salah satu makanan telah habis dipesan oleh meja lain", Toast.LENGTH_SHORT).show();
+            }
         }
 
 
@@ -224,9 +236,7 @@ public class ConfirmActivity extends AppCompatActivity {
                     mKeterangan = keterangan.getText().toString();
                     new OrderAsyncTask().execute(Produk.BASE_PATH + Produk.GET_NOTA,
                             Produk.BASE_PATH + Produk.POST_PESAN + Produk.PEMESANAN);
-                    Intent intent = new Intent(ConfirmActivity.this, BillingActivity.class);
-                    startActivity(intent);
-                    Toast.makeText(getBaseContext(), R.string.toast_order, Toast.LENGTH_SHORT).show();
+
                 }
             });
         } else {

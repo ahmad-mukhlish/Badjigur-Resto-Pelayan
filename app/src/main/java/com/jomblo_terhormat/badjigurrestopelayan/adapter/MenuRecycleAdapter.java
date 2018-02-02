@@ -236,7 +236,6 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
         Boolean disabled = false;
 
-        //TODO Add A Condition To Check Whether The Particular Food Is Expired Or Not
         for (Bahan availNow : availables) {
 
             for (Bahan costNow : costs) {
