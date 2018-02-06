@@ -66,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             try {
+                Log.v("coba",QueryUtils.fetchResponse(urls[0])) ;
                 JSONArray root = new JSONArray(QueryUtils.fetchResponse(urls[0]));
                 if (root.length() == 0) {
                     mRealPass = "salah";

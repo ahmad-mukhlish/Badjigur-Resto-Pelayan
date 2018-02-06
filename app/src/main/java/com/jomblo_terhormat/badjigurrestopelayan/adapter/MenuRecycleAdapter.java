@@ -164,7 +164,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuRecycleAdapter.
 
 
             Picasso.with(mContext).
-                    load(Produk.BASE_PATH + clickedProduk.getmPath()).
+                    load(Produk.BASE_PATH + Produk.GET_GAMBAR + clickedProduk.getmPath()).
                     error(R.drawable.detail)
                     .into(imageView, new Callback() {
                         @Override

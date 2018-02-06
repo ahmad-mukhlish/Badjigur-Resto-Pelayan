@@ -15,7 +15,7 @@ public class Produk implements Parcelable {
 
 
     //BASE PATH
-    public static final String BASE_PATH = "http://192.168.1.11/ci-restserver/";
+    public static final String BASE_PATH = "http://server.silentdev.com/";
 
     //GET FOR CI
     public static final String GET_MAKANAN = "index.php/Makanan";
